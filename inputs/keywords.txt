@@ -1,0 +1,6 @@
+en:         north korea                 ,  democratic people's republic of corea  , dprk , dpr korea
+es:         corea del norte , norcorea  ,  república popular democrática de corea , rpdc
+sv:         nordkorea                   ,  demokratiska folkrepubliken korea
+no:         nord-korea                  ,  demokratiske folkerepublikken korea
+da:         nordkorea                   ,  demokratiske folkerepublik korea
+de:         nordkorea                   ,  demokratische volksrepublik korea

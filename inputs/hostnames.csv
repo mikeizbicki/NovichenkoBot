@@ -1,0 +1,169 @@
+DOMAIN,NAME,COUNTRY,LANGUAGE,NOTES
+dn.se,Dagens Nyheter,Sweden,Swedish,
+di.se,Dagens Industri,Sweden,Swedish,
+gp.se,Göteborgs-Posten ,Sweden,Swedish,
+svd.se,Svenska Dagbladet,Sweden,Swedish,
+allehanda.se,Allehanda,Sweden,Swedish, (large newspaper with several small local areas represented)
+dt.se,Dalarnas Tidningar,Sweden,Swedish, (larger grouping of local communities)
+arbetarbladet.se,Arbetarbladet,Sweden,Swedish,
+sydsvenskan.se,Sydsvenskan,Sweden,Swedish,
+dagen.se,Dagen,Sweden,Swedish,
+aftonbladet.se,Aftonbladet,Sweden,Swedish,
+expressen.se,Expressen,Sweden,Swedish,
+metro.se,Metro,Sweden,Swedish,
+hd.se,Helsingborgs Dagblad,Sweden,Swedish,
+na.se,Nerikes Allehanda (NA),Sweden,Swedish,
+nsd.se/nyheter,Norrländska Socialdemokraten (NSD),Sweden,Swedish,
+nwt.se,Nya Wermlands-Tidningen (NWT),Sweden,Swedish,
+ttela.se,TTELA,Sweden,Swedish,
+vk.se,Vasterbottens-Kuriren,Sweden,Swedish,
+corren.se/nyheter,Östgöta Correspondenten,Sweden,Swedish,
+folkbladet.nu,Folkbladet,Sweden,Swedish,
+dalademokraten.se,Dala-Demokraten,Sweden,Swedish,
+bt.se,Borås Tidning,Sweden,Swedish,
+hallandsposten.se,Hallandsposten,Sweden,Swedish,
+hn.se,Hallands Nyheter,Sweden,Swedish,
+helahalsingland.se,Helahälsingland,Sweden,Swedish,
+barometern.se,Barometern,Sweden,Swedish,
+bohuslaningen.se,Bohusläningen ,Sweden,Swedish,
+gd.se,Gefle Dagblad ,Sweden,Swedish,
+helagotland.se/start,Gotlands Tidningar,Sweden,Swedish,
+jp.se,Jönköpings-Posten,Sweden,Swedish,
+kt.se,Karlstads-Tidningen ,Sweden,Swedish,
+kristianstadsbladet.se,Kristianstadsbladet,Sweden,Swedish,
+skd.se,Skånska Dagbladet ,Sweden,Swedish,
+nsk.se,Norra Skåne ,Sweden,Swedish,
+norran.se,Norra Västerbotten ,Sweden,Swedish,
+kuriren.nu/nyheter,Norrbottens-Kuriren ,Sweden,Swedish,
+ostrasmaland.se,Östra Småland ,Sweden,Swedish,
+op.se,Östersunds-Posten,Sweden,Swedish,
+vt.se/nyheter,Västerviks-Tidningen,Sweden,Swedish,
+vf.se,Värmlands Folkblad ,Sweden,Swedish,
+vlt.se,Vestmanlands Läns Tidning ,Sweden,Swedish,
+unt.se/nyheter,Upsala Nya Tidning ,Sweden,Swedish,
+st.nu,Sundsvalls Tidning,Sweden,Swedish,
+nt.se/nyheter,Norrköpings Tidningar ,Sweden,Swedish,
+smp.se,Smålandsposten ,Sweden,Swedish,
+ostnyland.fi,Östra Nyland / Borgåbladet,Finland,Swedish,
+hbl.fi,Hufvudstadsbladet,Finland,Swedish,
+nyan.ax,Nya Åland ,Finland,Swedish,
+sydin.fi,Syd-Österbotten,Finland,Swedish,
+vasabladet.fi,Vasabladet,Finland,Swedish,
+vastranyland.fi,Västra Nyland,Finland,Swedish,
+m.alandstidningen.ax,Ålandstidningen ,Finland,Swedish,
+osterbottenstidning.fi,Österbottens Tidning ,Finland,Swedish,
+vg.no,VG,Norway,Norweigian,
+aftenposten.no,Aftenposten,Norway,Norweigian,
+dagbladet.no,Dagbladet,Norway,Norweigian,
+bt.no,Bergens Tidende,Norway,Norweigian,
+bondebladet.no,Bondebladet,Norway,Norweigian,
+dn.no,Dagens Næringsliv,Norway,Norweigian,
+adressa.no,"Adresseavisen (""Adressa"")",Norway,Norweigian,
+ostkantavisa.no,Østkantavisa,Norway,Norweigian,
+aftenbladet.no,Stavanger Aftenblad,Norway,Norweigian,
+fvn.no,Fædrelandsvennen,Norway,Norweigian,
+dt.no,Drammens Tidende,Norway,Norweigian,
+rb.no,Romerikes Blad,Norway,Norweigian,
+smp.no,Sunnmørsposten,Norway,Norweigian,
+tb.no,Tønsbergs Blad,Norway,Norweigian,
+dagsavisen.no,Dagsavisen,Norway,Norweigian,
+budstikka.no,Budstikka,Norway,Norweigian,
+ba.no,Bergensavisen,Norway,Norweigian,
+oa.no,Oppland Arbeiderblad,Norway,Norweigian,
+vl.no,Vårt Land,Norway,Norweigian,
+an.no,Avisa Nordland,Norway,Norweigian,
+f-b.no,Fredriksstad Blad,Norway,Norweigian,
+agderposten.no,Agderposten,Norway,Norweigian,
+t-a.no,Trønder-Avisa,Norway,Norweigian,
+ta.no,Telemarksavisa,Norway,Norweigian,
+glomdalen.no,Glåmdalen,Norway,Norweigian,
+rbnett.no,Romsdals Budstikke,Norway,Norweigian,
+tk.no,Tidens Krav,Norway,Norweigian,
+sa.no,Sarpsborg Arbeiderblad,Norway,Norweigian,
+klassekampen.no,Klassekampen,Norway,Norweigian,
+itromso.no,Bladet Tromsø,Norway,Norweigian,
+dagen.no,Dagen,Norway,Norweigian,
+ranablad.no,Rana Blad,Norway,Norweigian,
+sognavis.no,Sogn Avis,Norway,Norweigian,
+dagogtid.no,Dag og Tid,Norway,Norweigian,
+tradewindsnews.com,TradeWinds,Norway,English,
+upstreamonline.com,Upstream,Norway,English,
+bt.dk,B.T.,Denmark,Danish,
+politiken.dk,Dagbladet Politiken,Denmark,Danish,
+weekendavisen.dk,Weekendavisen,Denmark,Danish,
+jyllands-posten.dk,Morgenavisen Jyllands-Posten,Denmark,Danish,
+berlingske.dk,Berlingske,Denmark,Danish,
+borsen.dk,Dagbladet Børsen,Denmark,Danish,
+kristeligt-dagblad.dk,Kristeligt Dagblad,Denmark,Danish,
+ekstrabladet.dk,Ekstrabladet,Denmark,Danish,
+information.dk,Dagbladet Information,Denmark,Danish,
+cphpost.dk,The Copenhagen Post,Denmark,Danish,
+arbejderen.dk,Dagbladet Arbejderen,Denmark,Danish,
+sondagsavisen.dk,Søndagsavisen,Denmark,Danish,
+nknews.org,,us,en,domain
+cnn.com,,us,en,news
+wsj.com,,us,en,news
+usatoday.com,,us,en,news
+latimes.com,,us,en,news
+nytimes.com,,us,en,news
+chron.com,,us,en,news
+chicagotribune.com,,us,en,news
+tampabay.com,,us,en,news
+washingtonpost.com,,us,en,news
+newsday.com,,us,en,news
+nypost.com,,us,en,news
+dallasnews.com,,us,en,news
+nydailynews.com,,us,en,news
+denverpost.com,,us,en,news
+bostonglobe.com,,us,en,news
+seattlenews.com,,us,en,news
+usnews.com,,us,en,news
+time.com,,us,en,news
+foxnews.com,,us,en,news
+politico.com,,us,en,news
+foreignpolicy.com,,us,en,specialist
+thediplomat.com,,us,en,specialist
+huffpost.com,,us,en,news
+theconversation.com,,us,en,blog
+npr.org,,us,en,news
+chinafocus.com,,us,en,specialist
+nbcnews.com,,us,en,news
+economist.com,,uk,en,news
+theguardian.co.uk,,uk,en,news
+independent.co.uk,,uk,en,news
+bbc.com,,uk,en,news
+biznews.com.mx,,mx,es,news
+eluniversal.com.mx,,mx,es,news
+reforma.com,,mx,es,news
+jornada.com.mx,,mx,es,news
+yucatan.com.mx,,mx,es,news
+debate.com.mx,,mx,es,news
+cronica.com.mx,,mx,es,news
+economista.com.mx,,mx,es,news
+unamasuno.com.mx,,mx,es,news
+poresto.net,,mx,es,news
+record.com.mx,,mx,es,news
+la-prensa.com.mx,,mx,es,news
+razon.com.mx,,mx,es,news
+granma.cu,,cu,es,news
+prensa-latina.cu,,cu,es,news
+juventudrebelde.cu,,cu,es,news
+trabajadores.cu,,cu,es,news
+escambray.cu,,cu,es,news
+tribuna.cu,,cu,es,news
+periodico26.cu,,cu,es,news
+invasor.cu,,cu,es,news
+guerrillero.cu,,cu,es,news
+ahora.cu,,cu,es,news
+ecured.cu,,cu,es,news
+adelante.cu,,cu,es,news
+elhabanero.cubaweb.cu,,cu,es,news
+lademajagua.co.cu,,cu,es,news
+giron.cu,,cu,es,news
+venceremos.cu,,cu,es,news
+sierramaestra.cu,,cu,es,news
+5septiembre.cu,,cu,es,news
+havanatimes.org,,cu,es,news
+northkoreatech.org,,us,en,domain
+38north.org,,us,en,domain
+armscontrolwonk.com,,us,en,domain
