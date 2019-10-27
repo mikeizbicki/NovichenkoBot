@@ -19,7 +19,8 @@ class Benchmark(Spider):
         self.le = LinkExtractor()
 
         # database connection
-        self.engine = sqlalchemy.create_engine(db, connect_args={'timeout': 120})
+        #self.engine = sqlalchemy.create_engine(db, connect_args={'timeout': 120})
+        self.engine = sqlalchemy.create_engine(db, connect_args={'connect_timeout': 120})
         self.connection = self.engine.connect()
 
     def parse(self, response):
@@ -35,5 +36,5 @@ class Benchmark(Spider):
         for link in all_links:
             r = scrapy.http.Request(url=link.url)
             r.meta.update(link_text=link.text)
-            r.depth=request.depth+1
+            r.depth=response.request.depth+1
             yield r

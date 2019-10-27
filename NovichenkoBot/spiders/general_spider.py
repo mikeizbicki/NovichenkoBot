@@ -7,6 +7,7 @@ from scrapy.linkextractors import LinkExtractor
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 import sqlalchemy
+from sqlalchemy.sql import text
 import datetime
 import langid
 import newspaper 
@@ -39,7 +40,7 @@ class GeneralSpider(Spider):
         lang=langid.classify('test')[0]
 
         # database connection
-        self.engine = sqlalchemy.create_engine(db, connect_args={'timeout': 120})
+        self.engine = sqlalchemy.create_engine(db, connect_args={'connect_timeout': 120})
         self.connection = self.engine.connect()
 
     def parse(self, response):
@@ -80,22 +81,25 @@ class GeneralSpider(Spider):
                     depth=response.request.depth,
                     )
             id_urls_canonical=url_info['id_urls']
-            res=self.connection.execute('''
+            sql=sqlalchemy.sql.text('''
                 INSERT INTO articles 
                 (id_urls,id_urls_canonical,id_responses,title,alltext,text,lang,pub_time) 
                 values 
-                (?,?,?,?,?,?,?,?)
-                ''',(
-                response.request.id_urls,
-                id_urls_canonical,
-                response.id_responses,
-                article.title,
-                alltext,
-                article.text,
-                lang,
-                article.publish_date,
-                ))
-            id_articles=res.lastrowid
+                (:id_urls,:id_urls_canonical,:id_responses,:title,:alltext,:text,:lang,:pub_time)
+                returning id_articles
+            ''')
+            res=self.connection.execute(sql,{
+                'id_urls':response.request.id_urls,
+                'id_urls_canonical':id_urls_canonical,
+                'id_responses':response.id_responses,
+                'title':article.title,
+                'alltext':alltext,
+                'text':article.text,
+                'lang':lang,
+                'pub_time':article.publish_date,
+                })
+            #id_articles=res.lastrowid
+            id_articles=res.first()[0]
 
             # update keywords table
             keywords_lang=self.keywords.get(lang,[])
@@ -105,25 +109,29 @@ class GeneralSpider(Spider):
             keywords_alltext=sum([ alltext_lower.count(keyword) for keyword in keywords_lang])
             keywords_text=sum([ text_lower.count(keyword)       for keyword in keywords_lang])
             keywords_title=sum([ title_lower.count(keyword)     for keyword in keywords_lang])
-            res=self.connection.execute('''
-                INSERT INTO keywords
-                    (id_articles,keyword,num_title,num_text,num_alltext)
-                    VALUES
-                    (?,?,?,?,?)
-                ''',(
-                    id_articles,
-                    'north korea',
-                    keywords_title,
-                    keywords_text,
-                    keywords_alltext,
-                ))
+            sql=sqlalchemy.sql.text('''
+            INSERT INTO keywords
+                (id_articles,keyword,num_title,num_text,num_alltext)
+                VALUES
+                (:id_articles,:keyword,:num_title,:num_text,:num_alltext)
+            ''')
+            res=self.connection.execute(sql,{
+                'id_articles':id_articles,
+                'keyword':'north korea',
+                'num_title':keywords_title,
+                'num_text':keywords_text,
+                'num_alltext':keywords_alltext,
+                })
 
             # update authors table
             for author in article.authors:
-                self.connection.execute('INSERT INTO authors (id_articles,author) values (?,?)',(
-                    id_articles,
-                    author,
-                    ))
+                sql=sqlalchemy.sql.text('''
+                    INSERT INTO authors (id_articles,author) values (:id_articles,:author)
+                ''')
+                self.connection.execute(sql,{
+                    'id_articles':id_articles,
+                    'author':author,
+                    })
 
             # update refs table
             refs=[]
@@ -136,17 +144,18 @@ class GeneralSpider(Spider):
                 refs.append([url.url,'link',url.text])
             for (url,url_type,text) in refs:
                 target=get_url_info(self.connection,url,depth=response.request.depth+1)['id_urls']
-                self.connection.execute('''
-                    insert into refs
-                        (source,target,type,text)
-                        values
-                        (?,?,?,?);
-                    ''',(
-                    id_articles,
-                    target,
-                    url_type,
-                    text
-                    ))
+                sql=sqlalchemy.sql.text('''
+                insert into refs
+                    (source,target,type,text)
+                    values
+                    (:source,:target,:type,:text);
+                ''')
+                self.connection.execute(sql,{
+                    'source':id_articles,
+                    'target':target,
+                    'type':url_type,
+                    'text':text,
+                    })
         
         # yield all links
         for link in all_links:

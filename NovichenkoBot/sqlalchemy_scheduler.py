@@ -13,6 +13,7 @@ from six.moves.urllib.parse import urljoin
 from w3lib.url import safe_url_string
 import logging
 import sqlalchemy
+from sqlalchemy.sql import text
 import scrapy
 from scrapy.utils.misc import load_object, create_instance
 from scrapy.utils.job import job_dir
@@ -20,7 +21,7 @@ from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError, TCPTimedOutError
 
-from NovichenkoBot.sqlalchemy_utils import get_url_info, insert_request
+from NovichenkoBot.sqlalchemy_utils import get_url_info, urlinfo2url, insert_request
 from timeit import default_timer as timer
 #import os
 #import sys
@@ -57,11 +58,9 @@ class Scheduler(object):
     def open(self, spider):
         self.spider = spider
         self.connection = self.engine.connect()
-        return None #self.df.open()
 
     def close(self, reason=None):
         self.connection.close()
-        return None #self.df.close(reason)
 
     def enqueue_request(self, request):
         insert_request(self.connection,request.url,priority=request.priority)
@@ -69,16 +68,42 @@ class Scheduler(object):
         return True
 
     def next_request(self):
+        # whenever the number of keys in the memqueue is small enough,
+        # we must select new rows from the frontier to fill the memqueue;
         if len(self.memqueue.keys()) < self.MEMQUEUE_HOSTNAMES:
-            memqueue_values=list(self.memqueue.keys())
-            memqueue_where=''.join([' and hostname != ?' for key in memqueue_values])
-            restrictions_values=self.HOSTNAME_RESTRICTIONS_clause
-            restrictions_where=' or '.join([' hostname_reversed like ?' for hostname in restrictions_values])
+            #
+            # the query to fill the memqueue is rather complicated
+            # and divided into several parts;
+            # all the parts will store parameters in this values_dict
+            values_dict={}
+
+            # generate a where clause for ensuring that the returned hostnames
+            # do not match any hostnames already in the dictionary;
+            # this ensures a broad crawl and that we don't send too much traffic
+            # to a single host
+            memqueue_where=''
+            memqueue_index=0
+            for key in self.memqueue.keys():
+                memqueue_index+=1
+                memqueue_where+=f' and hostname != :hostname{memqueue_index} '
+                values_dict[f'hostname{memqueue_index}']=key
+
+
+            # generate a where clause that ensures we are only crawling allowed
+            # domains and subdomains based on the HOSTNAME_RESTRICTIONS parameter
+            restrictions=[]
+            restrictions_index=0
+            for hostname_reversed in self.HOSTNAME_RESTRICTIONS_clause:
+                restrictions_index+=1
+                restrictions.append(f' hostname_reversed like :hostname_reversed{restrictions_index}')
+                values_dict[f'hostname_reversed{restrictions_index}']=hostname_reversed
+            restrictions_where=' or '.join(restrictions)
             if len(restrictions_where) > 0:
                 restrictions_where=f'and ({restrictions_where})'
-            all_values=memqueue_values+restrictions_values
 
-            sql=f'''
+            # substitute the above where constraints into the sql,
+            # execute the result, and add it to memqueue
+            sql=text(f'''
             select scheme,hostname,port,path,params,query,fragment,frontier.id_frontier,urls.id_urls,depth
             from urls 
             inner join frontier on urls.id_urls=frontier.id_urls
@@ -88,43 +113,37 @@ class Scheduler(object):
                 {restrictions_where}
             order by priority desc
             limit {self.MEMQUEUE_LIMIT};
-            '''
-            rows=list(self.connection.execute(sql,all_values))
-            for row in rows:
-                hostname=row[1]
+            ''')
+            #res=connection.execute(sql,url_parsed)
+            #return [{column: value for column, value in row.items()} for row in res][0]
+            res=self.connection.execute(sql,values_dict)
+            for row in [dict(row.items()) for row in res]:
+                hostname=row['hostname']
                 self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
                 self.next_hostname=hostname
 
+        # if the memqueue is empty, then there are no pages in the frontier
+        # and we should return
         hostnames=sorted(list(self.memqueue.keys()))
         if hostnames==[]:
             return None
 
+        # otherwise generate the next request
         else:
+            # these lines ensure that everytime next_request is called,
+            # the request comes from a different entry in the memqueue
             current_hostname=self.next_hostname
             next_index=(hostnames.index(self.next_hostname)+1)%len(hostnames)
             self.next_hostname=hostnames[next_index]
 
-            row=self.memqueue[current_hostname].pop()
-
+            # get the next row from the frontier
+            frontier_row=self.memqueue[current_hostname].pop()
+            url=urlinfo2url(frontier_row)
+            
+            # if the pop leaves an entry of the memqueue empty,
+            # delete the key so that a new entry can be populated
             if self.memqueue[current_hostname]==[]:
                 del self.memqueue[current_hostname]
-
-            # extract the values
-            scheme=row[0]
-            hostname=row[1]
-            port=row[2]
-            path=row[3]
-            params=row[4]
-            query=row[5]
-            fragment=row[6]
-            id_frontier=row[7]
-            id_urls=row[8]
-            depth=row[9]
-            if port=='':
-                netloc=hostname
-            else:
-                netloc=hostname+':'+port
-            url=urlunparse([scheme,netloc,path,params,query,fragment])
 
             # define callback functions for generating a request
             # these functions are defined locally so that they have access to 
@@ -145,22 +164,24 @@ class Scheduler(object):
                     id_urls_redirected=url_info_redirected['id_urls']
 
                 # create a new row in responses table
-                sql='''
+                sql=text('''
                 insert into responses
                     (id_frontier,timestamp_received,twisted_status,http_status,dataloss,bytes,id_urls_redirected)
                     values
-                    (?,?,?,?,?,?,?);
-                '''
-                res=self.connection.execute(sql,(
-                    id_frontier,
-                    datetime.datetime.now(),
-                    'Success',
-                    response.status,
-                    'dataloss' in response.flags,
-                    len(response.body),
-                    id_urls_redirected
-                    ))
-                response.id_responses=res.lastrowid
+                    (:id_frontier,:timestamp_received,:twisted_status,:http_status,:dataloss,:bytes,:id_urls_redirected)
+                    returning id_responses
+                ''')
+                res=self.connection.execute(sql,{
+                    'id_frontier':frontier_row['id_frontier'],
+                    'timestamp_received':datetime.datetime.now(),
+                    'twisted_status':'Success',
+                    'http_status':response.status,
+                    'dataloss':'dataloss' in response.flags,
+                    'bytes':len(response.body),
+                    'id_urls_redirected':id_urls_redirected
+                    })
+                #response.id_responses=res.lastrowid
+                response.id_responses=res.first()[0]
 
                 # run the spider on the response only if the response is not a redirect
                 if id_urls_redirected is None:
@@ -169,13 +190,13 @@ class Scheduler(object):
                     parse_generator=None
 
                 # update the responses table to indicate it is fully processed
-                sql='''
-                update responses set timestamp_processed=? where id_responses=?
-                '''
-                res=self.connection.execute(sql,(
-                    datetime.datetime.now(),
-                    response.id_responses
-                    ))
+                sql=text('''
+                update responses set timestamp_processed=:timestamp_processed where id_responses=:id_responses
+                ''')
+                res=self.connection.execute(sql,{
+                    'timestamp_processed':datetime.datetime.now(),
+                    'id_responses':response.id_responses
+                    })
 
                 # the spider may return a generator that yields urls to crawl, 
                 # and we must return that generator here to crawl those urls
@@ -184,36 +205,43 @@ class Scheduler(object):
             def errback_httpbin(failure):
                 twisted_status=failure.value.__class__.__name__
                 twisted_status_long=str(failure.value)
-                sql='''
+                sql=text('''
                 insert into responses
                     (id_frontier,timestamp_received,twisted_status,twisted_status_long)
                     values
-                    (?,?,?,?);
-                '''
-                self.connection.execute(sql,(
-                    id_frontier,
-                    datetime.datetime.now(),
-                    twisted_status,
-                    twisted_status_long,
-                    ))
+                    (:id_frontier,:timestamp_received,:twisted_status,:twisted_status_long);
+                ''')
+                self.connection.execute(sql,{
+                    'id_frontier':frontier_row['id_frontier'],
+                    'timestamp_received':datetime.datetime.now(),
+                    'twisted_status':twisted_status,
+                    'twisted_status_long':twisted_status_long,
+                    })
 
             # generate the request
             request=scrapy.http.Request(url,callback=parse_httpbin,
                                     errback=errback_httpbin)
             #request=scrapy.http.Request(url)
-            request.id_urls=id_urls
-            request.id_frontier=id_frontier
-            request.depth=depth
+            request.id_urls=frontier_row['id_urls']
+            request.id_frontier=frontier_row['id_frontier']
+            request.depth=frontier_row['depth']
             
             # update the row to indicate it has been retrieved 
-            sql=f"update frontier set timestamp_processed=? where id_frontier=?"
-            self.connection.execute(sql,(datetime.datetime.now(),id_frontier))
+            sql=text(f'''
+            update frontier 
+                set timestamp_processed=:timestamp_processed 
+                where id_frontier=:id_frontier
+            ''')
+            self.connection.execute(sql,{
+                'timestamp_processed':datetime.datetime.now(),
+                'id_frontier':frontier_row['id_frontier']
+                })
             self.stats.inc_value('scheduler/dequeued', spider=self.spider)
 
             return request
 
     def has_pending_requests(self):
-        #print('has_pending_request')
+        # FIXME
         return True
 
     #def __len__(self):
@@ -269,13 +297,24 @@ if __name__=='__main__':
                         ]:
                     insert_request(connection,url,allow_dupes=True,priority=float('Inf'))
                 url_info=get_url_info(connection,'http://'+domain)
-                sql='''
-                insert into seed_hostnames
-                    (hostname,lang,country)
-                    values
-                    (?,?,?);
-                '''
-                connection.execute(sql,(url_info['hostname'],row['LANGUAGE'],row['COUNTRY']))
+
+                # add hostnames into the hostnames table if they don't exist
+                # if they do exist, postgres raises an error, 
+                # which we catch and discard
+                try:
+                    sql=text('''
+                    insert into seed_hostnames
+                        (hostname,lang,country)
+                        values
+                        (:hostname,:lang,:country);
+                    ''')
+                    connection.execute(sql,{
+                        'hostname':url_info['hostname'],
+                        'lang':row['LANGUAGE'],
+                        'country':row['COUNTRY']
+                        })
+                except sqlalchemy.exc.IntegrityError:
+                    pass
 
     # close the connection
     connection.close()

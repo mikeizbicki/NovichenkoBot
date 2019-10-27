@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS seed_hostnames (
 );
 
 CREATE TABLE IF NOT EXISTS urls (
-    id_urls INTEGER PRIMARY KEY,
+    id_urls BIGSERIAL PRIMARY KEY,
     scheme VARCHAR(8),
     hostname VARCHAR(253),
     port INTEGER,
@@ -26,7 +26,7 @@ CREATE INDEX IF NOT EXISTS urls_index_hostname_path ON urls(hostname,path);
  * scheduled and downloaded.
  */
 CREATE TABLE IF NOT EXISTS frontier (
-    id_frontier INTEGER PRIMARY KEY,
+    id_frontier BIGSERIAL PRIMARY KEY,
     id_urls INTEGER,
     priority REAL,
     timestamp_received TIMESTAMP,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS frontier (
      */
     hostname_reversed VARCHAR(253),
 
-    FOREIGN KEY (id_urls) REFERENCES urls(id_urls)
+    FOREIGN KEY (id_urls) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE INDEX IF NOT EXISTS frontier_index_urls ON frontier(id_urls);
@@ -52,7 +52,7 @@ CREATE VIEW IF NOT EXISTS frontier_urls AS
 */
 
 CREATE TABLE IF NOT EXISTS responses (
-    id_responses INTEGER PRIMARY KEY,
+    id_responses BIGSERIAL PRIMARY KEY,
     id_frontier INTEGER, 
     id_urls_redirected INTEGER,
     timestamp_received TIMESTAMP,
@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS responses (
     http_status VARCHAR(4),
     dataloss BOOLEAN,
     bytes INTEGER,
-    FOREIGN KEY (id_frontier) REFERENCES frontier(id_frontier),
-    FOREIGN KEY (id_urls_redirected) REFERENCES urls(id_urls)
+    FOREIGN KEY (id_frontier) REFERENCES frontier(id_frontier) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (id_urls_redirected) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE INDEX IF NOT EXISTS responses_index_frontier ON responses(id_frontier);
@@ -81,7 +81,7 @@ CREATE VIEW IF NOT EXISTS responses_urls AS
  */
 
 CREATE TABLE IF NOT EXISTS articles (
-    id_articles INTEGER PRIMARY KEY,
+    id_articles BIGSERIAL PRIMARY KEY,
     id_urls INTEGER, 
     id_urls_canonical INTEGER, 
     id_responses INTEGER,
@@ -103,7 +103,7 @@ CREATE VIEW IF NOT EXISTS articles_urls AS
 */
 
 CREATE TABLE IF NOT EXISTS keywords (
-    id_keywords INTEGER PRIMARY KEY,
+    id_keywords BIGSERIAL PRIMARY KEY,
     id_articles INTEGER, 
     keyword VARCHAR(16),
     num_title INTEGER,
@@ -113,14 +113,14 @@ CREATE TABLE IF NOT EXISTS keywords (
 );
 
 CREATE TABLE IF NOT EXISTS authors (
-    id_authors INTEGER PRIMARY KEY,
+    id_authors BIGSERIAL PRIMARY KEY,
     id_articles INTEGER, 
     author VARCHAR(128), 
     FOREIGN KEY (id_articles) REFERENCES articles(id_articles)
 );
 
 CREATE TABLE IF NOT EXISTS refs (
-    id_refs INTEGER PRIMARY KEY,
+    id_refs BIGSERIAL PRIMARY KEY,
     source INTEGER,
     target INTEGER,
     type VARCHAR(10),
