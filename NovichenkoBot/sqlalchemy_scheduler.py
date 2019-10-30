@@ -21,7 +21,7 @@ from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError, TCPTimedOutError
 
-from NovichenkoBot.sqlalchemy_utils import get_url_info, urlinfo2url, insert_request
+from NovichenkoBot.sqlalchemy_utils import get_url_info, urlinfo2url, insert_request, reverse_hostname
 from timeit import default_timer as timer
 #import os
 #import sys
@@ -36,9 +36,10 @@ class Scheduler(object):
     def __init__(self, stats=None, crawler=None, db=None):
         settings=crawler.settings
         self.HOSTNAME_RESTRICTIONS = settings.getlist('HOSTNAME_RESTRICTIONS')
-        self.HOSTNAME_RESTRICTIONS_clause = [hostname[::-1]+'.%' for hostname in self.HOSTNAME_RESTRICTIONS]
+        self.HOSTNAME_RESTRICTIONS_clause = [reverse_hostname(hostname)+'%' for hostname in self.HOSTNAME_RESTRICTIONS]
         self.MEMQUEUE_HOSTNAMES = settings.getint('MEMQUEUE_HOSTNAMES',default=40)
         self.MEMQUEUE_LIMIT = settings.getint('MEMQUEUE_LIMIT',default=1000)
+        self.MEMQUEUE_MIN = settings.getint('MEMQUEUE_MIN',default=100)
         
         self.stats = stats
         self.crawler = crawler
@@ -70,8 +71,11 @@ class Scheduler(object):
     def next_request(self):
         # whenever the number of keys in the memqueue is small enough,
         # we must select new rows from the frontier to fill the memqueue;
-        if len(self.memqueue.keys()) < self.MEMQUEUE_HOSTNAMES:
-            #
+        memqueue_values=sum(map(len,self.memqueue.values()))
+        #if len(self.memqueue.keys()) < self.MEMQUEUE_HOSTNAMES:
+        if memqueue_values < self.MEMQUEUE_MIN:
+            logger.info(f'expanding memqueue; keys = {len(self.memqueue.keys())} ; values = {memqueue_values}')
+            
             # the query to fill the memqueue is rather complicated
             # and divided into several parts;
             # all the parts will store parameters in this values_dict
@@ -83,11 +87,10 @@ class Scheduler(object):
             # to a single host
             memqueue_where=''
             memqueue_index=0
-            for key in self.memqueue.keys():
+            for hostname in self.memqueue.keys():
                 memqueue_index+=1
-                memqueue_where+=f' and hostname != :hostname{memqueue_index} '
-                values_dict[f'hostname{memqueue_index}']=key
-
+                memqueue_where+=f' and hostname_reversed != :hostname_reversed{memqueue_index} '
+                values_dict[f'hostname_reversed{memqueue_index}']=reverse_hostname(hostname)
 
             # generate a where clause that ensures we are only crawling allowed
             # domains and subdomains based on the HOSTNAME_RESTRICTIONS parameter
@@ -121,6 +124,8 @@ class Scheduler(object):
                 hostname=row['hostname']
                 self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
                 self.next_hostname=hostname
+
+            logger.info(f'expanded memqueue; keys = {len(self.memqueue.keys())} ; values = {memqueue_values}')
 
         # if the memqueue is empty, then there are no pages in the frontier
         # and we should return

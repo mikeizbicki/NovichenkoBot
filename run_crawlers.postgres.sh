@@ -4,7 +4,7 @@ set -e
 
 db=novichenkobot
 db_rfc=postgres:///$db
-stepsize=3
+stepsize=2
 
 # create log directories
 log=log/$(date +'%Y-%m-%d-%H-%M-%S')
@@ -25,7 +25,7 @@ while true; do
 EOF
 )
     hosts=$(echo "$res" | tail -n +3 | head -n -1)
-    if [ "$hosts" = "" ] || [ $i = 50 ]; then
+    if [ "$hosts" = "" ] ; then
         break
         echo done
     fi

@@ -3,6 +3,9 @@ from urllib.parse import urlparse,urlunparse
 from sqlalchemy.sql import text
 import copy
 
+def reverse_hostname(hostname):
+    return hostname[::-1]+'.'
+
 def parse_url(url):
     # normalizing the url converts all domain characters
     # into lower case and ensures non-alphanumeric characters
@@ -112,13 +115,14 @@ def insert_request(connection,url,priority=0,allow_dupes=False,depth=0):
                 sql=text('''
                 update frontier set priority=priority+:priority where id_urls=:id_urls;
                 ''')
-                res=connection.execute(sql,{'priority',priority,'id_urls',url_info['id_urls']})
+                res=connection.execute(sql,{
+                    'priority':priority,
+                    'id_urls':url_info['id_urls']
+                    })
             return url_info
 
     # we reach this line if either no duplicates were found or allow_dupes is True,
     # so we insert into the table
-    hostname=url_info['hostname']
-    hostname_reversed=hostname[::-1]+'.'
     sql=text('''
     insert into frontier
         (id_urls,timestamp_received,priority,hostname_reversed)
@@ -129,6 +133,6 @@ def insert_request(connection,url,priority=0,allow_dupes=False,depth=0):
         'id_urls':url_info['id_urls'],
         'timestamp_received':datetime.datetime.now(),
         'priority':priority,
-        'hostname_reversed':hostname_reversed,
+        'hostname_reversed':reverse_hostname(url_info['hostname']),
         })
     return url_info
