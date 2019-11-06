@@ -21,7 +21,7 @@ ln -sfn "$(pwd)/$log" log/newest
 i=0
 while true; do
     res=$(psql $db <<EOF 
-    select hostname from seed_hostnames limit $stepsize offset $((i * $stepsize));
+    select hostname from seed_hostnames order by hostname limit $stepsize offset $((i * $stepsize));
 EOF
 )
     hosts=$(echo "$res" | tail -n +3 | head -n -1)
@@ -30,8 +30,8 @@ EOF
         echo done
     fi
     restrictions=$(echo $hosts | tr ' ' ',')
-    echo $restrictions
-    nohup scrapy crawl general -s HOSTNAME_RESTRICTIONS=$restrictions -a db=$db_rfc > $log/general.$(printf "%04d" $i) 2>&1 &
+    echo $i : $restrictions
+    nohup nice -n 19 scrapy crawl general -s HOSTNAME_RESTRICTIONS=$restrictions -a db=$db_rfc > $log/general.$(printf "%04d" $i) 2>&1 &
     echo $! >> $log/pids
     i=$(( i + 1 ))
 done

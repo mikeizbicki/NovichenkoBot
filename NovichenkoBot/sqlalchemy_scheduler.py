@@ -40,6 +40,8 @@ class Scheduler(object):
         self.MEMQUEUE_HOSTNAMES = settings.getint('MEMQUEUE_HOSTNAMES',default=40)
         self.MEMQUEUE_LIMIT = settings.getint('MEMQUEUE_LIMIT',default=1000)
         self.MEMQUEUE_MIN = settings.getint('MEMQUEUE_MIN',default=100)
+        self.MEMQUEUE_DELAY = settings.getint('MEMQUEUE_DELAY',default=100)
+        self.time_since_memqueue_fill = float('inf')
         
         self.stats = stats
         self.crawler = crawler
@@ -73,8 +75,15 @@ class Scheduler(object):
         # we must select new rows from the frontier to fill the memqueue;
         memqueue_values=sum(map(len,self.memqueue.values()))
         #if len(self.memqueue.keys()) < self.MEMQUEUE_HOSTNAMES:
-        if memqueue_values < self.MEMQUEUE_MIN:
-            logger.info(f'expanding memqueue; keys = {len(self.memqueue.keys())} ; values = {memqueue_values}')
+        self.time_since_memqueue_fill+=1
+        if ( memqueue_values < self.MEMQUEUE_MIN #or 
+                #( len(self.memqueue.keys()) < self.MEMQUEUE_HOSTNAMES and 
+                  #self.time_since_memqueue_fill > self.MEMQUEUE_DELAY and
+                  #memqueue_values < self.MEMQUEUE_LIMIT*2
+                #)
+                ):
+            self.time_since_memqueue_fill=0
+            logger.info(f'expanding memqueue prior; keys = {len(self.memqueue.keys())} ; values = {memqueue_values}')
             
             # the query to fill the memqueue is rather complicated
             # and divided into several parts;
@@ -125,7 +134,8 @@ class Scheduler(object):
                 self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
                 self.next_hostname=hostname
 
-            logger.info(f'expanded memqueue; keys = {len(self.memqueue.keys())} ; values = {memqueue_values}')
+            memqueue_values=sum(map(len,self.memqueue.values()))
+            logger.info(f'expanded memqueue after; keys = {len(self.memqueue.keys())} ; values = {memqueue_values}')
 
         # if the memqueue is empty, then there are no pages in the frontier
         # and we should return
@@ -171,13 +181,14 @@ class Scheduler(object):
                 # create a new row in responses table
                 sql=text('''
                 insert into responses
-                    (id_frontier,timestamp_received,twisted_status,http_status,dataloss,bytes,id_urls_redirected)
+                    (id_frontier,hostname,timestamp_received,twisted_status,http_status,dataloss,bytes,id_urls_redirected)
                     values
-                    (:id_frontier,:timestamp_received,:twisted_status,:http_status,:dataloss,:bytes,:id_urls_redirected)
+                    (:id_frontier,:hostname,:timestamp_received,:twisted_status,:http_status,:dataloss,:bytes,:id_urls_redirected)
                     returning id_responses
                 ''')
                 res=self.connection.execute(sql,{
                     'id_frontier':frontier_row['id_frontier'],
+                    'hostname':frontier_row['hostname'],
                     'timestamp_received':datetime.datetime.now(),
                     'twisted_status':'Success',
                     'http_status':response.status,
@@ -212,12 +223,13 @@ class Scheduler(object):
                 twisted_status_long=str(failure.value)
                 sql=text('''
                 insert into responses
-                    (id_frontier,timestamp_received,twisted_status,twisted_status_long)
+                    (id_frontier,hostname,timestamp_received,twisted_status,twisted_status_long)
                     values
-                    (:id_frontier,:timestamp_received,:twisted_status,:twisted_status_long);
+                    (:id_frontier,:hostname,:timestamp_received,:twisted_status,:twisted_status_long);
                 ''')
                 self.connection.execute(sql,{
                     'id_frontier':frontier_row['id_frontier'],
+                    'hostname':frontier_row['hostname'],
                     'timestamp_received':datetime.datetime.now(),
                     'twisted_status':twisted_status,
                     'twisted_status_long':twisted_status_long,
@@ -228,6 +240,7 @@ class Scheduler(object):
                                     errback=errback_httpbin)
             #request=scrapy.http.Request(url)
             request.id_urls=frontier_row['id_urls']
+            request.hostname=frontier_row['hostname']
             request.id_frontier=frontier_row['id_frontier']
             request.depth=frontier_row['depth']
             

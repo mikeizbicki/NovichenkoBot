@@ -83,13 +83,14 @@ class GeneralSpider(Spider):
             id_urls_canonical=url_info['id_urls']
             sql=sqlalchemy.sql.text('''
                 INSERT INTO articles 
-                (id_urls,id_urls_canonical,id_responses,title,alltext,text,lang,pub_time) 
+                (id_urls,hostname,id_urls_canonical,id_responses,title,alltext,text,lang,pub_time) 
                 values 
-                (:id_urls,:id_urls_canonical,:id_responses,:title,:alltext,:text,:lang,:pub_time)
+                (:id_urls,:hostname,:id_urls_canonical,:id_responses,:title,:alltext,:text,:lang,:pub_time)
                 returning id_articles
             ''')
             res=self.connection.execute(sql,{
                 'id_urls':response.request.id_urls,
+                'hostname':response.request.hostname,
                 'id_urls_canonical':id_urls_canonical,
                 'id_responses':response.id_responses,
                 'title':article.title,
@@ -164,3 +165,45 @@ class GeneralSpider(Spider):
             r.meta.update(link_text=link.text)
             r.depth=response.request.depth+1
             yield r
+
+def html2article(url,html):
+
+    ret={}
+
+    # if the input html is empty, 
+    # we need to handle this case separately because many of the
+    # libraries don't work
+    if len(html)==0:
+        ret['text']=None
+        ret['title']=None
+        ret['year']=None
+        ret['authors']=None
+        ret['canonical_link']=None
+        ret['lang']=None
+        return ret
+
+    # detect page language 
+    soup=BeautifulSoup(response.body,'lxml')
+    alltext=soup.get_text(separator=' ')
+    ret['lang']=langid.classify(alltext)[0]
+
+    # extract content using newspaper3k library
+    try:
+        article = newspaper.Article(url,language=ret['lang'])
+        article.download(input_html=html)
+        article.parse()
+    except:
+        article = newspaper.Article(url)
+        article.download(input_html=html)
+        article.parse()
+
+    ret['text']=article.text
+    ret['title']=article.title
+    ret['pub_time']=article.publish_date
+    ret['authors']=article.authors
+    ret['canonical_link']=article.canonical_link
+
+    # for some domains, newspaper3k doesn't work well
+    # and so we have manual rules for extracting information
+    if 'thediplomat.com' in url:
+        soup.find('span',class_='pubTime')

@@ -6,14 +6,14 @@ CREATE TABLE IF NOT EXISTS seed_hostnames (
 
 CREATE TABLE IF NOT EXISTS urls (
     id_urls BIGSERIAL PRIMARY KEY,
-    scheme VARCHAR(8),
-    hostname VARCHAR(253),
-    port INTEGER,
-    path VARCHAR(1024),
-    params VARCHAR(256),
-    query VARCHAR(1024),
-    fragment VARCHAR(256),
-    other VARCHAR(2048),
+    scheme VARCHAR(8) NOT NULL,
+    hostname VARCHAR(253) NOT NULL,
+    port INTEGER NOT NULL,
+    path VARCHAR(1024) NOT NULL,
+    params VARCHAR(256) NOT NULL,
+    query VARCHAR(1024) NOT NULL,
+    fragment VARCHAR(256) NOT NULL,
+    other VARCHAR(2048) NOT NULL,
     depth INTEGER,
     UNIQUE(scheme,hostname,port,path,params,query,fragment,other)
 );
@@ -27,7 +27,7 @@ CREATE INDEX IF NOT EXISTS urls_index_hostname_path ON urls(hostname,path);
  */
 CREATE TABLE IF NOT EXISTS frontier (
     id_frontier BIGSERIAL PRIMARY KEY,
-    id_urls INTEGER,
+    id_urls BIGINT,
     priority REAL,
     timestamp_received TIMESTAMP,
     timestamp_processed TIMESTAMP,
@@ -55,15 +55,17 @@ CREATE VIEW IF NOT EXISTS frontier_urls AS
 
 CREATE TABLE IF NOT EXISTS responses (
     id_responses BIGSERIAL PRIMARY KEY,
-    id_frontier INTEGER, 
-    id_urls_redirected INTEGER,
-    timestamp_received TIMESTAMP,
+    id_frontier BIGINT NOT NULL, 
+    hostname VARCHAR(253) NOT NULL,
+    id_urls_redirected BIGINT,
+    timestamp_received TIMESTAMP NOT NULL,
     timestamp_processed TIMESTAMP,
     twisted_status VARCHAR(256),
     twisted_status_long VARCHAR(2048),
     http_status VARCHAR(4),
     dataloss BOOLEAN,
     bytes INTEGER,
+    recycled_into_frontier BOOLEAN DEFAULT false,
     FOREIGN KEY (id_frontier) REFERENCES frontier(id_frontier) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (id_urls_redirected) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
@@ -71,35 +73,135 @@ CREATE TABLE IF NOT EXISTS responses (
 CREATE INDEX IF NOT EXISTS responses_index_frontier ON responses(id_frontier);
 CREATE INDEX IF NOT EXISTS responses_index_timestamp_received ON responses(timestamp_received);
 CREATE INDEX IF NOT EXISTS responses_index_timestamp_processed ON responses(timestamp_processed);
+CREATE INDEX IF NOT EXISTS responses_index_hostnametwistedhttp ON responses(hostname,twisted_status,http_status);
 
-CREATE VIEW responses_status AS
+CREATE VIEW total_byes AS
+    SELECT pg_size_pretty(sum(bytes)) FROM responses;
+
+/* this view lets us evaluate the performance of the crawler on particular domains */
+CREATE VIEW responses_hostname AS
     SELECT hostname,twisted_status,http_status,count(1) as num
     FROM responses
-    INNER JOIN frontier ON frontier.id_frontier=responses.id_frontier
-    INNER JOIN urls ON urls.id_urls=frontier.id_urls
+    WHERE NOT recycled_into_frontier
     GROUP BY hostname,twisted_status,http_status
     ORDER BY hostname,twisted_status,http_status
     ;
 
-CREATE VIEW crawl_performance AS
-    SELECT t1.timestamp,frontier_received,frontier_processed,responses_received,responses_processed
-    FROM (SELECT date_trunc('minute', timestamp_received) as timestamp,count(1) as frontier_received
-        FROM frontier GROUP BY timestamp) AS t1
-    INNER JOIN (SELECT date_trunc('minute', timestamp_processed) as timestamp,count(1) as frontier_processed
-        FROM frontier GROUP BY timestamp) AS t2 ON t1.timestamp=t2.timestamp
-    INNER JOIN (SELECT date_trunc('minute', timestamp_received) as timestamp,count(1) as responses_received 
-        FROM responses GROUP BY timestamp) AS t3 ON t1.timestamp=t3.timestamp
-    INNER JOIN (SELECT date_trunc('minute', timestamp_processed) as timestamp,count(1) as responses_processed
-        FROM responses GROUP BY timestamp) AS t4 ON t1.timestamp=t4.timestamp
-    ORDER BY t1.timestamp;
-
-/*
-CREATE VIEW IF NOT EXISTS responses_urls AS
-    SELECT responses.*,urls.*
+CREATE VIEW responses_recent_status AS
+    SELECT twisted_status,http_status,count(1) as num
     FROM responses
-    INNER JOIN frontier ON responses.id_frontier=frontier.id_frontier
-    INNER JOIN urls ON frontier.id_urls=urls.id_urls;
-*/
+    WHERE
+        timestamp_received>(SELECT max(timestamp_received)-interval '1 hour' FROM responses)
+    GROUP BY twisted_status,http_status
+    ORDER BY twisted_status,http_status
+    ;
+
+/* this view lets us evaluate the recent performance of the crawler */
+CREATE VIEW responses_recent_performance AS
+    SELECT
+        t1.timestamp,
+        responses_received,
+        responses_processed,
+        bytes
+    FROM (
+        SELECT 
+            date_trunc('minute',timestamp_received) as timestamp,
+            count(1) as responses_received 
+        FROM responses
+        WHERE timestamp_received>(SELECT max(timestamp_received)-interval '1 hour' FROM responses)
+        GROUP BY timestamp
+    ) AS t1
+    FULL OUTER JOIN (
+        SELECT 
+            date_trunc('minute',timestamp_processed) as timestamp,
+            count(1) as responses_processed ,
+            sum(bytes) as bytes
+        FROM responses
+        WHERE timestamp_processed>(SELECT max(timestamp_received)-interval '1 hour' FROM responses)
+        GROUP BY timestamp
+    ) AS t2 ON t1.timestamp=t2.timestamp 
+    ORDER BY t1.timestamp DESC;
+
+CREATE VIEW responses_recent_performance2 AS
+    SELECT
+        t1.hostname,
+        t1.timestamp,
+        responses_received,
+        responses_processed,
+        bytes
+    FROM (
+        SELECT 
+            hostname,
+            date_trunc('minute',timestamp_received) as timestamp,
+            count(1) as responses_received 
+        FROM responses
+        WHERE timestamp_received>(SELECT max(timestamp_received)-interval '1 hour' FROM responses)
+        GROUP BY hostname,timestamp
+    ) AS t1
+    FULL OUTER JOIN (
+        SELECT 
+            hostname,
+            date_trunc('minute',timestamp_processed) as timestamp,
+            count(1) as responses_processed ,
+            sum(bytes) as bytes
+        FROM responses
+        WHERE timestamp_processed>(SELECT max(timestamp_received)-interval '1 hour' FROM responses)
+        GROUP BY hostname,timestamp
+    ) AS t2 ON t1.timestamp=t2.timestamp and t1.hostname=t2.hostname
+    ORDER BY t1.timestamp DESC;
+
+/* If a response indicates that the URL failed to download for a "transient"
+ * reason, we can recycle the response back into the frontier to try downloading again.
+ */
+CREATE FUNCTION responses_recycle()
+RETURNS void AS $$
+BEGIN
+    /*
+     * FIXME: we need to be able to clean the frontier of processed URLS
+     * that do not have entries in responses.
+     *
+
+    UPDATE frontier 
+    SET timestamp_processed=null
+    WHERE id_frontier IN (SELECT id_frontier FROM frontier_ghost LIMIT 1000);
+    */
+
+    CREATE TEMP TABLE responses_to_update AS
+    SELECT id_urls,priority,hostname_reversed,id_responses
+        FROM responses_recyclable
+        INNER JOIN frontier ON frontier.id_frontier=responses_recyclable.id_frontier;
+
+    INSERT INTO frontier
+        (id_urls,priority,hostname_reversed,timestamp_received)
+    SELECT id_urls,priority+1,hostname_reversed,now() from responses_to_update;
+
+    UPDATE responses 
+    SET recycled_into_frontier=true 
+    WHERE id_responses IN (SELECT id_responses FROM responses_to_update);
+
+    DROP TABLE responses_to_update;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE VIEW frontier_ghost AS
+    SELECT frontier.*
+    FROM frontier 
+    LEFT JOIN responses ON responses.id_frontier=frontier.id_frontier
+    WHERE
+        responses.id_frontier is null and
+        frontier.timestamp_processed is not null and
+        frontier.timestamp_received < now()-interval '10 minutes';
+
+CREATE VIEW responses_recyclable AS
+    SELECT *
+    FROM responses
+    WHERE
+        not recycled_into_frontier and
+        twisted_status != 'Success' and
+        twisted_status != 'IgnoreRequest' and
+        twisted_status != 'DNSLookupError' and
+        timestamp_processed is null and
+        timestamp_received < now()-interval '10 minutes';
 
 /*
  * These tables store the actual scraped articles.
@@ -107,9 +209,10 @@ CREATE VIEW IF NOT EXISTS responses_urls AS
 
 CREATE TABLE IF NOT EXISTS articles (
     id_articles BIGSERIAL PRIMARY KEY,
-    id_urls INTEGER, 
-    id_urls_canonical INTEGER, 
-    id_responses INTEGER,
+    id_urls BIGINT, 
+    id_urls_canonical BIGINT, 
+    hostname VARCHAR(253),
+    id_responses BIGINT,
     title TEXT,
     alltext TEXT,
     text TEXT,
@@ -120,6 +223,8 @@ CREATE TABLE IF NOT EXISTS articles (
     FOREIGN KEY (id_responses) REFERENCES responses(id_responses) DEFERRABLE INITIALLY DEFERRED
 );
 
+CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
+
 /*
 CREATE VIEW IF NOT EXISTS articles_urls AS
     SELECT *
@@ -129,7 +234,7 @@ CREATE VIEW IF NOT EXISTS articles_urls AS
 
 CREATE TABLE IF NOT EXISTS keywords (
     id_keywords BIGSERIAL PRIMARY KEY,
-    id_articles INTEGER, 
+    id_articles BIGINT, 
     keyword VARCHAR(16),
     num_title INTEGER,
     num_text INTEGER,
@@ -139,18 +244,17 @@ CREATE TABLE IF NOT EXISTS keywords (
 
 CREATE TABLE IF NOT EXISTS authors (
     id_authors BIGSERIAL PRIMARY KEY,
-    id_articles INTEGER, 
+    id_articles BIGINT, 
     author VARCHAR(4096), 
     FOREIGN KEY (id_articles) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE IF NOT EXISTS refs (
     id_refs BIGSERIAL PRIMARY KEY,
-    source INTEGER,
-    target INTEGER,
+    source BIGINT,
+    target BIGINT,
     type VARCHAR(10),
     text VARCHAR(2084),
-
     FOREIGN KEY (source) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (target) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
@@ -201,6 +305,12 @@ CREATE TABLE labels (
     FOREIGN KEY (id_sentences) REFERENCES sentences(id_sentences) DEFERRABLE INITIALLY DEFERRED
 );
 
+/*********************************************************************************
+ *
+ * FIXME: Should we drop these tables now that hostname is incorporated
+ * as a column in responses/articles?
+ */
+
 /*
  * The following "rollup tables" provide incremental summary stats.
  */
@@ -218,6 +328,9 @@ CREATE TABLE crawl_performance (
     num_articles INT,
     PRIMARY KEY (hostname,timestamp)
 );
+
+CREATE INDEX crawl_performance_index_timestamp ON crawl_performance(timestamp);
+CREATE INDEX crawl_performance_index_hostname ON crawl_performance(hostname);
 
 CREATE VIEW crawl_performance_hostname AS
     SELECT hostname,
@@ -274,6 +387,30 @@ BEGIN
         ON CONFLICT (hostname,timestamp) DO NOTHING;
 END;
 $$ LANGUAGE plpgsql;
+
+        --SELECT 
+            --hostname,date_trunc('minute', frontier.timestamp_received) as timestamp,
+            --count(1) as frontier_received
+        --FROM (SELECT id_urls,timestamp_received FROM frontier  WHERE frontier.timestamp_received>(SELECT max(timestamp) FROM crawl_performance)) as frontier_filter
+        --INNER JOIN urls on frontier_filter.id_urls=urls.id_urls
+        --GROUP BY hostname,timestamp
+
+    select count(1) from (
+        SELECT
+            hostname,date_trunc('minute', frontier.timestamp_received) as timestamp,
+            count(1) as frontier_received
+        FROM frontier
+        INNER JOIN urls on frontier.id_urls=urls.id_urls
+        WHERE frontier.timestamp_received > (SELECT max(timestamp) FROM crawl_performance)
+        GROUP BY hostname,timestamp
+    );
+
+        SELECT
+            hostname,date_trunc('minute',frontier.timestamp_received) as timestamp,
+            count(1) as frontier_received
+        FROM frontier
+        WHERE (hostname,frontier.id_urls) in (select hostname,id_urls from urls);
+
 
 CREATE VIEW crawl_performance_new AS
     SELECT 
@@ -361,10 +498,31 @@ CREATE TABLE crawl_responses (
     PRIMARY KEY (hostname,timestamp,twisted_status,http_status)
 );
 
-CREATE VIEW crawl_responses_hostname AS 
+CREATE VIEW crawl_responses_hostname2 AS 
     SELECT hostname,twisted_status,http_status,sum(num)
     FROM crawl_responses
     GROUP BY hostname,twisted_status,http_status;
+
+CREATE VIEW crawl_responses_hostname AS 
+    SELECT
+        hostname,
+        sum(Success) as Success,
+        sum(TCPTimedOutError) as TCPTimedOutError,
+        sum(ResponseNeverReceived) as ResponseNeverReceived,
+        sum(IgnoreRequest) as IgnoreRequest,
+        sum(num-Success-TCPTimedOutError-ResponseNeverReceived-IgnoreRequest) as Other
+    FROM (
+        SELECT 
+            hostname,
+            CASE WHEN twisted_status='Success' THEN num ELSE 0 END as Success,
+            CASE WHEN twisted_status='TCPTimedOutError' THEN num ELSE 0 END as TCPTimedOutError,
+            CASE WHEN twisted_status='ResponseNeverReceived' THEN num ELSE 0 END as ResponseNeverReceived,
+            CASE WHEN twisted_status='IgnoreRequest' THEN num ELSE 0 END as IgnoreRequest,
+            num
+        FROM crawl_responses
+    ) AS t1
+    GROUP BY hostname
+    ORDER BY hostname;
 
 CREATE VIEW crawl_responses_timestamp AS 
     SELECT
@@ -422,6 +580,29 @@ CREATE VIEW articles_summary AS
         extract(MONTH FROM pub_time) as month,
         count(1) as num
     FROM articles
-    INNER JOIN urls on urls.id_urls=articles.id_urls_canonical
+    --INNER JOIN urls on urls.id_urls=articles.id_urls_canonical
     GROUP BY hostname,year,month
     ORDER BY hostname,year,month;
+
+
+/* 
+ * this code updates the null hostname 
+ *
+with new_values as (
+    select responses.id_responses,urls.hostname from responses
+    inner join frontier on frontier.id_frontier=responses.id_frontier
+    inner join urls on urls.id_urls=frontier.id_urls
+    where
+        responses.hostname is null
+    )
+update responses
+set hostname=new_values.hostname
+from new_values
+where responses.id_responses=new_values.id_responses;
+*/
+
+/*
+update frontier
+set priority=priority+50
+where hostname_reversed='moc.semityn.www.';
+*/
