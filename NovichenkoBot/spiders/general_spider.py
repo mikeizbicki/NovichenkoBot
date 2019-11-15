@@ -4,7 +4,6 @@ from scrapy.http import Request
 from scrapy.http.response.html import HtmlResponse
 from scrapy.linkextractors import LinkExtractor
 
-from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 import sqlalchemy
 from sqlalchemy.sql import text
@@ -49,32 +48,14 @@ class GeneralSpider(Spider):
         if not isinstance(response, HtmlResponse):
             return
         
-        # basic webpage information
-        domain=urlparse(response.url).hostname
+        # process the downloaded webpage
+        article=html2article(response.url,response.body)
         all_links=self.le.extract_links(response)
 
-        # detect page language 
-        soup=BeautifulSoup(response.body,'lxml')
-        alltext=soup.get_text(separator=' ')
-        lang=langid.classify(alltext)[0]
-
-        # extract content 
-        if response.body==b'':
-            article = newspaper.Article(response.url)
-            article.title=''
-            article.text=''
-        else:
-            try:
-                article = newspaper.Article(response.url,language=lang)
-                article.download(input_html=response.body)
-                article.parse()
-            except:
-                article = newspaper.Article(response.url)
-                article.download(input_html=response.body)
-                article.parse()
-
-        # update database
+        # insert article into database
         with self.connection.begin() as trans:
+
+            # insert into articles table
             url_info=get_url_info(
                     self.connection,
                     article.canonical_link,
@@ -83,9 +64,9 @@ class GeneralSpider(Spider):
             id_urls_canonical=url_info['id_urls']
             sql=sqlalchemy.sql.text('''
                 INSERT INTO articles 
-                (id_urls,hostname,id_urls_canonical,id_responses,title,alltext,text,lang,pub_time) 
+                (id_urls,hostname,id_urls_canonical,id_responses,title,text,lang,pub_time) 
                 values 
-                (:id_urls,:hostname,:id_urls_canonical,:id_responses,:title,:alltext,:text,:lang,:pub_time)
+                (:id_urls,:hostname,:id_urls_canonical,:id_responses,:title,:text,:lang,:pub_time)
                 returning id_articles
             ''')
             res=self.connection.execute(sql,{
@@ -94,17 +75,17 @@ class GeneralSpider(Spider):
                 'id_urls_canonical':id_urls_canonical,
                 'id_responses':response.id_responses,
                 'title':article.title,
-                'alltext':alltext,
                 'text':article.text,
-                'lang':lang,
+                'html':article.article_html,
+                'lang':article.lang,
                 'pub_time':article.publish_date,
                 })
             #id_articles=res.lastrowid
             id_articles=res.first()[0]
 
             # update keywords table
-            keywords_lang=self.keywords.get(lang,[])
-            alltext_lower=alltext.lower()
+            keywords_lang=self.keywords.get(article.lang,[])
+            alltext_lower=article.alltext.lower()
             text_lower=article.text.lower()
             title_lower=article.title.lower()
             keywords_alltext=sum([ alltext_lower.count(keyword) for keyword in keywords_lang])
@@ -157,7 +138,8 @@ class GeneralSpider(Spider):
                     'type':url_type,
                     'text':text,
                     })
-        
+
+
         # yield all links
         for link in all_links:
             r = scrapy.http.Request(url=link.url)
@@ -167,43 +149,41 @@ class GeneralSpider(Spider):
             yield r
 
 def html2article(url,html):
-
-    ret={}
-
-    # if the input html is empty, 
-    # we need to handle this case separately because many of the
-    # libraries don't work
-    if len(html)==0:
-        ret['text']=None
-        ret['title']=None
-        ret['year']=None
-        ret['authors']=None
-        ret['canonical_link']=None
-        ret['lang']=None
-        return ret
+    '''
+    extract article information from html source;
+    this function mostly relies on the newspaper3k library to extract information,
+    but some hostnames require their own additional parsing code
+    '''
 
     # detect page language 
-    soup=BeautifulSoup(response.body,'lxml')
+    soup=BeautifulSoup(html,'lxml')
     alltext=soup.get_text(separator=' ')
-    ret['lang']=langid.classify(alltext)[0]
+    # FIXME: can we make things faster?
+    # Some pages have serious bottlenecks, but we don't know what they are.
+    # alltext=soup.find('body').get_text(separator=' ')[:10000]
+    lang=langid.classify(alltext)[0]
 
-    # extract content using newspaper3k library
+    # extract content using newspaper3k library;
+    # newspaper3k is able to automatically detect the language sometimes,
+    # but their technique is not robust because it requires the language to be specified in the html,
+    # and it fails silently if it is unable to detect a langauge;
+    # therefore, we first try with the langauge detected above,
+    # and only if that fails do we rely on newspaper3k's implementation
     try:
-        article = newspaper.Article(url,language=ret['lang'])
+        article = newspaper.Article(url,keep_article_html=True,MAX_TEXT=None,language=lang)
         article.download(input_html=html)
         article.parse()
     except:
-        article = newspaper.Article(url)
+        article = newspaper.Article(url,keep_article_html=True,MAX_TEXT=None)
         article.download(input_html=html)
         article.parse()
 
-    ret['text']=article.text
-    ret['title']=article.title
-    ret['pub_time']=article.publish_date
-    ret['authors']=article.authors
-    ret['canonical_link']=article.canonical_link
+    article.lang=lang
+    article.alltext=alltext
 
     # for some domains, newspaper3k doesn't work well
     # and so we have manual rules for extracting information
     if 'thediplomat.com' in url:
         soup.find('span',class_='pubTime')
+
+    return article

@@ -37,11 +37,12 @@ class Scheduler(object):
         settings=crawler.settings
         self.HOSTNAME_RESTRICTIONS = settings.getlist('HOSTNAME_RESTRICTIONS')
         self.HOSTNAME_RESTRICTIONS_clause = [reverse_hostname(hostname)+'%' for hostname in self.HOSTNAME_RESTRICTIONS]
-        self.MEMQUEUE_HOSTNAMES = settings.getint('MEMQUEUE_HOSTNAMES',default=40)
         self.MEMQUEUE_LIMIT = settings.getint('MEMQUEUE_LIMIT',default=1000)
-        self.MEMQUEUE_MIN = settings.getint('MEMQUEUE_MIN',default=100)
-        self.MEMQUEUE_DELAY = settings.getint('MEMQUEUE_DELAY',default=100)
-        self.time_since_memqueue_fill = float('inf')
+        self.MEMQUEUE_MIN_HOSTNAMES = settings.getint('MEMQUEUE_MIN_HOSTNAMES',default=1)
+        self.MEMQUEUE_MIN_URLS = settings.getint('MEMQUEUE_MIN_URLS',default=100)
+        self.MEMQUEUE_MAX_URLS = settings.getint('MEMQUEUE_MAX_URLS',default=self.MEMQUEUE_LIMIT*2)
+        self.MEMQUEUE_TIMEDELTA = settings.getint('MEMQUEUE_TIMEDELTA',default=120)
+        self.time_of_last_memqueue_fill = datetime.datetime.now()- datetime.timedelta(0,self.MEMQUEUE_TIMEDELTA)
         
         self.stats = stats
         self.crawler = crawler
@@ -74,16 +75,14 @@ class Scheduler(object):
         # whenever the number of keys in the memqueue is small enough,
         # we must select new rows from the frontier to fill the memqueue;
         memqueue_values=sum(map(len,self.memqueue.values()))
-        #if len(self.memqueue.keys()) < self.MEMQUEUE_HOSTNAMES:
-        self.time_since_memqueue_fill+=1
-        if ( memqueue_values < self.MEMQUEUE_MIN #or 
-                #( len(self.memqueue.keys()) < self.MEMQUEUE_HOSTNAMES and 
-                  #self.time_since_memqueue_fill > self.MEMQUEUE_DELAY and
-                  #memqueue_values < self.MEMQUEUE_LIMIT*2
-                #)
-                ):
-            self.time_since_memqueue_fill=0
-            logger.info(f'expanding memqueue prior; keys = {len(self.memqueue.keys())} ; values = {memqueue_values}')
+        tdelta=datetime.datetime.now()-self.time_of_last_memqueue_fill
+        if ( memqueue_values < self.MEMQUEUE_MAX_URLS and 
+             tdelta.seconds > self.MEMQUEUE_TIMEDELTA and (
+                memqueue_values < self.MEMQUEUE_MIN_URLS or
+                len(self.memqueue.keys()) < self.MEMQUEUE_MIN_HOSTNAMES
+                )):
+            self.time_of_last_memqueue_fill=datetime.datetime.now()
+            logger.info(f'expanding memqueue; keys = {self.memqueue.keys()} ; values = {memqueue_values}')
             
             # the query to fill the memqueue is rather complicated
             # and divided into several parts;
@@ -115,6 +114,7 @@ class Scheduler(object):
 
             # substitute the above where constraints into the sql,
             # execute the result, and add it to memqueue
+            # FIXME: both sql codes shown below should compute the same thing; which is faster?
             sql=text(f'''
             select scheme,hostname,port,path,params,query,fragment,frontier.id_frontier,urls.id_urls,depth
             from urls 
@@ -126,6 +126,21 @@ class Scheduler(object):
             order by priority desc
             limit {self.MEMQUEUE_LIMIT};
             ''')
+            sql=text(f'''
+            select scheme,hostname,port,path,params,query,fragment,fmod.id_frontier,urls.id_urls,depth
+            from urls 
+            inner join (
+                select id_frontier,id_urls
+                from frontier 
+                where
+                    timestamp_processed is null
+                    {memqueue_where}
+                    {restrictions_where}
+                    order by priority desc
+                    limit {self.MEMQUEUE_LIMIT}
+                ) as fmod on urls.id_urls=fmod.id_urls
+                ;
+            ''')
             #res=connection.execute(sql,url_parsed)
             #return [{column: value for column, value in row.items()} for row in res][0]
             res=self.connection.execute(sql,values_dict)
@@ -135,7 +150,7 @@ class Scheduler(object):
                 self.next_hostname=hostname
 
             memqueue_values=sum(map(len,self.memqueue.values()))
-            logger.info(f'expanded memqueue after; keys = {len(self.memqueue.keys())} ; values = {memqueue_values}')
+            logger.info(f'expanded memqueue; keys = {self.memqueue.keys()} ; values = {memqueue_values}')
 
         # if the memqueue is empty, then there are no pages in the frontier
         # and we should return

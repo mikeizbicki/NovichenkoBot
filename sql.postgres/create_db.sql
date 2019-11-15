@@ -45,13 +45,7 @@ CREATE INDEX IF NOT EXISTS frontier_index_urls ON frontier(id_urls);
 CREATE INDEX IF NOT EXISTS frontier_index_timestamp_received ON frontier(timestamp_received);
 CREATE INDEX IF NOT EXISTS frontier_index_timestamp_processed ON frontier(timestamp_processed);
 CREATE INDEX IF NOT EXISTS frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority);
-
-/*
-CREATE VIEW IF NOT EXISTS frontier_urls AS
-    SELECT * 
-    FROM frontier
-    INNER JOIN urls ON frontier.id_urls=urls.id_urls;
-*/
+CREATE INDEX IF NOT EXISTS frontier_index_nextrequest2 ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
 
 CREATE TABLE IF NOT EXISTS responses (
     id_responses BIGSERIAL PRIMARY KEY,
@@ -156,16 +150,6 @@ CREATE VIEW responses_recent_performance2 AS
 CREATE FUNCTION responses_recycle()
 RETURNS void AS $$
 BEGIN
-    /*
-     * FIXME: we need to be able to clean the frontier of processed URLS
-     * that do not have entries in responses.
-     *
-
-    UPDATE frontier 
-    SET timestamp_processed=null
-    WHERE id_frontier IN (SELECT id_frontier FROM frontier_ghost LIMIT 1000);
-    */
-
     CREATE TEMP TABLE responses_to_update AS
     SELECT id_urls,priority,hostname_reversed,id_responses
         FROM responses_recyclable
@@ -183,15 +167,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE VIEW frontier_ghost AS
-    SELECT frontier.*
-    FROM frontier 
-    LEFT JOIN responses ON responses.id_frontier=frontier.id_frontier
-    WHERE
-        responses.id_frontier is null and
-        frontier.timestamp_processed is not null and
-        frontier.timestamp_received < now()-interval '10 minutes';
-
 CREATE VIEW responses_recyclable AS
     SELECT *
     FROM responses
@@ -204,18 +179,46 @@ CREATE VIEW responses_recyclable AS
         timestamp_received < now()-interval '10 minutes';
 
 /*
+ * A URL in the frontier is a ghost if its timestamp_processed is not null
+ * but it has no entry in the responses table.  This can happen when
+ * an exception is uncaught in the response code or when the crawler is
+ * terminated unexpectedly.
+ *
+ * This function sets the timestamp_processed to null for each of these 
+ * ghosted frontier urls so that they can be recrawled correctly.
+ */
+CREATE FUNCTION frontier_deghost()
+RETURNS void AS $$
+BEGIN
+    UPDATE frontier 
+    SET timestamp_processed=null
+    WHERE id_frontier IN (SELECT id_frontier FROM frontier_ghost);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE VIEW frontier_ghost AS
+    SELECT frontier.*
+    FROM frontier 
+    LEFT JOIN responses ON responses.id_frontier=frontier.id_frontier
+    WHERE
+        responses.id_frontier is null and
+        frontier.timestamp_processed is not null and
+        frontier.timestamp_received < now()-interval '10 minutes';
+
+/*
  * These tables store the actual scraped articles.
  */
 
 CREATE TABLE IF NOT EXISTS articles (
     id_articles BIGSERIAL PRIMARY KEY,
-    id_urls BIGINT, 
-    id_urls_canonical BIGINT, 
-    hostname VARCHAR(253),
-    id_responses BIGINT,
+    id_responses BIGINT NOT NULL,
+    id_urls BIGINT NOT NULL, 
+    id_urls_canonical BIGINT NOT NULL, 
+    hostname VARCHAR(253) NOT NULL,
     title TEXT,
     alltext TEXT,
     text TEXT,
+    html TEXT,
     lang VARCHAR(2),
     pub_time TIMESTAMP,
     FOREIGN KEY (id_urls) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED,
@@ -225,12 +228,14 @@ CREATE TABLE IF NOT EXISTS articles (
 
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
 
-/*
-CREATE VIEW IF NOT EXISTS articles_urls AS
-    SELECT *
+CREATE VIEW articles_per_year AS 
+    SELECT 
+        hostname,
+        extract(YEAR FROM pub_time) as year,
+        count(1) as num
     FROM articles
-    INNER JOIN urls ON articles.id_urls=urls.id_urls;
-*/
+    GROUP BY hostname,year
+    ORDER BY hostname,year;
 
 CREATE TABLE IF NOT EXISTS keywords (
     id_keywords BIGSERIAL PRIMARY KEY,
@@ -251,39 +256,50 @@ CREATE TABLE IF NOT EXISTS authors (
 
 CREATE TABLE IF NOT EXISTS refs (
     id_refs BIGSERIAL PRIMARY KEY,
-    source BIGINT,
-    target BIGINT,
+    source BIGINT NOT NULL,
+    target BIGINT, -- NOTE: this column is NULL whenever a target URL does not match the constraints of the urls table
     type VARCHAR(10),
     text VARCHAR(2084),
     FOREIGN KEY (source) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (target) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE VIEW refs_urls AS
-    SELECT 
-          id_refs
-        , source
-        , target
-        , type
-        , text
-        , source_urls.scheme as source_scheme
-        , source_urls.hostname as source_hostname
-        , source_urls.port as source_port
-        , source_urls.path as source_path
-        , source_urls.params as source_params
-        , source_urls.query as source_query
-        , source_urls.fragment as source_fragment
-        , target_urls.scheme as target_scheme
-        , target_urls.hostname as target_hostname
-        , target_urls.port as target_port
-        , target_urls.path as targete_path
-        , target_urls.params as target_params
-        , target_urls.query as target_query
-        , target_urls.fragment as target_fragment
-        FROM refs
-        INNER JOIN urls AS source_urls ON source_urls.id_urls=refs.source
-        INNER JOIN urls AS target_urls ON target_urls.id_urls=refs.target
-        ;
+/* This view gives us insight into how far along we are into the crawl for each domain.
+ * FIXME: This would probably be better done as a roll-up table that is progressively
+ * updated and can show how the crawl has progressed over time.
+ */
+CREATE MATERIALIZED VIEW fraction_crawled AS 
+    SELECT
+        t1.hostname,
+        frontier_unique,
+        articles_unique,
+        articles_unique/(1.0*frontier_unique) as fraction_crawled
+    FROM (
+        SELECT
+            hostname,
+            count(1) as frontier_unique
+        FROM (
+            SELECT scheme,urls.hostname,urls.path,count(1) FROM frontier
+            INNER JOIN urls ON urls.id_urls=frontier.id_urls
+            GROUP BY urls.scheme,urls.hostname,urls.path
+            ) AS t1a
+            GROUP BY hostname
+        ) AS t1
+    LEFT OUTER JOIN (
+        SELECT
+            hostname,
+            count(1) as articles_unique
+        FROM (
+            SELECT scheme,urls.hostname,urls.path,count(1) FROM articles
+            INNER JOIN urls ON urls.id_urls=articles.id_urls
+            GROUP BY urls.scheme,urls.hostname,urls.path
+            ) AS t2a
+            GROUP BY hostname
+        ) AS t2 ON t1.hostname=t2.hostname
+    WHERE articles_unique>1000
+    ORDER BY fraction_crawled DESC
+WITH NO DATA;
+REFRESH MATERIALIZED VIEW fraction_crawled;
 
 /*
  * The following tables are for postprocessing after download.
@@ -573,17 +589,6 @@ CREATE VIEW crawl_responses_new AS
 
 /**************************************/
 
-CREATE VIEW articles_summary AS 
-    SELECT 
-        hostname,
-        extract(YEAR FROM pub_time) as year,
-        extract(MONTH FROM pub_time) as month,
-        count(1) as num
-    FROM articles
-    --INNER JOIN urls on urls.id_urls=articles.id_urls_canonical
-    GROUP BY hostname,year,month
-    ORDER BY hostname,year,month;
-
 
 /* 
  * this code updates the null hostname 
@@ -602,7 +607,45 @@ where responses.id_responses=new_values.id_responses;
 */
 
 /*
+ * this code increases the priority of important domains in the frontier
+ *
 update frontier
 set priority=priority+50
 where hostname_reversed='moc.semityn.www.';
+
+update frontier
+set priority=priority+50
+where hostname_reversed=reverse('.www.usatoday.com');
+
+update frontier
+set priority=priority+100000
+where hostname_reversed=reverse('.www.washingtonpost.com');
+
+update frontier
+set priority=-100
+where hostname_reversed=reverse('.onfaith.washingtonpost.com');
 */
+
+/*
+select hostname,count(1) as c from (select hostname,id_urls_canonical,title,count(1) as c from articles group by hostname,id_urls_canonical,title) as t group by hostname order by c desc;
+
+select hostname,id_urls,id_urls_canonical,title 
+from articles
+where id_urls_canonical!=2425
+group by hostname,id_urls,id_urls_canonical,title
+having (count(id_urls_canonical)>1)
+order by id_urls_canonical
+;
+*/
+
+/*
+ * calculate the diskspace used by a column in 
+ * from: https://stackoverflow.com/questions/18316893/how-to-estimate-the-size-of-one-column-in-a-postgres-table
+
+select
+    pg_size_pretty(sum(pg_column_size(alltext))) as total_size,
+    pg_size_pretty(avg(pg_column_size(alltext))) as average_size,
+    sum(pg_column_size(alltext)) * 100.0 / pg_total_relation_size('articles') as percentage
+from articles;
+*/
+ 
