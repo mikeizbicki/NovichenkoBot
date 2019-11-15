@@ -215,10 +215,15 @@ class Scheduler(object):
                 response.id_responses=res.first()[0]
 
                 # run the spider on the response only if the response is not a redirect
+                parse_generator=None
+                parse_error=None
                 if id_urls_redirected is None:
-                    parse_generator=self.crawler.spider.parse(response)
-                else:
-                    parse_generator=None
+                    try:
+                        parse_generator=self.crawler.spider.parse(response)
+                    except e:
+                        parse_error=str(e)[:2048]
+                        logger.error('parse error {parse_error} on {request.url}')
+                        logger.error(traceback.format_exc())
 
                 # update the responses table to indicate it is fully processed
                 sql=text('''
@@ -226,7 +231,8 @@ class Scheduler(object):
                 ''')
                 res=self.connection.execute(sql,{
                     'timestamp_processed':datetime.datetime.now(),
-                    'id_responses':response.id_responses
+                    'id_responses':response.id_responses,
+                    #'parse_error':parse_error,
                     })
 
                 # the spider may return a generator that yields urls to crawl, 

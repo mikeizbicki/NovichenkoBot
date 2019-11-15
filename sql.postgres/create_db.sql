@@ -256,7 +256,7 @@ CREATE TABLE IF NOT EXISTS authors (
 
 CREATE TABLE IF NOT EXISTS refs (
     id_refs BIGSERIAL PRIMARY KEY,
-    source BIGINT NOT NULL,
+    source BIGINT, -- FIXME: add not null constraint
     target BIGINT, -- NOTE: this column is NULL whenever a target URL does not match the constraints of the urls table
     type VARCHAR(10),
     text VARCHAR(2084),

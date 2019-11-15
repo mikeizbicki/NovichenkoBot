@@ -2,6 +2,7 @@ import datetime
 from urllib.parse import urlparse,urlunparse
 from sqlalchemy.sql import text
 import copy
+import psycopg2
 
 def reverse_hostname(hostname):
     return hostname[::-1]+'.'
@@ -56,17 +57,30 @@ def urlinfo2url(urlinfo):
 
 
 def get_url_info(connection,url,depth=0):
+    '''
+    This function returns a dictionary containing the information of the urls table in the database.
+    If there is no entry for the url in the table, then an entry is created.
+    If the url does not satisfy the constraints of the urls table,
+    then this function returns None.
+    This typically happens when a url is used to uuencode an image.
+    The constraint exists to ensure that the database does not get filled up with these useless urls.
+    '''
     url_parsed=parse_url(url)
 
     # insert into urls table if it doesn't exist 
-    sql=text('''
-    insert into urls 
-        (scheme,hostname,port,path,params,query,fragment,other,depth)
-        values
-        (:scheme,:hostname,:port,:path,:params,:query,:fragment,:other,:depth)
-    on conflict do nothing;
-    ''')
-    res=connection.execute(sql,depth=depth,**url_parsed)
+    try:
+        sql=text('''
+        insert into urls 
+            (scheme,hostname,port,path,params,query,fragment,other,depth)
+            values
+            (:scheme,:hostname,:port,:path,:params,:query,:fragment,:other,:depth)
+        on conflict do nothing;
+        ''')
+        res=connection.execute(sql,depth=depth,**url_parsed)
+
+    # the url does not satisfy the constraints of the urls table
+    except psycopg2.errors.StringDataRightTruncation:
+        return None
 
     # query to find the id_urls
     sql=text('''
