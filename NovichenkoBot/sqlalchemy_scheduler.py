@@ -141,8 +141,6 @@ class Scheduler(object):
                 ) as fmod on urls.id_urls=fmod.id_urls
                 ;
             ''')
-            #res=connection.execute(sql,url_parsed)
-            #return [{column: value for column, value in row.items()} for row in res][0]
             res=self.connection.execute(sql,values_dict)
             for row in [dict(row.items()) for row in res]:
                 hostname=row['hostname']
@@ -211,7 +209,6 @@ class Scheduler(object):
                     'bytes':len(response.body),
                     'id_urls_redirected':id_urls_redirected
                     })
-                #response.id_responses=res.lastrowid
                 response.id_responses=res.first()[0]
 
                 # run the spider on the response only if the response is not a redirect

@@ -80,7 +80,6 @@ class GeneralSpider(Spider):
                 'lang':article.lang,
                 'pub_time':article.publish_date,
                 })
-            #id_articles=res.lastrowid
             id_articles=res.first()[0]
 
             # update keywords table

@@ -2,7 +2,18 @@ language: python
 python:
   - "3.6"
 cache: pip
+services:
+  - postgresql
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
 install:
   - pip install -r requirements.txt
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
 script:
+  - psql travis_ci_test -U postgres < sql/create_db.sql
   - python3 -m pytest
