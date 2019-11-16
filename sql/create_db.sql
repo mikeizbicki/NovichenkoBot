@@ -216,7 +216,6 @@ CREATE TABLE articles (
     id_urls_canonical BIGINT NOT NULL, 
     hostname VARCHAR(253) NOT NULL,
     title TEXT,
-    alltext TEXT,
     text TEXT,
     html TEXT,
     lang VARCHAR(2),
@@ -306,18 +305,21 @@ REFRESH MATERIALIZED VIEW fraction_crawled;
  */
 
 CREATE TABLE sentences (
-    id_sentences BIGSERIAL PRIMARY KEY,
-    id_articles INTEGER,
+    id_articles BIGINT,
+    id_sentences INTEGER,
     sentence TEXT,
+    sentence_resolved TEXT,
+    PRIMARY KEY (id_articles,id_sentences),
     FOREIGN KEY (id_articles) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE labels (
-    id_labels BIGSERIAL PRIMARY KEY,
+    id_articles BIGINT,
     id_sentences INTEGER,
-    type TEXT,
-    source TEXT,
+    id_labels VARCHAR(1024),
     score REAL,
-    FOREIGN KEY (id_sentences) REFERENCES sentences(id_sentences) DEFERRABLE INITIALLY DEFERRED
+    PRIMARY KEY (id_articles,id_sentences,id_labels),
+    FOREIGN KEY (id_articles,id_sentences) REFERENCES sentences(id_articles,id_sentences) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (id_articles) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED
 );
 
