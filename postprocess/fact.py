@@ -103,7 +103,11 @@ def get_sentences(connection,id_articles,text=None,title=None):
     text_resolved=nlp(text)._.coref_resolved
     sentences_resolved = [title]+tokenize_by_sentence(text_resolved)
     
-    # there should be a 1-1 correspondence between the resolved and original sentences
+    # there should be a 1-1 correspondence between the resolved and original sentences;
+    # sometimes, the tokenizer breaks the resolved text into too many sentences,
+    # and in that case we do not store any resolved text to indicate that a failure occurred
+    if len(sentences) != len(sentences_resolved):
+        sentences_resolved = [ None for sentence in sentences ]
     assert(len(sentences)==len(sentences_resolved))
 
     # insert sentences into table;
