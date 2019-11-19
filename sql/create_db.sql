@@ -225,6 +225,7 @@ CREATE TABLE articles (
     FOREIGN KEY (id_responses) REFERENCES responses(id_responses) DEFERRABLE INITIALLY DEFERRED
 );
 
+CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
 
 CREATE VIEW articles_per_year AS 
@@ -262,6 +263,35 @@ CREATE TABLE refs (
     FOREIGN KEY (source) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (target) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
+
+/*
+ * This function returns the article associated with a url;
+ * this task is not as simple as looking up the id_urls associated with the url in the articles table;
+ * because of redirects, there may be many urls that point to a single article,
+ * but the id_urls field of articles only points to a single one of these urls;
+ * given a url, this function will follow all redirects of that url to eventually find the article.
+ */
+CREATE FUNCTION id_urls_2_id_articles(bigint) RETURNS bigint
+    AS 
+    '
+    SELECT id_articles 
+    FROM articles
+    WHERE id_urls IN (
+        WITH RECURSIVE follow_redirects AS (
+            SELECT frontier.id_urls,id_urls_redirected
+            FROM responses
+            INNER JOIN frontier ON frontier.id_frontier=responses.id_frontier
+            WHERE id_urls=$1
+            UNION
+            SELECT follow_redirects.id_urls_redirected, responses.id_urls_redirected
+            FROM responses
+            INNER JOIN frontier ON frontier.id_frontier=responses.id_frontier
+            INNER JOIN follow_redirects ON follow_redirects.id_urls_redirected=frontier.id_urls
+        ) SELECT id_urls FROM follow_redirects WHERE id_urls_redirected IS NULL)
+    '
+    LANGUAGE SQL
+    IMMUTABLE
+    RETURNS NULL ON NULL INPUT;
 
 /* This view gives us insight into how far along we are into the crawl for each domain.
  * FIXME: This would probably be better done as a roll-up table that is progressively

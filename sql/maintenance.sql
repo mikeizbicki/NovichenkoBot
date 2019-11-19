@@ -75,3 +75,22 @@ order by id_urls_canonical
 ;
 */
 
+
+/*
+ * FIXME: we need to convert this into a function so that the inner where clause can be a parameter
+ *
+CREATE VIEW articles_deduped AS
+    SELECT DISTINCT ON (text) *
+    FROM (
+        SELECT DISTINCT ON (title) * 
+        FROM articles
+        WHERE 
+            hostname='www.northkoreatech.org' AND
+            title != '' AND
+            title IS NOT NULL AND
+            text != '' AND
+            text IS NOT NULL
+        ) as dedupe_title
+        ;
+*/
+

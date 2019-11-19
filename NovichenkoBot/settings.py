@@ -5,8 +5,8 @@ SPIDER_MODULES = ['NovichenkoBot.spiders']
 NEWSPIDER_MODULE = 'NovichenkoBot.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'NovichenkoBot'
-USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'
+USER_AGENT = 'NovichenkoBot'
+#USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'
 
 SCHEDULER = 'NovichenkoBot.sqlalchemy_scheduler.Scheduler'
 #SCHEDULER = 'frontera.contrib.scrapy.schedulers.frontier.FronteraScheduler'
@@ -45,7 +45,7 @@ DOWNLOADER_MIDDLEWARES = {
     #'scrapy.spidermiddlewares.depth.DepthMiddleware': 900,
 #}
 
-
+TELNETCONSOLE_ENABLED = False
 ROBOTSTXT_OBEY = True
 DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 

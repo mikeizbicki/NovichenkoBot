@@ -35,6 +35,7 @@ class Scheduler(object):
     """
     def __init__(self, stats=None, crawler=None, db=None):
         settings=crawler.settings
+        self.INFINITY_CRAWLER = settings.getbool('INFINITY_CRAWLER',False)
         self.HOSTNAME_RESTRICTIONS = settings.getlist('HOSTNAME_RESTRICTIONS')
         self.HOSTNAME_RESTRICTIONS_clause = [reverse_hostname(hostname)+'%' for hostname in self.HOSTNAME_RESTRICTIONS]
         self.MEMQUEUE_LIMIT = settings.getint('MEMQUEUE_LIMIT',default=1000)
@@ -42,16 +43,16 @@ class Scheduler(object):
         self.MEMQUEUE_MIN_URLS = settings.getint('MEMQUEUE_MIN_URLS',default=100)
         self.MEMQUEUE_MAX_URLS = settings.getint('MEMQUEUE_MAX_URLS',default=self.MEMQUEUE_LIMIT*2)
         self.MEMQUEUE_TIMEDELTA = settings.getint('MEMQUEUE_TIMEDELTA',default=120)
-        self.time_of_last_memqueue_fill = datetime.datetime.now()- datetime.timedelta(0,self.MEMQUEUE_TIMEDELTA)
+        self.time_of_last_memqueue_fill = datetime.datetime.now()- datetime.timedelta(0,1000*self.MEMQUEUE_TIMEDELTA)
         
         self.stats = stats
         self.crawler = crawler
         if crawler is not None:
-            self.engine = crawler.spider.engine
+            #self.engine = crawler.spider.engine
             self.connection = crawler.spider.connection
         elif db is not None:
-            self.engine = sqlalchemy.create_engine(db, connect_args={'timeout': 120})
-            self.connection = self.engine.connect()
+            engine = sqlalchemy.create_engine(db, connect_args={'timeout': 120})
+            self.connection = engine.connect()
         self.memqueue = {}
 
     @classmethod
@@ -61,7 +62,6 @@ class Scheduler(object):
 
     def open(self, spider):
         self.spider = spider
-        self.connection = self.engine.connect()
 
     def close(self, reason=None):
         self.connection.close()
@@ -72,83 +72,8 @@ class Scheduler(object):
         return True
 
     def next_request(self):
-        # whenever the number of keys in the memqueue is small enough,
-        # we must select new rows from the frontier to fill the memqueue;
-        memqueue_values=sum(map(len,self.memqueue.values()))
-        tdelta=datetime.datetime.now()-self.time_of_last_memqueue_fill
-        if ( memqueue_values < self.MEMQUEUE_MAX_URLS and 
-             tdelta.seconds > self.MEMQUEUE_TIMEDELTA and (
-                memqueue_values < self.MEMQUEUE_MIN_URLS or
-                len(self.memqueue.keys()) < self.MEMQUEUE_MIN_HOSTNAMES
-                )):
-            self.time_of_last_memqueue_fill=datetime.datetime.now()
-            logger.info(f'expanding memqueue; keys = {self.memqueue.keys()} ; values = {memqueue_values}')
-            
-            # the query to fill the memqueue is rather complicated
-            # and divided into several parts;
-            # all the parts will store parameters in this values_dict
-            values_dict={}
 
-            # generate a where clause for ensuring that the returned hostnames
-            # do not match any hostnames already in the dictionary;
-            # this ensures a broad crawl and that we don't send too much traffic
-            # to a single host
-            memqueue_where=''
-            memqueue_index=0
-            for hostname in self.memqueue.keys():
-                memqueue_index+=1
-                memqueue_where+=f' and hostname_reversed != :hostname_reversed{memqueue_index} '
-                values_dict[f'hostname_reversed{memqueue_index}']=reverse_hostname(hostname)
-
-            # generate a where clause that ensures we are only crawling allowed
-            # domains and subdomains based on the HOSTNAME_RESTRICTIONS parameter
-            restrictions=[]
-            restrictions_index=0
-            for hostname_reversed in self.HOSTNAME_RESTRICTIONS_clause:
-                restrictions_index+=1
-                restrictions.append(f' hostname_reversed like :hostname_reversed{restrictions_index}')
-                values_dict[f'hostname_reversed{restrictions_index}']=hostname_reversed
-            restrictions_where=' or '.join(restrictions)
-            if len(restrictions_where) > 0:
-                restrictions_where=f'and ({restrictions_where})'
-
-            # substitute the above where constraints into the sql,
-            # execute the result, and add it to memqueue
-            # FIXME: both sql codes shown below should compute the same thing; which is faster?
-            sql=text(f'''
-            select scheme,hostname,port,path,params,query,fragment,frontier.id_frontier,urls.id_urls,depth
-            from urls 
-            inner join frontier on urls.id_urls=frontier.id_urls
-            where 
-                timestamp_processed is null
-                {memqueue_where}
-                {restrictions_where}
-            order by priority desc
-            limit {self.MEMQUEUE_LIMIT};
-            ''')
-            sql=text(f'''
-            select scheme,hostname,port,path,params,query,fragment,fmod.id_frontier,urls.id_urls,depth
-            from urls 
-            inner join (
-                select id_frontier,id_urls
-                from frontier 
-                where
-                    timestamp_processed is null
-                    {memqueue_where}
-                    {restrictions_where}
-                    order by priority desc
-                    limit {self.MEMQUEUE_LIMIT}
-                ) as fmod on urls.id_urls=fmod.id_urls
-                ;
-            ''')
-            res=self.connection.execute(sql,values_dict)
-            for row in [dict(row.items()) for row in res]:
-                hostname=row['hostname']
-                self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
-                self.next_hostname=hostname
-
-            memqueue_values=sum(map(len,self.memqueue.values()))
-            logger.info(f'expanded memqueue; keys = {self.memqueue.keys()} ; values = {memqueue_values}')
+        self._update_memqueue()
 
         # if the memqueue is empty, then there are no pages in the frontier
         # and we should return
@@ -181,12 +106,24 @@ class Scheduler(object):
                 # handle redirects
                 id_urls_redirected = None
                 if 300 <= response.status < 400 and 'Location' in response.headers:
+
+                    # if we are in INFINITY_CRAWLER mode,
+                    # then the redirects need to have high priority
+                    # FIXME: there should be a more elegant way to do this
+                    # where the priority of redirects is equal to the priority
+                    # of the original request (and this would help normal crawls
+                    # as well)
+                    priority=response.request.priority
+                    if self.INFINITY_CRAWLER:
+                        priority=float('inf')
+
+                    # insert a new request to the redirected url
                     location = safe_url_string(response.headers['location'])
                     redirected_url = urljoin(request.url, location)
                     url_info_redirected=insert_request(
                             self.connection,
                             redirected_url,
-                            priority=response.request.priority,
+                            priority=priority,
                             depth=response.request.depth,
                             )
                     id_urls_redirected=url_info_redirected['id_urls']
@@ -276,17 +213,146 @@ class Scheduler(object):
 
             return request
 
+
     def has_pending_requests(self):
-        # FIXME
-        return True
 
-    #def __len__(self):
-        ##FIXME
-        #return 0
+        # when operating in normal mode, the spider should continue running
+        # even if there is nothing in the memqueue; therefore we always
+        # return True
+        if not self.INFINITY_CRAWLER:
+            return True
 
-    def _dqdir(self,jobdir):
-        return
+        # when operating as the INFINITY_CRAWLER, then we need to exit
+        # after downloading all of the frontier items with infinite priority
+        else:
+            self._update_memqueue()
+            hostnames=sorted(list(self.memqueue.keys()))
+            print('hostnames=',hostnames)
+            if hostnames==[]:
+                return False
+            else:
+                return True
 
+
+    def _update_memqueue(self):
+        '''
+        This function fills the memqueue from the database.
+        It is intended as a helper function for the next_request function.
+        '''
+
+        # whenever the number of keys in the memqueue is small enough,
+        # we must select new rows from the frontier to fill the memqueue;
+        memqueue_values=sum(map(len,self.memqueue.values()))
+        tdelta=datetime.datetime.now()-self.time_of_last_memqueue_fill
+        if ( memqueue_values < self.MEMQUEUE_MAX_URLS and 
+             tdelta.seconds > self.MEMQUEUE_TIMEDELTA and (
+                memqueue_values < self.MEMQUEUE_MIN_URLS or
+                len(self.memqueue.keys()) < self.MEMQUEUE_MIN_HOSTNAMES
+                )):
+
+            # output some debugging information whenever we fill the memqueue
+            self.time_of_last_memqueue_fill=datetime.datetime.now()
+            logger.info(f'expanding memqueue; keys = {self.memqueue.keys()} ; values = {memqueue_values}')
+
+            # the query to fill the memqueue is rather complicated
+            # and divided into several parts;
+            # all the parts will store parameters in this values_dict
+            values_dict={}
+            
+            # if INFINITY_CRAWLER is set, then we crawl anything in the frontier
+            # with an infinite priority; these are urls that are added as seeds
+            if self.INFINITY_CRAWLER:
+                sql=text(f'''
+                select 
+                    scheme,
+                    hostname,
+                    port,
+                    path,
+                    params,
+                    query,
+                    fragment,
+                    fmod.id_frontier,
+                    urls.id_urls,
+                    depth
+                from urls 
+                inner join (
+                    select 
+                        id_frontier,
+                        id_urls
+                    from frontier 
+                    where
+                        timestamp_processed is null AND
+                        priority = '+infinity'
+                    limit {self.MEMQUEUE_LIMIT}
+                    ) as fmod on urls.id_urls=fmod.id_urls
+                    ;
+                ''')
+
+            # otherwise, we need to construct a query tailored for the domains
+            # we are crawling
+            else:
+                # generate a where clause for ensuring that the returned hostnames
+                # do not match any hostnames already in the dictionary;
+                # this ensures a broad crawl and that we don't send too much traffic
+                # to a single host
+                memqueue_where=''
+                memqueue_index=0
+                for hostname in self.memqueue.keys():
+                    memqueue_index+=1
+                    memqueue_where+=f' and hostname_reversed != :hostname_reversed{memqueue_index} '
+                    values_dict[f'hostname_reversed{memqueue_index}']=reverse_hostname(hostname)
+
+                # generate a where clause that ensures we are only crawling allowed
+                # domains and subdomains based on the HOSTNAME_RESTRICTIONS parameter
+                restrictions=[]
+                restrictions_index=0
+                for hostname_reversed in self.HOSTNAME_RESTRICTIONS_clause:
+                    restrictions_index+=1
+                    restrictions.append(f' hostname_reversed like :hostname_reversed{restrictions_index}')
+                    values_dict[f'hostname_reversed{restrictions_index}']=hostname_reversed
+                restrictions_where=' or '.join(restrictions)
+                if len(restrictions_where) > 0:
+                    restrictions_where=f'and ({restrictions_where})'
+
+                # substitute the above where constraints into the sql,
+                # execute the result, and add it to memqueue
+                # FIXME: both sql codes shown below should compute the same thing; which is faster?
+                sql=text(f'''
+                select scheme,hostname,port,path,params,query,fragment,frontier.id_frontier,urls.id_urls,depth
+                from urls 
+                inner join frontier on urls.id_urls=frontier.id_urls
+                where 
+                    timestamp_processed is null
+                    {memqueue_where}
+                    {restrictions_where}
+                order by priority desc
+                limit {self.MEMQUEUE_LIMIT};
+                ''')
+                sql=text(f'''
+                select scheme,hostname,port,path,params,query,fragment,fmod.id_frontier,urls.id_urls,depth
+                from urls 
+                inner join (
+                    select id_frontier,id_urls
+                    from frontier 
+                    where
+                        timestamp_processed is null
+                        {memqueue_where}
+                        {restrictions_where}
+                        order by priority desc
+                        limit {self.MEMQUEUE_LIMIT}
+                    ) as fmod on urls.id_urls=fmod.id_urls
+                    ;
+                ''')
+
+            # execute the SQL query and update memqueue with the results
+            res=self.connection.execute(sql,values_dict)
+            for row in [dict(row.items()) for row in res]:
+                hostname=row['hostname']
+                self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
+                self.next_hostname=hostname
+
+            memqueue_values=sum(map(len,self.memqueue.values()))
+            logger.info(f'expanded memqueue; keys = {self.memqueue.keys()} ; values = {memqueue_values}')
 
 # the scheduler can be run directly to perform manual manipulations of the database
 if __name__=='__main__':

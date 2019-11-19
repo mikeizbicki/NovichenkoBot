@@ -18,7 +18,8 @@ class GeneralSpider(Spider):
 
     def __init__(
             self, 
-            db='sqlite:///benchmark.db', 
+            db='postgres:///novichenkobot', 
+            connection=None,
             keywords='inputs/keywords.txt',
             *args, 
             **kwargs
@@ -39,8 +40,11 @@ class GeneralSpider(Spider):
         lang=langid.classify('test')[0]
 
         # database connection
-        self.engine = sqlalchemy.create_engine(db, connect_args={'connect_timeout': 120})
-        self.connection = self.engine.connect()
+        if connection is None:
+            engine = sqlalchemy.create_engine(db, connect_args={'connect_timeout': 120})
+            self.connection = engine.connect()
+        else:
+            self.connection = connection
 
     def parse(self, response):
 
