@@ -68,34 +68,57 @@ def get_url_info(connection,url,depth=0):
     '''
     url_parsed=parse_url(url)
 
-    # insert into urls table if it doesn't exist 
-    try:
-        sql=sqlalchemy.sql.text('''
-        insert into urls 
-            (scheme,hostname,port,path,params,query,fragment,other,depth)
-            values
-            (:scheme,:hostname,:port,:path,:params,:query,:fragment,:other,:depth)
-        on conflict do nothing;
-        ''')
-        res=connection.execute(sql,depth=depth,**url_parsed)
-
-    # the url does not satisfy the constraints of the urls table
-    except sqlalchemy.exc.DataError:
+    # manually check to ensure that size constraints are not violated
+    # FIXME: this should really be done in the database 
+    # since that's where the constrain information is stored,
+    # but I can't figure out how to do it.
+    # I've previously tried catching the sqlalchemy.exc.DataError exception,
+    # which makes the python part of this function work fine,
+    # but the failed insert still causes postgres to terminate the transaction,
+    # resulting in InternalError exceptions on future inputs.
+    # Somehow, we would need to prevent the failed insert from aborting the transaction.
+    if ( len(url_parsed['path'])>1024 or 
+         len(url_parsed['query'])>1024 or 
+         len(url_parsed['fragment'])>256
+         ):
         return None
 
-    # query to find the id_urls
+    # insert into urls table if it doesn't exist 
     sql=sqlalchemy.sql.text('''
-    select id_urls,scheme,hostname,port,path,params,query,fragment,other,depth from urls where
-        scheme=:scheme and
-        hostname=:hostname and
-        port=:port and
-        path=:path and
-        params=:params and
-        query=:query and
-        fragment=:fragment
+    insert into urls 
+        (scheme,hostname,port,path,params,query,fragment,other,depth)
+        values
+        (:scheme,:hostname,:port,:path,:params,:query,:fragment,:other,:depth)
+    on conflict do nothing
+    returning id_urls
+    ;
     ''')
-    res=connection.execute(sql,url_parsed)
-    return [{column: value for column, value in row.items()} for row in res][0]
+    res=connection.execute(sql,depth=depth,**url_parsed).first()
+
+    # url was already in the database, so we need to do a separate search
+    # FIXME: is there a way to include this select statement in the insert above?
+    # this might improve performance non-trivially since these queries occur very often
+    if res is None:
+        sql=sqlalchemy.sql.text('''
+        select id_urls 
+        from urls
+        where
+            scheme=:scheme and
+            hostname=:hostname and
+            port=:port and
+            path=:path and
+            params=:params and
+            query=:query and
+            fragment=:fragment
+        ''')
+        res=connection.execute(sql,depth=depth,**url_parsed).first()
+
+    # build the url_info and return
+    id_urls=res[0]
+    url_info=url_parsed
+    url_info['id_urls']=id_urls
+    return url_info
+
 
 def insert_request(connection,url,priority=0,allow_dupes=False,depth=0):
     # if a url has already been indexed that has a similar structure

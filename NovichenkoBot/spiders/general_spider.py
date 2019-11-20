@@ -128,20 +128,25 @@ class GeneralSpider(Spider):
             for url in all_links:
                 refs.append([url.url,'link',url.text])
             for (url,url_type,text) in refs:
-                target=get_url_info(self.connection,url,depth=response.request.depth+1)['id_urls']
-                sql=sqlalchemy.sql.text('''
-                insert into refs
-                    (source,target,type,text)
-                    values
-                    (:source,:target,:type,:text);
-                ''')
-                self.connection.execute(sql,{
-                    'source':id_articles,
-                    'target':target,
-                    'type':url_type,
-                    'text':text,
-                    })
-
+                target_url_info=get_url_info(
+                    self.connection,
+                    url,
+                    depth=response.request.depth+1
+                    )
+                if target_url_info is not None:
+                    target=target_url_info['id_urls']
+                    sql=sqlalchemy.sql.text('''
+                    insert into refs
+                        (source,target,type,text)
+                        values
+                        (:source,:target,:type,:text);
+                    ''')
+                    self.connection.execute(sql,{
+                        'source':id_articles,
+                        'target':target,
+                        'type':url_type,
+                        'text':text,
+                        })
 
         # yield all links
         for link in all_links:
