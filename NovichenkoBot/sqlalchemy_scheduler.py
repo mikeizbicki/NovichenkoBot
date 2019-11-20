@@ -188,8 +188,11 @@ class Scheduler(object):
                     })
 
             # generate the request
-            request=scrapy.http.Request(url,callback=parse_httpbin,
-                                    errback=errback_httpbin)
+            request=scrapy.http.Request(
+                    url,
+                    callback=parse_httpbin,
+                    errback=errback_httpbin
+                    )
             #request=scrapy.http.Request(url)
             request.id_urls=frontier_row['id_urls']
             request.hostname=frontier_row['hostname']
