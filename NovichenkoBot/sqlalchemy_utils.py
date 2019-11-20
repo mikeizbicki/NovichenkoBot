@@ -80,7 +80,7 @@ def get_url_info(connection,url,depth=0):
         res=connection.execute(sql,depth=depth,**url_parsed)
 
     # the url does not satisfy the constraints of the urls table
-    except psycopg2.errors.StringDataRightTruncation:
+    except sqlalchemy.exc.DataError:
         return None
 
     # query to find the id_urls
