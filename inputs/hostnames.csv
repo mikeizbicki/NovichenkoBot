@@ -1,169 +1,711 @@
-DOMAIN,NAME,COUNTRY,LANGUAGE,NOTES
-dn.se,Dagens Nyheter,se,sv,
-di.se,Dagens Industri,se,sv,
-gp.se,Göteborgs-Posten ,se,sv,
-svd.se,Svenska Dagbladet,se,sv,
-allehanda.se,Allehanda,se,sv, (large newspaper with several small local areas represented)
-dt.se,Dalarnas Tidningar,se,sv, (larger grouping of local communities)
-arbetarbladet.se,Arbetarbladet,se,sv,
-sydsvenskan.se,Sydsvenskan,se,sv,
-dagen.se,Dagen,se,sv,
-aftonbladet.se,Aftonbladet,se,sv,
-expressen.se,Expressen,se,sv,
-metro.se,Metro,se,sv,
-hd.se,Helsingborgs Dagblad,se,sv,
-na.se,Nerikes Allehanda (NA),se,sv,
-nsd.se/nyheter,Norrländska Socialdemokraten (NSD),se,sv,
-nwt.se,Nya Wermlands-Tidningen (NWT),se,sv,
-ttela.se,TTELA,se,sv,
-vk.se,Vasterbottens-Kuriren,se,sv,
-corren.se/nyheter,Östgöta Correspondenten,se,sv,
-folkbladet.nu,Folkbladet,se,sv,
-dalademokraten.se,Dala-Demokraten,se,sv,
-bt.se,Borås Tidning,se,sv,
-hallandsposten.se,Hallandsposten,se,sv,
-hn.se,Hallands Nyheter,se,sv,
-helahalsingland.se,Helahälsingland,se,sv,
-barometern.se,Barometern,se,sv,
-bohuslaningen.se,Bohusläningen ,se,sv,
-gd.se,Gefle Dagblad ,se,sv,
-helagotland.se/start,Gotlands Tidningar,se,sv,
-jp.se,Jönköpings-Posten,se,sv,
-kt.se,Karlstads-Tidningen ,se,sv,
-kristianstadsbladet.se,Kristianstadsbladet,se,sv,
-skd.se,Skånska Dagbladet ,se,sv,
-nsk.se,Norra Skåne ,se,sv,
-norran.se,Norra Västerbotten ,se,sv,
-kuriren.nu/nyheter,Norrbottens-Kuriren ,se,sv,
-ostrasmaland.se,Östra Småland ,se,sv,
-op.se,Östersunds-Posten,se,sv,
-vt.se/nyheter,Västerviks-Tidningen,se,sv,
-vf.se,Värmlands Folkblad ,se,sv,
-vlt.se,Vestmanlands Läns Tidning ,se,sv,
-unt.se/nyheter,Upsala Nya Tidning ,se,sv,
-st.nu,Sundsvalls Tidning,se,sv,
-nt.se/nyheter,Norrköpings Tidningar ,se,sv,
-smp.se,Smålandsposten ,se,sv,
-ostnyland.fi,Östra Nyland / Borgåbladet,fi,sv,
-hbl.fi,Hufvudstadsbladet,fi,sv,
-nyan.ax,Nya Åland ,fi,sv,
-sydin.fi,Syd-Österbotten,fi,sv,
-vasabladet.fi,Vasabladet,fi,sv,
-vastranyland.fi,Västra Nyland,fi,sv,
-m.alandstidningen.ax,Ålandstidningen ,fi,sv,
-osterbottenstidning.fi,Österbottens Tidning ,fi,sv,
-vg.no,VG,no,no,
-aftenposten.no,Aftenposten,no,no,
-dagbladet.no,Dagbladet,no,no,
-bt.no,Bergens Tidende,no,no,
-bondebladet.no,Bondebladet,no,no,
-dn.no,Dagens Næringsliv,no,no,
-adressa.no,"Adresseavisen (""Adressa"")",no,no,
-ostkantavisa.no,Østkantavisa,no,no,
-aftenbladet.no,Stavanger Aftenblad,no,no,
-fvn.no,Fædrelandsvennen,no,no,
-dt.no,Drammens Tidende,no,no,
-rb.no,Romerikes Blad,no,no,
-smp.no,Sunnmørsposten,no,no,
-tb.no,Tønsbergs Blad,no,no,
-dagsavisen.no,Dagsavisen,no,no,
-budstikka.no,Budstikka,no,no,
-ba.no,Bergensavisen,no,no,
-oa.no,Oppland Arbeiderblad,no,no,
-vl.no,Vårt Land,no,no,
-an.no,Avisa Nordland,no,no,
-f-b.no,Fredriksstad Blad,no,no,
-agderposten.no,Agderposten,no,no,
-t-a.no,Trønder-Avisa,no,no,
-ta.no,Telemarksavisa,no,no,
-glomdalen.no,Glåmdalen,no,no,
-rbnett.no,Romsdals Budstikke,no,no,
-tk.no,Tidens Krav,no,no,
-sa.no,Sarpsborg Arbeiderblad,no,no,
-klassekampen.no,Klassekampen,no,no,
-itromso.no,Bladet Tromsø,no,no,
-dagen.no,Dagen,no,no,
-ranablad.no,Rana Blad,no,no,
-sognavis.no,Sogn Avis,no,no,
-dagogtid.no,Dag og Tid,no,no,
-tradewindsnews.com,TradeWinds,no,en,
-upstreamonline.com,Upstream,no,en,
-bt.dk,B.T.,dk,da,
-politiken.dk,Dagbladet Politiken,dk,da,
-weekendavisen.dk,Weekendavisen,dk,da,
-jyllands-posten.dk,Morgenavisen Jyllands-Posten,dk,da,
-berlingske.dk,Berlingske,dk,da,
-borsen.dk,Dagbladet Børsen,dk,da,
-kristeligt-dagblad.dk,Kristeligt Dagblad,dk,da,
-ekstrabladet.dk,Ekstrabladet,dk,da,
-information.dk,Dagbladet Information,dk,da,
-cphpost.dk,The Copenhagen Post,dk,da,
-arbejderen.dk,Dagbladet Arbejderen,dk,da,
-sondagsavisen.dk,Søndagsavisen,dk,da,
-nknews.org,,us,en,domain
-cnn.com,,us,en,news
-wsj.com,,us,en,news
-usatoday.com,,us,en,news
-latimes.com,,us,en,news
-nytimes.com,,us,en,news
-chron.com,,us,en,news
-chicagotribune.com,,us,en,news
-tampabay.com,,us,en,news
-washingtonpost.com,,us,en,news
-newsday.com,,us,en,news
-nypost.com,,us,en,news
-dallasnews.com,,us,en,news
-nydailynews.com,,us,en,news
-denverpost.com,,us,en,news
-bostonglobe.com,,us,en,news
-seattlenews.com,,us,en,news
-usnews.com,,us,en,news
-time.com,,us,en,news
-foxnews.com,,us,en,news
-politico.com,,us,en,news
-foreignpolicy.com,,us,en,specialist
-thediplomat.com,,us,en,specialist
-huffpost.com,,us,en,news
-theconversation.com,,us,en,blog
-npr.org,,us,en,news
-chinafocus.com,,us,en,specialist
-nbcnews.com,,us,en,news
-economist.com,,uk,en,news
-theguardian.co.uk,,uk,en,news
-independent.co.uk,,uk,en,news
-bbc.com,,uk,en,news
-biznews.com.mx,,mx,es,news
-eluniversal.com.mx,,mx,es,news
-reforma.com,,mx,es,news
-jornada.com.mx,,mx,es,news
-yucatan.com.mx,,mx,es,news
-debate.com.mx,,mx,es,news
-cronica.com.mx,,mx,es,news
-economista.com.mx,,mx,es,news
-unamasuno.com.mx,,mx,es,news
-poresto.net,,mx,es,news
-record.com.mx,,mx,es,news
-la-prensa.com.mx,,mx,es,news
-razon.com.mx,,mx,es,news
-granma.cu,,cu,es,news
-prensa-latina.cu,,cu,es,news
-juventudrebelde.cu,,cu,es,news
-trabajadores.cu,,cu,es,news
-escambray.cu,,cu,es,news
-tribuna.cu,,cu,es,news
-periodico26.cu,,cu,es,news
-invasor.cu,,cu,es,news
-guerrillero.cu,,cu,es,news
-ahora.cu,,cu,es,news
-ecured.cu,,cu,es,news
-adelante.cu,,cu,es,news
-elhabanero.cubaweb.cu,,cu,es,news
-lademajagua.co.cu,,cu,es,news
-giron.cu,,cu,es,news
-venceremos.cu,,cu,es,news
-sierramaestra.cu,,cu,es,news
-5septiembre.cu,,cu,es,news
-havanatimes.org,,cu,es,news
-northkoreatech.org,,us,en,domain
-38north.org,,us,en,domain
-armscontrolwonk.com,,us,en,domain
+URL,PRIORITY,NAME (Native),NAME (Latin),COUNTRY,LANGUAGE,NOTES,,
+https://granma.cu,,,,cu,es,news,,
+https://prensa-latina.cu,,,,cu,es,news,,
+https://juventudrebelde.cu,,,,cu,es,news,,
+https://trabajadores.cu,,,,cu,es,news,,
+https://escambray.cu,,,,cu,es,news,,
+https://tribuna.cu,,,,cu,es,news,,
+https://periodico26.cu,,,,cu,es,news,,
+https://invasor.cu,,,,cu,es,news,,
+https://guerrillero.cu,,,,cu,es,news,,
+https://ahora.cu,,,,cu,es,news,,
+https://ecured.cu,,,,cu,es,news,,
+https://adelante.cu,,,,cu,es,news,,
+https://elhabanero.cubaweb.cu,,,,cu,es,news,,
+https://lademajagua.co.cu,,,,cu,es,news,,
+https://giron.cu,,,,cu,es,news,,
+https://venceremos.cu,,,,cu,es,news,,
+https://sierramaestra.cu,,,,cu,es,news,,
+https://5septiembre.cu,,,,cu,es,news,,
+https://havanatimes.org,,,,cu,es,news,,
+https://www.sueddeutsche.de/,,Süddeutsche Zeitung,,de,de,,,
+https://www.faz.net/,,Frankfurter Allgemeine Zeitung,,de,de,,,
+https://www.welt.de/,,Die Welt,,de,de,,,
+https://www.handelsblatt.com/,,Handelsblatt,,de,de,,,
+https://www.tagesspiegel.de/,,Der Tagesspiegel,,de,de,,,
+https://taz.de/,,Die Tageszeitung,,de,de,,,
+https://www.neues-deutschland.de/,,Neues Deutschland,,de,de,,,
+https://www.jungewelt.de/,,Junge Welt,,de,de,,,
+https://www.zeit.de/index,,Die Zeit,,de,de,,,
+https://jungefreiheit.de/,,Junge Freiheit,,de,de,,,
+https://www.freitag.de/,,Der Freitag,,de,de,,,
+https://www.preussische-allgemeine.de/,,Preußische Allgemeine Zeitung,,de,de,,,
+https://www.spiegel.de,,Der Spiegel,,de,de,,,
+https://www.stern.de/,,Stern ,,de,de,,,
+https://www.focus.de/,,Focus,,de,de,,,
+https://www.wiwo.de/,,Wirtschaftswoche,,de,de,,,
+https://www.cicero.de/,,Cicero ,,de,de,,,
+https://www.bild.de/,,Bild,,de,de,,,
+http://www.westfalen-blatt.de/,,Westfalen-Blatt,,de,de,,,
+https://www.derwesten.de/wp/,,Westfalenpost,,de,de,,,
+http://www.westfaelische-nachrichten.de/,,Westfälische Nachrichten,,de,de,,,
+http://www.wa.de/,,Westfälischer Anzeiger,,de,de,,,
+http://www.wr.de/,,Westfälische Rundschau,,de,de,,,
+https://www.waz.de/,,Westdeutsche Allgemeine Zeitung,,de,de,,,
+https://www.weser-kurier.de/,,Weser-Kurier ,,de,de,,,
+https://www.volksstimme.de/,,Volksstimme,,de,de,,,
+http://www.az-web.de,,Aachener Zeitung,,de,de,,,
+https://www.augsburger-allgemeine.de/,,Augsburger Allgemeine,,de,de,,,
+http://www.bnn.de/,,Badische Neueste Nachrichten,,de,de,,,
+https://www.badische-zeitung.de/,,Badische Zeitung,,de,de,,,
+https://www.morgenpost.de/,,Berliner Morgenpost,,de,de,,,
+https://www.berliner-zeitung.de/,,Berliner Zeitung,,de,de,,,
+https://www.braunschweiger-zeitung.de/,,Braunschweiger Zeitung,,de,de,,,
+https://www.freiepresse.de/,,Freie Presse,,de,de,,,
+https://www.fr.de/,,Frankfurter Rundschau,,de,de,,,
+https://www.abendblatt.de/,,Hamburger Abendblatt,,de,de,,,
+https://www.haz.de/,,Hannoversche Allgemeine Zeitung,,de,de,,,
+https://www.hna.de/,,Hessische/Niedersächsische Allgemeine,,de,de,,,
+https://www.ksta.de/,,Kölner Stadt-Anzeiger,,de,de,,,
+https://www.lvz.de/,,Leipziger Volkszeitung,,de,de,,,
+http://www.main-post.de/,,Main-Post,,de,de,,,
+https://www.merkur.de/,,Münchner Merkur,,de,de,,,
+https://www.noz.de/,,Neue Osnabrücker Zeitung,,de,de,,,
+https://www.derwesten.de/nrz/,,Neue Ruhr Zeitung,,de,de,,,
+http://www.nw.de/,,Neue Westfälische,,de,de,,,
+http://www.nwzonline.de/,,Nordwest-Zeitung,,de,de,,,
+https://www.pnp.de/,,Passauer Neue Presse,,de,de,,,
+https://rp-online.de/,,Rheinische Post,,de,de,,,
+https://www.rheinpfalz.de/,,Die Rheinpfalz,,de,de,,,
+http://www.rhein-zeitung.de/,,Rhein-Zeitung,,de,de,,,
+https://www.ruhrnachrichten.de/,,Ruhr Nachrichten,,de,de,,,
+https://www.saarbruecker-zeitung.de/,,Saarbrücker Zeitung,,de,de,,,
+https://www.saechsische.de/,,Sächsische Zeitung,,de,de,,,
+https://www.schwaebische.de/,,Schwäbische Zeitung,,de,de,,,
+http://www.schwarzwaelder-bote.de/,,Schwarzwälder Bote,,de,de,,,
+https://www.stuttgarter-zeitung.de/,,Stuttgarter Zeitung,,de,de,,,
+https://www.suedkurier.de/,,Südkurier,,de,de,,,
+https://www.swp.de/,,Südwest-Presse,,de,de,,,
+https://www.thueringer-allgemeine.de/,,Thüringer Allgemeine,,de,de,,,
+https://www.frankfurter-hefte.de/,,Neue Gesellschaft/Frankfurter Hefte,,de,de,,,
+https://zeitschrift-ip.dgap.org/de,,Internationale Politik,,de,de,,,
+https://www.ipg-journal.de/,,Internationale Politik und Gesellschaft,,de,de,,,
+https://www.bnr.de/,,Blick Nach Rechts,,de,de,,,
+https://bt.dk,,B.T.,,dk,da,,,
+https://politiken.dk,,Dagbladet Politiken,,dk,da,,,
+https://weekendavisen.dk,,Weekendavisen,,dk,da,,,
+https://jyllands-posten.dk,,Morgenavisen Jyllands-Posten,,dk,da,,,
+https://berlingske.dk,,Berlingske,,dk,da,,,
+https://borsen.dk,,Dagbladet Børsen,,dk,da,,,
+https://kristeligt-dagblad.dk,,Kristeligt Dagblad,,dk,da,,,
+https://ekstrabladet.dk,,Ekstrabladet,,dk,da,,,
+https://information.dk,,Dagbladet Information,,dk,da,,,
+https://cphpost.dk,,The Copenhagen Post,,dk,da,,,
+https://arbejderen.dk,,Dagbladet Arbejderen,,dk,da,,,
+https://sondagsavisen.dk,,Søndagsavisen,,dk,da,,,
+https://ostnyland.fi,,Östra Nyland / Borgåbladet,,fi,sv,,,
+https://hbl.fi,,Hufvudstadsbladet,,fi,sv,,,
+https://nyan.ax,,Nya Åland ,,fi,sv,,,
+https://sydin.fi,,Syd-Österbotten,,fi,sv,,,
+https://vasabladet.fi,,Vasabladet,,fi,sv,,,
+https://vastranyland.fi,,Västra Nyland,,fi,sv,,,
+https://m.alandstidningen.ax,,Ålandstidningen ,,fi,sv,,,
+https://osterbottenstidning.fi,,Österbottens Tidning ,,fi,sv,,,
+https://www.connexionfrance.com/,,The Connexion,,fr,en,,,
+https://international.la-croix.com/,,La Croix,,fr,fr,,,
+https://www.lesechos.fr/,,Les Échos ,,fr,fr,,,
+https://www.lefigaro.fr/,,Le Figaro,,fr,fr,,,
+https://www.humanite.fr/,,L'Humanité,,fr,fr,,,
+https://www.liberation.fr/,,Libération ,,fr,fr,,,
+https://www.lemonde.fr/,,Le Monde,,fr,fr,,,
+https://www.lopinion.fr/,,L'Opinion,,fr,fr,,,
+http://www.leparisien.fr/,,Le Parisien / Aujourd'hui en France,,fr,fr,,,
+http://www.francesoir.fr/,,France Soir,,fr,fr,,,
+https://www.mediapart.fr/,,Mediapart,,fr,fr,,,
+https://www.latribune.fr/,,La Tribune,,fr,fr,,,
+http://www.slate.fr,,Slate,,fr,fr,,,
+https://www.contrepoints.org/,,Contrepoints,,fr,fr,,,
+https://www.challenges.fr/,,Challenges,,fr,fr,,,
+https://www.courrierinternational.com/,,Courrier International,,fr,fr,,,
+https://www.lexpress.fr/,,L'Express,,fr,fr,,,
+https://www.lejdd.fr/,,Le Journal du dimanche,,fr,fr,,,
+https://www.monde-libertaire.fr/,,Le Monde Libertaire,,fr,fr,,,
+https://www.nouvelobs.com/,,L'Obs,,fr,fr,,,
+https://www.lepoint.fr/,,Le Point,,fr,fr,,,
+https://www.marianne.net/,,Marianne,,fr,fr,,,
+https://www.monde-diplomatique.fr/,,Le Monde Diplomatique,,fr,fr,,,
+https://www.franceguyane.fr/,,France-Guyane,,fr,fr,,,
+https://www.lecanardenchaine.fr/,,Le Canard Enchainé,,fr,fr,,,
+https://www.20minutes.fr/,,20 Minutes,,fr,fr,,,
+https://www.bienpublic.com/,,Le Bien Public,,fr,fr,,,
+https://www.charentelibre.fr/,,Charente Libre,,fr,fr,,,
+https://www.lalsace.fr/,,L'Alsace ,,fr,fr,,,
+https://www.ledauphine.com/,,Le Dauphiné libéré,,fr,fr,,,
+https://www.corsematin.com/,,Corse-Matin,,fr,fr,,,
+https://www.ladepeche.fr/,,La Dépêche du Midi ,,fr,fr,,,
+https://www.estrepublicain.fr/,,L'Est Républicain,,fr,fr,,,
+https://www.midilibre.fr/,,Midi Libre,,fr,fr,,,
+https://www.lanouvellerepublique.fr/,,La Nouvelle République du Centre-Ouest ,,fr,fr,,,
+https://www.ouest-france.fr,,Ouest France,,fr,fr,,,
+https://www.leprogres.fr/,,Le Progrès,,fr,fr,,,
+https://www.laprovence.com/,,La Provence,,fr,fr,,,
+https://www.republicain-lorrain.fr/,,Le Républicain Lorrain,,fr,fr,,,
+https://www.sudouest.fr/,,Sud-Ouest,,fr,fr,,,
+https://www.lavoixdunord.fr/,,La Voix du Nord,,fr,fr,,,
+https://lexpansion.lexpress.fr/,,L’Expansion,,fr,fr,,,
+https://www.lejsl.com/,,Le Journal de Saône-et-Loire,,fr,fr,,,
+https://www.letelegramme.fr/,,Le Télégramme,,fr,fr,,,
+https://www.dna.fr/,,Les Dernières Nouvelles d’Alsace,,fr,fr,,,
+https://www.lyoncapitale.fr/,,Lyon Capitale,,fr,fr,,,
+https://www.lunion.fr/,,L'Union de Reims,,fr,fr,,,
+https://www.lamontagne.fr/,,La Montagne,,fr,fr,,,
+https://www.larep.fr/,,La République du Centre,,fr,fr,,,
+https://www.lyonne.fr/,,L'Yonne Républicaine,,fr,fr,,,
+https://www.lepopulaire.fr/,,Le Populaire,,fr,fr,,,
+https://www.lechorepublicain.fr,,L'Écho républicain,,fr,fr,,,
+http://www.jhm.fr/,,Le Journal de la Haute-Marne,,fr,fr,,,
+https://www.paris-normandie.fr/,,Paris-Normandie,,fr,fr,,,
+https://www.nicematin.com/,,nice-matin,,fr,fr,,,
+https://www.leberry.fr/,,Le Berry Républicain,,fr,fr,,,
+https://www.lejdc.fr/,,Le Journal du Centre,,fr,fr,,,
+https://www.lejdd.fr/,,Le Journal du Dimanche,,fr,fr,,,
+https://www.boursorama.com/,,Boursorama,,fr,fr,,,
+https://www.dordognelibre.fr/,,Dordogne Libre,,fr,fr,,,
+http://www.lapressedelamanche.fr/,,La Presse de la Manche,,fr,fr,,,
+https://www.lest-eclair.fr/,,L'Est Eclair,,fr,fr,,,
+https://actu.fr/voix-du-jura/,,Voix du Jura,,fr,fr,,,
+https://www.larepubliquedespyrenees.fr/,,La Republique des Pyrenees,,fr,fr,,,
+https://www.leveil.fr/accueil.html,,L'Eveil de La Haute Loire,,fr,fr,,,
+https://www.cnews.fr/,,Cnews Matin,,fr,fr,,,
+https://actu.fr/l-informateur-d-eu/,,L'Eclaireur,,fr,fr,,,
+https://www.centrepresseaveyron.fr/,,Centre Presse Aveyron,,fr,fr,,,
+https://tribuca.net/,,Tribune Bulletin Cote d'Azur,,fr,fr,,,
+http://www.nordeclair.fr/,,Nord éclair,,fr,fr,,,
+https://www.lindependant.fr/,,Independant,,fr,fr,,,
+https://www.telerama.fr/,,Telerama,,fr,fr,,,
+https://www.linternaute.com/,,L'Internaute,,fr,fr,,,
+https://www.lci.fr/,,LCI.fr,,fr,fr,,,
+https://www.france24.com/fr/,,France 24,,fr,fr,,,
+https://www.nouvelobs.com/rue89/,,Rue 89,,fr,fr,,,
+https://www.alpes-et-midi.fr/,,Alpes et Midi‎,,fr,fr,,,
+http://www.avenir-cotedazur.com/fr/,,L'Avenir Cote d'Azur,,fr,fr,,,
+https://auvergnat.com/,,L'Auvergnat de Paris,,fr,fr,,,
+https://dailynord.fr/,,Daily Nord,,fr,fr,,,
+https://infodujour.fr/,,Info du Jour‎,,fr,fr,,,
+https://www.picardiegazette.fr/,,Picardie la Gazette,,fr,fr,,,
+https://orientaldaily.on.cc/,,,Oriental Daily News,hk,,,,
+https://www.bastillepost.com/hongkong/,,,Bastille Post,hk,,,,
+https://www.mingpao.com/,,,Mingpao,hk,,,,
+http://www.stheadline.com/,,,Headline Daily,hk,,,,
+https://now.com/home,,,Now,hk,,,,
+http://www.wenweipo.com/,,,Wen Wei Po,hk,,,,
+http://www.am730.com.hk/,,,Am730,hk,,,,
+https://www.my-magazine.me/,,,My Magazine,hk,,,,
+https://www.inmediahk.net/,,,Immedia HK,hk,,,,
+https://www.nextdigital.com.hk/,,,Next Digital HK,hk,,,,
+https://www.news.gov.hk/chi/index.html,,,HK Government (also in English),hk,,,,
+http://www.hkcna.hk/,,,Hong Kong China News Agency,hk,,,,
+http://the-sun.on.cc/,,,The Sun,hk,,,,
+https://www.hket.com/,,,Hong Kong Economic Times,hk,,,,
+https://www2.hkej.com/landing/index,,,Hong Kong Economics Journal,hk,,,,
+http://www.hkcd.com/,,,Hong Kong Commercial Daily,hk,,,,
+http://www.passiontimes.hk/4.0/index.php,,,Passion Times,hk,,,,
+http://www.ftchinese.com/,,,Financial Times,hk,,,,
+https://www.metrodaily.hk/,,,Metro Daily,hk,,,,
+http://www.metroradio.com.hk/superhome/,,,Metro Broadcast,hk,,,,
+http://www.takungpao.com.hk/,,,Takungpao,hk,,,,
+https://www.singpao.com.hk/,,,Sing Pao Daily News,hk,,,,
+https://skypost.ulifestyle.com.hk/,,,Skypost,hk,,,,
+https://www.rthk.hk/,,,RTHK,hk,,,,
+https://kkp.catholic.org.hk/,,,Kung Kao Po,hk,,,,
+http://www.wednesdayjournal.net/main/index.html,,,Wednesday Journal,hk,,,,
+http://www.krt.com.hk/,,,Kingdom Revival Times,hk,,,,
+http://std.stheadline.com/,,,Sing Tao Daily,hk,,,,
+http://hk01.com/,,,HK 01,hk,,,,
+https://www.ucanews.com/,,,Union of Catholic Asian News,hk,,,,
+http://www.factwire.org/,,,FactWire,hk,,,,
+https://the-japan-news.com,,,The Japan Times ,jp,en,Nationwide,Daily Newspaper ,Center-Right 
+https://www.asahi.com,,朝日新聞東京本社 ,The Asahi Shimbun ,jp,ja,Nationwide,Daily Newspaper ,Center-Left
+http://mainichi.jp/,,毎日新聞東京本社,The Mainichi,jp,ja,Nationwide,Daily Newspaper ,Center-Left
+https://www.yomiuri.co.jp/,,読売新聞東京本社,Yomiuri Shimbun,jp,ja,Nationwide,Daily Newspaper ,Center-Right 
+https://www.nikkei.com,,日本経済新聞社,Nikkei Asian Review,jp,ja,Nationwide,Daily Newspaper ,Economy / Center
+http://www.tokyo-np.co.jp/,,東京新聞,The Tokyo Shimbun,jp,ja,Nationwide,Daily Newspaper ,Center-Left
+https://www.sankei.com/,,産経新聞東京本社,The Sankei Shimbun,jp,ja,Nationwide,Daily Newspaper ,Right
+https://www.japantimes.co.jp/,,ジャパンタイムズ,The Japan Times ,jp,ja,Nationwide,Daily English Newspaper,Center
+https://www.hochi.co.jp/,,報知新聞社,The Hochi Shimbun,jp,ja,Nationwide,Daily Newspaper ,Small size company
+https://www.jcp.or.jp/akahata/,,赤旗,Akahata,jp,ja,Nationwide,Daily Newspaper  ,Japanese Communist Party newspaper
+https://www.komei.or.jp/komeinews/,,公明新聞,Komei Shimbun,jp,ja,Nationwide,Daily Newspaper i,Buddhist party Soka Gakkai newspaper
+http://www.nikkan.co.jp/,,日刊工業新聞社,Nikkan Kogyo Shimbun,jp,ja,Nationwide,Daily Newspaper,Industrial 
+http://www.sankeibiz.jp/,,日本工業新聞社,Nippon Kogyo Shimbun,jp,ja,Nationwide,Daily Newspaper,Economy
+https://www.kyodonews.jp/,,共同通信社,Kyodo News ,jp,ja,Nationwide,News Agency,
+https://www.jiji.com/,,時事通信社,Jiji Press,jp,ja,Nationwide,News Agency,
+http://www.np-net.co.jp/,,エヌピー通信社,NP News Agency,jp,ja,Nationwide,News Agency,
+http://www.nhk.or.jp/,,日本放送協会,NHK World – Japan ,jp,ja,Nationwide,Broadcasting (TV),Public Media 
+https://www.tbs.co.jp/,,TBSテレビ,Tokyo Brodcasting Systems Television,jp,ja,Nationwide,Broadcasting (TV),Private Media
+http://www.joqr.co.jp/,,文化放送,Nippon Cultural Broadcasting,jp,ja,Nationwide,Broadcasting (FM/AM),Private Radio
+http://www.jolf.co.jp/,,ニッポン放送,Nippon Broadcasting System,jp,ja,Nationwide,Broadcasting (FM/AM),Private Radio
+http://www.ntv.co.jp/,,日本テレビ放送網,Nippon Television Network,jp,ja,Nationwide,Broadcasting (TV),Private Media
+http://www.fujitv.co.jp/,,フジテレビジョン,Fuji Television Network,jp,ja,Nationwide,Broadcasting (TV),Private Media
+https://www.tv-asahi.co.jp/,,テレビ朝日,TV Asahi,jp,ja,Nationwide,Broadcasting (TV),Private Media
+http://www.tv-tokyo.co.jp/,,テレビ東京,TV Tokyo,jp,ja,Nationwide,Broadcasting (TV),Private Media
+http://www.tfm.co.jp/,,エフエム東京,Tokyo FM Broadcasting,jp,ja,Nationwide,Broadcasting (FM),Private Radio
+http://mxtv.co.jp,,東京メトロポリタンテレビジョン,Tokyo Metropolitan Television Broadcasting ,jp,ja,Nationwide,Broadcasting (TV),Private Media
+https://www.wowow.co.jp/,,WOWOW,Wowow Inc,jp,ja,Nationwide,Cable TV,Private Media
+http://www.bs11.jp/,,日本BS放送,Nippon BS Broadcasting  ,jp,ja,Nationwide,Satellite/Cable TV,Private Media
+https://www.asahi.co.jp/,,朝日放送テレビ,ABC TV ,jp,ja,Kansai,Broadcasting (TV),Private Media
+https://www.mbs.jp/,,毎日放送,Mainichi Broadcasting System,jp,ja,Kansai,Broadcasting (TV/AM Radio),Private Media
+https://www.ktv.jp/,,関西テレビ放送,Kansai Television,jp,ja,Kansai,Broadcasting (TV),Private Media
+http://www.ytv.co.jp/,,読売テレビ放送,Yomiuri Telecasting,jp,ja,Kansai,Broadcasting (TV),Private Media
+http://www.tv-osaka.co.jp/,,テレビ大阪,Television Osaka,jp,ja,Kansai,Broadcasting (TV),Private Media
+https://www.hokkaido-np.co.jp/,,北海道新聞社,The Hokkaido Shimbun Press,jp,ja,Hokkaido,Daily Newspaper,Local （Sapporo）
+http://www.muromin.co.jp/,,室蘭民報社,Muroran Mumpo,jp,ja,Hokkaido,Daily Newspaper,Local (Muroran)
+http://www.tokachi.co.jp/,,十勝毎日新聞社,Tokachi Mainichi Newspaper,jp,ja,Hokkaido,Daily Newspaper,Local (Obihiro)
+http://www.news-kushiro.co.jp/,,釧路新聞社,Kushiro Shimbun,jp,ja,Hokkaido,Daily Newspaper,Local (Kushiro)
+http://www.tomamin.co.jp/,,苫小牧民報社,The Tomakomai Mimpo,jp,ja,Hokkaido,Daily Newspaper,Local (Tomakomai)
+https://digital.hakoshin.jp/,,函館新聞社,Hakodate Shimbun,jp,ja,Hokkaido,Daily Newspaper,Local (Hakodate) 
+http://www.toonippo.co.jp/,,東奥日報社,The To-o Nippo Press,jp,ja,Tohoku,Daily Newspaper,Local (Aomori) 
+http://www.mutusinpou.co.jp/,,陸奥新報社,Mutushimpo,jp,ja,Tohoku,Daily Newspaper,Local (Hirosaki)
+https://www.daily-tohoku.news/,,デーリー東北新聞社,Daily Tohoku Shimbun,jp,ja,Tohoku,Daily Newspaper,Local (Hachonohe)
+http://www.iwate-np.co.jp/,,岩手日報社,Iwate Nippo,jp,ja,Tohoku,Daily Newspaper,Local (Morioka)
+https://www.iwanichi.co.jp/,,岩手日日新聞社,Iwate Nichinichi Shimbun,jp,ja,Tohoku,Daily Newspaper,Local (Ichinoseki)
+https://www.kahoku.co.jp/,,河北新報社,Kahoku Shimpo,jp,ja,Tohoku,Daily Newspaper,Local (Sendai)
+http://www.sakigake.jp/,,秋田魁新報社,Akita Sakigake Shimpo,jp,ja,Tohoku,Daily Newspaper,Local (Akita)
+http://www.hokuu.co.jp/,,北羽新報社,Hokuu Shimpo,jp,ja,Tohoku,Daily Newspaper,Local (Noshiro)
+http://yamagata-np.jp/,,山形新聞社,Yamagata Shimbun,jp,ja,Tohoku,Daily Newspaper,Local (Yamagata)
+http://www.shonai-nippo.co.jp/,,荘内日報社,The Shonai Nippo,jp,ja,Tohoku,Daily Newspaper ,Local (Tsuruoka) 
+http://www.yoneshin.com/,,米澤新聞社,Yonezawa Shimbun,jp,ja,Tohoku,Daily Newspaper,Local (Yonezawa)
+http://www.minpo.jp/,,福島民報社,Fukushima Mimpo,jp,ja,Tohoku,Daily Newspaper,Local (Fukushima)
+https://www.minyu-net.com/,,福島民友新聞社,The Fukushima Minyu Shimbun,jp,ja,Tohoku,Daily Newspaper,Local (Fukushima)
+http://www.iwaki-minpo.co.jp/,,いわき民報社,Iwaki Mimpo,jp,ja,Tohoku,Daily Newspaper,Local (iwaki)
+http://ibarakinews.jp/,,茨城新聞社,The Ibaraki Shimbun,jp,ja,Kanto,Daily Newspaper,Local (Mito)
+https://www.shimotsuke.co.jp/,,下野新聞社,Shimotsuke Shimbun,jp,ja,Kanto,Daily Newspaper ,Local (Utsunomiya)
+http://www.raijin.com/,,上毛新聞社,Jomo Shimbun,jp,ja,Kanto,Daily Newspaper ,Local (Maebashi)
+http://www.saitama-np.co.jp/,,埼玉新聞社,Saitama Shimbun,jp,ja,Kanto,Daily Newspaper,Local  (Saitama)
+http://www.kanaloco.jp/,,神奈川新聞社,Kanagawa Shimbun,jp,ja,Kanto,Daily Newspaper ,Local (Yokohama)
+http://www.chibanippo.co.jp/,,千葉日報社,Chiba Nippo,jp,ja,Kanto,Daily Newspaper ,Local (Chiba)
+http://www.kanaloco.jp/,,静岡新聞社,The Shizuoka Shimbun and Broadcasting,jp,ja,Chubu,Daily Newspaper / Broadcasting (TV/FM) ,Local (Shizuoka)
+http://www.shinmai.co.jp/,,信濃毎日新聞社,The Shinano Mainichi Shimbun,jp,ja,Chubu,Daily Newspaper ,Local (Nagano)
+http://www.nagano-np.co.jp/,,長野日報社,The Nagano Nippo,jp,ja,Chubu,Daily Newspaper,Local (Suwa)
+http://minamishinshu.jp/,,南信州新聞社,Minamishinshu Newspaper,jp,ja,Chubu,Daily Newspaper,Local (Iida)
+http://www.shimintimes.co.jp/,,市民タイムス,Shimin Times,jp,ja,Chubu,Daily Newspaper ,Local (Matsumoto)
+http://www.chunichi.co.jp/,,中日新聞社,The Chunichi Shimbun,jp,ja,Chubu,Daily Newspaper ,Local (Nagoya) 
+http://www.chukei-news.co.jp/,,中部経済新聞社,Chuubu Keizai Shimbun ,jp,ja,Chubu,Daily Newspaper ,Local / Economy  (Nagoya)
+http://www.higashiaichi.co.jp/,,東愛知新聞社,Higashiaichi Shimbun,jp,ja,Chubu,Daily Newspaper,Local (Toyohashi)
+http://www.gifu-np.co.jp/,,岐阜新聞社,Gifu Shimbun,jp,ja,Chubu,Daily Newspaper ,Local (Gifu)
+http://www.hicbc.com/,,CBCテレビ,Chubu-Nippon Broadcasting,jp,ja,Chubu,Broadcasting (TV),Local TV (Nagoya)
+http://tokai-tv.com/,,東海テレビ放送,Tokai Television Broadcasting,jp,ja,Chubu,Broadcasting (TV),Local TV (Nagoya)
+http://www.nagoyatv.com/,,名古屋テレビ放送,Nagoya Broadcasting Network,jp,ja,Chubu,Broadcasting (TV),Local TV (Nagoya)
+http://www.tv-aichi.co.jp/,,テレビ愛知,Aichi Television Broadcasting,jp,ja,Chubu,Broadcasting (TV),Local TV (Nagoya)
+https://www.ctv.co.jp/,,中京テレビ放送,Chukyo Television Broadcasting,jp,ja,Chubu,Broadcasting (TV) ,Local TV (Nagoya)
+http://www.niigata-nippo.co.jp/,,新潟日報社,The Niigata Nippo,jp,ja,Hokiruku,Daily Newspaper,Local (Niigata)
+http://webun.jp/,,北日本新聞社,The Kitanippon Shimbun,jp,ja,Hokiruku,Daily Newspaper,Local (Toyama)
+http://www.hokkoku.co.jp/,,北國新聞社,The Hokkoku Shimbun,jp,ja,Hokiruku,Daily Newspaper,Local (Kanazawa) 
+http://www.fukuishimbun.co.jp/,,福井新聞社,Fukui Shimbun,jp,ja,Hokiruku,Daily Newspaper ,Local (Fukui) 
+https://www.isenp.co.jp/,,伊勢新聞社,The Ise Shimbun,jp,ja,Kinki,Daily Newspaper,Local (ise)
+http://www.yukanmie.com/,,夕刊三重新聞社,Yukan Mie,jp,ja,Kinki,Daily Evening Newspaper,Local (Matsuzaka)
+http://www.kyoto-np.co.jp/,,京都新聞社,The Kyoto Shimbun,jp,ja,Kinki,Daily Newspaper ,Local (Kyoto)
+https://www.kobe-np.co.jp/,,神戸新聞社,The Kobe Shimbun,jp,ja,Kinki,Daily Newspaper ,Local (Kobe)
+http://www.nara-np.co.jp/,,奈良新聞社,Nara Newspaper,jp,ja,Kinki,Daily Newspaper ,Local (Nara)
+https://www.agara.co.jp/,,紀伊民報社,Kii Mimpo,jp,ja,Kinki,Daily Newspaper ,Local (Tanabe)
+http://www.sanyonews.jp/,,山陽新聞社,The Sanyo Shimbun,jp,ja,Chugoku,Daily Newspaper ,Local (Okayama)
+https://www.chugoku-np.co.jp/,,中国新聞社,The Chugoku Shimbun,jp,ja,Chugoku,Daily Newspaper ,Local (Hiroshima)
+https://www.nnn.co.jp/,,新日本海新聞社,The Shin Nihonkai Shimbun,jp,ja,Chugoku,Daily Newspaper ,Local (Tottori)
+http://www.sanin-chuo.co.jp/,,山陰中央新報社,The San-in Chuo Shimpo,jp,ja,Chugoku,Daily Newspaper ,Local (Matsue)
+http://www.shimanenichinichi.co.jp/,,島根日日新聞社,Shimane Nichinichi Shimbun,jp,ja,Chugoku,Daily Newspaper ,Local (Izumo)
+http://www.minato-yamaguchi.co.jp/yama/,,山口新聞社,The Yamaguchi Shimbun,jp,ja,Chugoku,Daily Newspaper ,Local (Shimonoseki)
+http://ubenippo.co.jp/,,宇部日報社,Ube Nippo,jp,ja,Chugoku,Daily Newspaper ,Local (Ube)
+http://www.topics.or.jp/,,徳島新聞社,The Tokushima Shimbun,jp,ja,Shikoku,Daily Newspaper ,Local (Tokushima)
+http://www.shikoku-np.co.jp/,,四国新聞社,The Shikoku Shimbun,jp,ja,Shikoku,Daily Newspaper,Local (Takamatsu)
+https://www.ehime-np.co.jp/,,愛媛新聞社,The Ehime Shimbun,jp,ja,Shikoku,Daily Newspaper ,Local (Matsuyama)
+https://www.kochinews.co.jp/,,高知新聞社,The Kochi Shimbun,jp,ja,Shikoku,Daily Newspaper ,Local (Kochi)
+https://www.nishinippon.co.jp/,,西日本新聞社,The Nishinippon Shimbun,jp,ja,Kyuushu,Daily Newspaper ,Local (Fukuoka)
+https://www.saga-s.co.jp/,,佐賀新聞社,Saga Shimbun,jp,ja,Kyuushu,Daily Newspaper ,Local (Saga)
+http://www.nagasaki-np.co.jp/,,長崎新聞社,Nagasaki Shimbun,jp,ja,Kyuushu,Daily Newspaper ,Local (Nagasaki)
+https://kumanichi.com/,,熊本日日新聞社,Kumamoto Nichinichi Shimbun,jp,ja,Kyuushu,Daily Newspaper ,Local (Kumamoto)
+http://www.oita-press.co.jp/,,大分合同新聞社,Oita Godo News,jp,ja,Kyuushu,Daily Newspaper ,Local (Oita) 
+http://www.the-miyanichi.co.jp/,,宮崎日日新聞社,Miyazaki Nichinichi Shimbun,jp,ja,Kyuushu,Daily Newspaper ,Local (Miyazaki)
+http://www.yukan-daily.co.jp/,,夕刊デイリー新聞社,Yukan Daily,jp,ja,Kyuushu,Daily Evening Newspaper,Local (Nobeoka)
+http://373news.com/,,南日本新聞社,Minami Nippon Shimbun,jp,ja,Kyuushu,Daily Newspaper  ,Local (Kagoshima) 
+http://www.nankainn.com/,,南海日日新聞社,Nankai Nichinichi Shimbun,jp,ja,Kyuushu,Daily Newspaper ,Local (Amami Islands) 
+https://www.okinawatimes.co.jp/,,沖縄タイムス社,The Okinawa Times,jp,ja,Kyuushu,Daily Newspaper,"Local (Naha, Okinawa)"
+http://ryukyushimpo.jp/,,琉球新報社,The Ryukyu Shimpo,jp,ja,Kyuushu,Daily Newspaper ,"Local (Naha, Okinawa)"
+http://www.y-mainichi.co.jp/,,八重山毎日新聞,Yaeyama Mainichi Shimbun,jp,ja,Kyuushu,Daly Newspaper ,Local (Ishigaki Island)
+http://www.miyakomainichi.com/,,宮古毎日新聞社,Miyako Mainichi Shimbun,jp,ja,Kyuushu,Daily Newspaper ,Local (Miyako Island)
+https://news.yahoo.co.jp/,,Yahoo News,Yahoo News (Japan),jp,ja,Internet,Web News ,Most Popular in Japan
+https://www.msn.com/ja-jp/news/,,MSN News,MSN News (Japan),jp,ja,Internet,Web News ,Second Popular in Japan 
+https://toyokeizai.net/,,東洋経済オンライン,Toyo Keizai Online ,jp,ja,Internet,Web News,Online Economy News in Japan 
+https://diamond.jp/,,ダイアモンドオンライン,Diamond Online,jp,ja,Internet,Web News ,Online Business News in Japan
+http://www.gaiko-web.jp/,,外交,Gaiko (International Affairs),jp,ja,Journal,Monthly Journal,Ministry of Foreign Affairs of Japan
+https://www2.jiia.or.jp,,国際問題,,jp,ja,Journal,Monthly Journal,The Japan Ministry of International Affaris
+https://www.jetro.go.jp,,ビジネス短信,Business Tanshin,jp,ja,Journal,Daily Web Journal,JETRO (Japan External Trade Organization)
+https://www.idj.co.jp/,,国際協力ジャーナル,Kokusai Kyouryoku,jp,ja,Journal,Monthly Journal,Private Publishing 
+https://www.southkoreanews.net/,,,South Korea News,kr,en,,,
+http://www.hankooki.com/,,한국아이,HankookI,kr,ko,,,
+http://www.hani.co.kr/,,한교레,Hankyoreh,kr,ko,,,
+http://www.donga.com/,,동아,dongA,kr,ko,,,
+http://www.chosun.com/,,조선일보,Chosun Ilbo,kr,ko,,,
+https://www.hankookilbo.com/,,한국일보,The Korea Times,kr,ko,,,
+http://www.khan.co.kr/,,경항신문,Gyunghan Newspaper,kr,ko,,,
+http://www.ohmynews.com/,,오마이뉴스,OhmyNews,kr,ko,,,
+http://www.munhwa.com/,,문화일보,Munhwa,kr,ko,,,
+http://www.seoul.co.kr/,,서울신분,Seoul Newspaper,kr,ko,,,
+https://www.yna.co.kr/,,연합뉴스,Yunhab News,kr,ko,,,
+http://www.mk.co.kr/,,매일경제,Maeil Economy,kr,ko,,,
+https://www.hankyung.com/,,한국경제,Hankyung,kr,ko,,,
+https://www.sedaily.com,,서울경제,Seoul Daily,kr,ko,,,
+https://www.mt.co.kr/,,머니투데이,Money Today,kr,ko,,,
+http://www.etnews.com/,,전자신문,ET News,kr,ko,,,
+https://www.nocutnews.co.kr/,,노컷뉴스,No Cut News,kr,ko,,,
+http://www.segye.com/,,세계일보,Segye,kr,ko,,,
+https://www.ytn.co.kr/,,,YTN,kr,ko,,,
+http://www.koreadaily.com/,,중앙일보,The Korea Daily,kr,ko,,,
+http://www.mediatoday.co.kr/,,미디아 오늘,Media Today,kr,ko,,,
+http://www.viewsnnews.com,,새상을보는다른눈,Views and News,kr,ko,,,
+http://www.kmib.co.kr/news/index.asp,,국민일보,Kookmin Ilbo,kr,ko,,,
+http://www.pressian.com,,프레시안,Pressian,kr,ko,,,
+http://www.newsis.com,,뉴시스,Newsis,kr,ko,,,
+http://www.busan.com,,부산일보,Busan Ilbo,kr,ko,,,
+http://dkbnews.donga.com/,,도깨비뉴스,Dokkaebi News,kr,ko,,,
+https://www.dispatch.co.kr/,,,Dispatch,kr,ko,,,
+https://www.edaily.co.kr,,이데일리,EDaily,kr,ko,,,
+http://biz.heraldcorp.com/,,해럴드경제,Herald Economy,kr,ko,,,
+https://www.asiae.co.kr/,,아시아경제,Asia Economy,kr,ko,,,
+http://www.dt.co.kr/,,디지털타임스,Digital Times,kr,ko,,,
+http://www.fnnews.com/bigissue,,파이낸설뉴스,Financial News,kr,ko,,,
+https://www.vop.co.kr/index.html,,민중의소리,Voice of the People,kr,ko,,,
+https://media.daum.net/,,,Daum News,kr,ko,,,
+http://news.jtbc.joins.com/,,,JTBC News,kr,ko,,,
+http://www.knnews.co.kr/autoi/index.html,,경남뉴스,Kyungnam News,kr,ko,,,
+http://www.kookje.co.kr/,,국제신문,Kookje,kr,ko,,,
+http://news.imaeil.com/,,매일신문,Maeil Shinmun,kr,ko,,,
+http://www.newsnjoy.or.kr/,,뉴스앤조이,News and Joy,kr,ko,,,
+http://ilyo.co.kr/,,일요신문,Ilyo,kr,ko,,,
+http://www.yeongnam.com/,,영남일보,Yeongnam Ilbo,kr,ko,,,
+https://www.huffingtonpost.kr/,,,Huffington Post,kr,ko,,,
+http://mbn.mk.co.kr/,,,MBN News,kr,ko,,,
+http://www.pennmike.com/,,펜엔드마이크,Pen and Mike,kr,ko,,,
+http://www.newdaily.co.kr/,,,NewDaily,kr,ko,,,
+https://news.naver.com/,,네이버,Naver,kr,ko,,,
+http://world.kbs.co.kr/,,,KBS World Radio,kr,ko,,,
+http://news.kbs.co.kr/,,,KBS News,kr,ko,,,
+http://www.knn.co.kr/,,,KNN,kr,ko,,,
+https://biznews.com.mx,,,,mx,es,news,,
+https://eluniversal.com.mx,,,,mx,es,news,,
+https://reforma.com,,,,mx,es,news,,
+https://jornada.com.mx,,,,mx,es,news,,
+https://yucatan.com.mx,,,,mx,es,news,,
+https://debate.com.mx,,,,mx,es,news,,
+https://cronica.com.mx,,,,mx,es,news,,
+https://economista.com.mx,,,,mx,es,news,,
+https://unamasuno.com.mx,,,,mx,es,news,,
+https://poresto.net,,,,mx,es,news,,
+https://record.com.mx,,,,mx,es,news,,
+https://la-prensa.com.mx,,,,mx,es,news,,
+https://razon.com.mx,,,,mx,es,news,,
+https://tradewindsnews.com,,TradeWinds,,no,en,,,
+https://upstreamonline.com,,Upstream,,no,en,,,
+https://vg.no,,VG,,no,no,,,
+https://aftenposten.no,,Aftenposten,,no,no,,,
+https://dagbladet.no,,Dagbladet,,no,no,,,
+https://bt.no,,Bergens Tidende,,no,no,,,
+https://bondebladet.no,,Bondebladet,,no,no,,,
+https://dn.no,,Dagens Næringsliv,,no,no,,,
+https://adressa.no,,"Adresseavisen (""Adressa"")",,no,no,,,
+https://ostkantavisa.no,,Østkantavisa,,no,no,,,
+https://aftenbladet.no,,Stavanger Aftenblad,,no,no,,,
+https://fvn.no,,Fædrelandsvennen,,no,no,,,
+https://dt.no,,Drammens Tidende,,no,no,,,
+https://rb.no,,Romerikes Blad,,no,no,,,
+https://smp.no,,Sunnmørsposten,,no,no,,,
+https://tb.no,,Tønsbergs Blad,,no,no,,,
+https://dagsavisen.no,,Dagsavisen,,no,no,,,
+https://budstikka.no,,Budstikka,,no,no,,,
+https://ba.no,,Bergensavisen,,no,no,,,
+https://oa.no,,Oppland Arbeiderblad,,no,no,,,
+https://vl.no,,Vårt Land,,no,no,,,
+https://an.no,,Avisa Nordland,,no,no,,,
+https://f-b.no,,Fredriksstad Blad,,no,no,,,
+https://agderposten.no,,Agderposten,,no,no,,,
+https://t-a.no,,Trønder-Avisa,,no,no,,,
+https://ta.no,,Telemarksavisa,,no,no,,,
+https://glomdalen.no,,Glåmdalen,,no,no,,,
+https://rbnett.no,,Romsdals Budstikke,,no,no,,,
+https://tk.no,,Tidens Krav,,no,no,,,
+https://sa.no,,Sarpsborg Arbeiderblad,,no,no,,,
+https://klassekampen.no,,Klassekampen,,no,no,,,
+https://itromso.no,,Bladet Tromsø,,no,no,,,
+https://dagen.no,,Dagen,,no,no,,,
+https://ranablad.no,,Rana Blad,,no,no,,,
+https://sognavis.no,,Sogn Avis,,no,no,,,
+https://dagogtid.no,,Dag og Tid,,no,no,,,
+https://larepublica.pe/,,La República,,pe,es,,,
+https://www.losandes.com.pe/,,Los Andes,,pe,es,,,
+https://elbocon.pe/,,El Bocón,,pe,es,,,
+https://elchino.pe/,,EL Chino,,pe,es,,,
+https://elcomercio.pe/,,El Comercio,,pe,es,,,
+https://peru21.pe/,,Perú 21,,pe,es,,,
+https://diariocorreo.pe/,,Diario Correo,,pe,es,,,
+https://diariodelcusco.pe/,,El Diario del Cusco,,pe,es,,,
+https://www.expreso.com.pe/,,Expreso,,pe,es,,,
+https://www.extra.com.pe/,,Extra,,pe,es,,,
+https://gestion.pe,,Gestión,,pe,es,,,
+http://www.laindustria.pe/,,La Industria (Trujillo),,pe,es,,,
+https://www.laindustriadechiclayo.pe/,,La Industria - El Gran Diario del norte (Chiclayo),,pe,es,,,
+http://www.lanacionperu.com/,,La Nación,,pe,es,,,
+https://ojo.pe/,,Ojo,,pe,es,,,
+https://elperuano.pe/,,El Peruano,,pe,es,,,
+https://www.elpopular.pe/,,El Popular,,pe,es,,,
+https://www.laprimera.pe/,,La Primera,,pe,es,,,
+https://larazon.pe/,,La Razón,,pe,es,,,
+https://eltiempo.pe/,,El Tiempo,,pe,es,,,
+http://www.tribuna.pe/,,La Tribuna,,pe,es,,,
+https://rpp.pe/,,RPP,,pe,es,,,
+https://dn.se,,Dagens Nyheter,,se,sv,,,
+https://di.se,,Dagens Industri,,se,sv,,,
+https://gp.se,,Göteborgs-Posten ,,se,sv,,,
+https://svd.se,,Svenska Dagbladet,,se,sv,,,
+https://allehanda.se,,Allehanda,,se,sv, (large newspaper with several small local areas represented),,
+https://dt.se,,Dalarnas Tidningar,,se,sv, (larger grouping of local communities),,
+https://arbetarbladet.se,,Arbetarbladet,,se,sv,,,
+https://sydsvenskan.se,,Sydsvenskan,,se,sv,,,
+https://dagen.se,,Dagen,,se,sv,,,
+https://aftonbladet.se,,Aftonbladet,,se,sv,,,
+https://expressen.se,,Expressen,,se,sv,,,
+https://metro.se,,Metro,,se,sv,,,
+https://hd.se,,Helsingborgs Dagblad,,se,sv,,,
+https://na.se,,Nerikes Allehanda (NA),,se,sv,,,
+https://nsd.se/nyheter,,Norrländska Socialdemokraten (NSD),,se,sv,,,
+https://nwt.se,,Nya Wermlands-Tidningen (NWT),,se,sv,,,
+https://ttela.se,,TTELA,,se,sv,,,
+https://vk.se,,Vasterbottens-Kuriren,,se,sv,,,
+https://corren.se/nyheter,,Östgöta Correspondenten,,se,sv,,,
+https://folkbladet.nu,,Folkbladet,,se,sv,,,
+https://dalademokraten.se,,Dala-Demokraten,,se,sv,,,
+https://bt.se,,Borås Tidning,,se,sv,,,
+https://hallandsposten.se,,Hallandsposten,,se,sv,,,
+https://hn.se,,Hallands Nyheter,,se,sv,,,
+https://helahalsingland.se,,Helahälsingland,,se,sv,,,
+https://barometern.se,,Barometern,,se,sv,,,
+https://bohuslaningen.se,,Bohusläningen ,,se,sv,,,
+https://gd.se,,Gefle Dagblad ,,se,sv,,,
+https://helagotland.se/start,,Gotlands Tidningar,,se,sv,,,
+https://jp.se,,Jönköpings-Posten,,se,sv,,,
+https://kt.se,,Karlstads-Tidningen ,,se,sv,,,
+https://kristianstadsbladet.se,,Kristianstadsbladet,,se,sv,,,
+https://skd.se,,Skånska Dagbladet ,,se,sv,,,
+https://nsk.se,,Norra Skåne ,,se,sv,,,
+https://norran.se,,Norra Västerbotten ,,se,sv,,,
+https://kuriren.nu/nyheter,,Norrbottens-Kuriren ,,se,sv,,,
+https://ostrasmaland.se,,Östra Småland ,,se,sv,,,
+https://op.se,,Östersunds-Posten,,se,sv,,,
+https://vt.se/nyheter,,Västerviks-Tidningen,,se,sv,,,
+https://vf.se,,Värmlands Folkblad ,,se,sv,,,
+https://vlt.se,,Vestmanlands Läns Tidning ,,se,sv,,,
+https://unt.se/nyheter,,Upsala Nya Tidning ,,se,sv,,,
+https://st.nu,,Sundsvalls Tidning,,se,sv,,,
+https://nt.se/nyheter,,Norrköpings Tidningar ,,se,sv,,,
+https://smp.se,,Smålandsposten ,,se,sv,,,
+http://www.theasianbanker.com/,,The Asian Banker ,,sg,en,,,
+https://www.asianscientist.com,,Asian Scientist ,,sg,en,,,
+https://todayonline.com,,Today,,sg,en,,,
+https://asia.nikkei.com,,The Business Times of Singapore,,sg,en,,,
+https://www.tnp.sg/,,The New Paper ,,sg,en,,,
+https://www.tabla.com.sg/,,tabla! ,,sg,en,,,
+https://www.singapore-herald.com/,,Singapore Herald,,sg,en,,,
+https://www.nst.com.my/,,New Straits Times,,sg,en,,,
+https://www.todayonline.com/,,Today ,,sg,en,,,
+https://www.asiaone.com/,,AsianOne,,sg,en,,,
+https://weekender.com.sg/,,Weekender ,,sg,en,,,
+https://www.channelnewsasia.com/news/international ,,Channel News Asia,,sg,en,,,
+https://www.businesstimes.com.sg/,,The Bussiness Times ,,sg,en,,,
+https://www.msn.com/en-sg,,MSN News In Singapore ,,sg,en,,,
+https://sg.news.yahoo.com/,,Yahoo News In Singapore ,,sg,en,,,
+https://stomp.straitstimes.com/,,STOMP,,sg,en,,,
+http://theindependent.sg/,,The Independent Singapore ,,sg,en,,,
+https://www.beritaharian.sg/,,Berita Harian,Berita Harian,sg,ms,,,
+https://www.pravasiexpress.com/,,Pravasi Express,,sg,ms,,,
+https://www.tamilmurasu.com.sg/,,Tamil Murasu,,sg,ta,,,
+https://www.zaobao.com.sg/,,早报,Zaobao,sg,zh,,,
+https://www.wanbao.com.sg/,,联合晚报,Lianhe Wanbao,sg,zh,,,
+https://www.enanyang.my/,,南洋商报,Nanyang Siang Pau,sg,zh,,,
+https://www.sinchew.com.my/,,星洲日报,Sin Chew Jit Poh,sg,zh,,,
+https://www.straitstimes.com,,The Straits Times ,,sg,,,,
+https://www.shinmin.sg/,,新民日报,Shin Min Daily News,sg,,,,
+https://tw.appledaily.com/home,,,Apple Daily,tw,,,,
+https://www.chinatimes.com/?chdtv,,,China Times,tw,,,,
+https://www.ltn.com.tw/,,,Liberty Times,tw,,,,
+https://udn.com/news/index,,,United Daily News,tw,,,,
+https://www.cna.com.tw/,,,Central News Agency (also in English),tw,,,,
+https://www.thenewslens.com/,,,The News Lens (also in English),tw,,,,
+https://www.mdnkids.com/,,,Mandarin Daily News,tw,,,,
+https://www.kmdn.gov.tw/,,,Kinmen Daily News ,tw,,,,
+http://www.matsu-news.gov.tw/,,,Matsu Daily News ,tw,,,,
+https://www.taiwandaily.net/,,,Taiwan Daily,tw,,,,
+https://www.storm.mg/,,,The Storm Media ,tw,,,,
+https://www.upmedia.mg/,,,Up Media,tw,,,,
+https://www.ettoday.net/,,,ET Today (more like online news site),tw,,,,
+https://www.nownews.com/,,,Now News,tw,,,,
+https://www.setn.com/,,,SETN News,tw,,,,
+https://talk.tw,,,Talk News,tw,,,,
+https://www.cnyes.com/,,,Anue,tw,,,,
+https://newtalk.tw/,,,New Talk,tw,,,,
+https://www.peoplenews.tw/,,,Taiwan People News,tw,,,,
+https://www.digitimes.com.tw/,,,Digi Times (also in English),tw,,,,
+https://ctee.com.tw/,,,Commercial Times,tw,,,,
+https://www.ydn.com.tw/,,,Youth Daily News ,tw,,,,
+http://www.merit-times.com.tw/,,,The Merit Times,tw,,,,
+https://www.cdns.com.tw/,,,China Daily News,tw,,,,
+http://www.tssdnews.com.tw/,,,Taiwan Shin Sheng Daily News,tw,,,,
+http://www.ksnews.com.tw/index.php,,,Keng Sheng Daily News ,tw,,,,
+http://www.penghutimes.com/,,,Penghu Times,tw,,,,
+http://www.mypeople.tw/,,,My People,tw,,,,
+https://www.idn.com.tw/,,,Independence Evening Post,tw,,,,
+https://www.cw.com.tw/,,,CommonWealth,tw,,,,
+https://www.taiwannews.com.tw/ch/index,,,Taiwan News ,tw,,,,
+https://www.rti.org.tw/,,,Radio Taiwan International,tw,,,,
+https://www.gov.taipei/,,,Taipei City Government ,tw,,,,
+https://www.taiwan-panorama.com,,,Taiwan Panorama,tw,,,,
+https://economist.com,,,,uk,en,news,,
+https://theguardian.co.uk,,,,uk,en,news,,
+https://independent.co.uk,,,,uk,en,news,,
+https://bbc.com,,,,uk,en,news,,
+https://nknews.org,,,,us,en,domain,,
+https://cnn.com,,,,us,en,news,,
+https://wsj.com,,,,us,en,news,,
+https://usatoday.com,high,,,us,en,news,,
+https://latimes.com,,,,us,en,news,,
+https://nytimes.com,high,,,us,en,news,,
+https://chron.com,,,,us,en,news,,
+https://chicagotribune.com,,,,us,en,news,,
+https://tampabay.com,,,,us,en,news,,
+https://washingtonpost.com,high,,,us,en,news,,
+https://newsday.com,,,,us,en,news,,
+https://nypost.com,,,,us,en,news,,
+https://dallasnews.com,,,,us,en,news,,
+https://nydailynews.com,,,,us,en,news,,
+https://denverpost.com,,,,us,en,news,,
+https://bostonglobe.com,,,,us,en,news,,
+https://seattlenews.com,,,,us,en,news,,
+https://usnews.com,,,,us,en,news,,
+https://time.com,,,,us,en,news,,
+https://foxnews.com,,,,us,en,news,,
+https://politico.com,,,,us,en,news,,
+https://foreignpolicy.com,,,,us,en,specialist,,
+https://thediplomat.com,,,,us,en,specialist,,
+https://huffpost.com,,,,us,en,news,,
+https://theconversation.com,,,,us,en,blog,,
+https://npr.org,,,,us,en,news,,
+https://chinafocus.com,,,,us,en,specialist,,
+https://nbcnews.com,,,,us,en,news,,
+https://northkoreatech.org,,,,us,en,domain,,
+https://38north.org,,,,us,en,domain,,
+https://armscontrolwonk.com,,,,us,en,domain,,
+https://northkoreatech.org,,,,us,en,domain,,
+https://38north.org,,,,us,en,domain,,
+https://armscontrolwonk.com,,,,us,en,domain,,
+https://sinonk.com,,,,,en,domain,,
+https://pust.co,,,,,en,static,,
+https://pyongyanginternationalfilmfestival.com,,,,,,,,
+https://pyongyangmarathon.com,,,,,,,,
+https://koryogroup.com,,,,,,,,
+https://uriminzokkiri.com,,,,,,,,
+https://dprktoday.com,,,,,,,,
+https://chosonsinbo.com,,,,,,,,
+https://pyongyang.news-site.net,,,,,,,,
+https://minjok.com,,,,,,,,
+https://dprkmedia.com,,,,,,,,
+https://kcnawatch.co,,,,,,,,
+https://https://dprk360.com,,,,,,,,
+https://mansudaeartstudio.com,,,,,,,,
+https://koreanposters.com,,,,,,,,
+https://north-korea-books.com,,,,,,,,
+https://dprk-book.com,,,,,,,,
+https://tptloffice.com,,,,,,,,
+https://pyeonghwamotors.com,,,,,,,,
+https://pyongsu.com,,,,,,,,
+https://orascomtelecom.com,,,,,,,,
+https://phoenixcommercialventures.eu,,,,,,,,
+https://kns-photo.com,,,,,,,,
+https://koryogroup.com,,,,,,,,
+https://ryugyongclip.com,,,,,,,,
+https://ryomyong.com,,,,,,,,
+https://kcc-europe.de,,,,,,,,
+https://krfair.com,,,,,,,,
+https://ournation-school.com,,,,,,,,
+https://chongryon.com,,,,,,,,
+https://kcna.co.jp,,,,,,,,
+https://korea-publ.com,,,,,,,,
+https://eba.nosotek.com,,,,,,,,
+https://digitalnk.com,,,,,,,,
+https://nkeconwatch.com,,,,,,,,
+https://nkleadershipwatch.org,,,,,,,,
+https://korea-dpr.com,,,,,,,,
+https://kfausa.org,,,,,,,,
+https://kfachile.blogspot.com,,,,,,,,
+https://kfachile.cl,,,,,,,,
+https://kfaeuskalherria.wordpress.com,,,,,,,,
+https://italiacoreapopolare.wordpress.com,,,,,,,,
+https://kfa-bolivia.blogspot.com,,,,,,,,
+https://jucheireland.wordpress.com,,,,,,,,
+https://kfa-paisvalenciano.blogspot.com,,,,,,,,
+https://infocoreia.blogspot.com,,,,,,,,
+https://chongryon.com,,,,,,,,
+https://onecoreanetwork.blogspot.com,,,,,,,,
+https://korelcfund.org.kp,,,,,,,,
+https://northkoreanreview.net,,,,,,,,
+https://youngpioneertours.com,,,,,,,,
+https://visitthedprk.org,,,,,,,,
+https://hotelnorthkorea.com,,,,,,,,
+https://koreakonsult.com,,,,,,,,
+https://freekorea.us,,,,,,,,
+https://nkmillennials.com,,,,,,,,
+https://libertyinnorthkorea.org,,,,,,,,
+https://juche.v.wol.ne.jp/en.htm,,,,,,,,
+https://ncnk.org,,,,,,,,
+https://mynorthkorea.blogspot.com,,,,,,,,
+https://uritours.com,,,,,,,,
+https://kimjongunlookingatthings.tumblr.com,,,,,,,,
+https://gowans.wordpress.com,,,,,,,,
+https://tongiltours.com,,,,,,,,
+https://chosonexchange.org,,,,,,,,
+https://crossingbordersnk.org,,,,,,,,
+https://hrnkinsider.org,,,,,,,,
+https://communistkorea.tumblr.com,,,,,,,,
+https://appgnk.org,,,,,,,,
+https://northkoreafootball.blogspot.com,,,,,,,,
+https://friendsofkorea.blogspot.com,,,,,,,,
+https://juche007-anglo-peopleskoreafriendship.blogspot.com,,,,,,,,
+https://committeeforreleaseofvicechairman.blogspot.com,,,,,,,,
+https://rcpbml.org.uk,,,,,,,,
+https://koryogroup.com,,,,,,,,
+https://nkfreedom.org,,,,,,,,
+https://helpinghandskorea.org,,,,,,,,
+https://isr2020.org,,,,,,,,
+https://northkoreanrefugees.com,,,,,,,,
+https://teachnorthkoreanrefugees.org,,,,,,,,
+https://lovenkchildren.org,,,,,,,,
+https://eahrnk.org,,,,,,,,
+https://connectnorthkorea.org,,,,,,,,
+https://koreafuture.org,,,,,,,,
+https://firststepscanada.org,,,,,,,,
+https://connectnorthkorea.org,,,,,,,,
+https://ploughshares.org,,,,,,,,
+https://yinks.or.kr,,,,,,,,
+https://unikorea.go.kr,,,,,,,,
+https://hss.or.kr,,,,,,,,
+https://dongposarang.or.kr,,,,,,,,
+https://leader.ne.kr,,,,,,,,
+https://nkwomen.org,,,,,,,,
+https://aiesec.or.kr,,,,,,,,
+https://dailynk.com,,,,,,,,
+https://kinu.or.kr,,,,,,,,
+https://pscore.org,,,,,,,,
+https://nkfreedom.org,,,,,,,,
+https://fnkradio.com,,,,,,,,
+https://nkplf.com,,,,,,,,
+https://nk.ac.kr,,,,,,,,
+https://mansudae-korea.com,,,,,,,,
+https://thepeninsulareport.com,,,,,,,,
+https://thebulletin.org,,,,,,,,
+https://intakt-reisen.de/asien/nordkorea,,,,,,,,
+https://piie.com/blogs/north-korea-witness-transformation,,,,,,,,
+https://asiapress.org/rimjin-gang,,,,,,,,
+https://rfa.org/english,,,,,,,,
+https://brookings.edu/topic/north-korea,,,,,,,,
+https://wilsoncenter.org/latest/North%20Korea%20International%20Documentation%20Project,,,,,,,,
+https://hrf.org,,,,,,,,
+https://nti.org,,,,,,,,
+https://fas.org,,,,,,,,
+https://cafe.daum.net/knahrf,,,,,,,,
+https://nonproliferation.org,,,,,,,,
+https://club.cyworld.com/hufsnk,,,,,,,,

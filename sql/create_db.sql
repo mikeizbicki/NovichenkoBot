@@ -1,7 +1,8 @@
-CREATE TABLE seed_hostnames (
+CREATE TABLE crawlable_hostnames (
     hostname VARCHAR(253) PRIMARY KEY,
     lang VARCHAR(2),
-    country VARCHAR(2)
+    country VARCHAR(2),
+    priority TEXT
 );
 
 CREATE TABLE urls (
