@@ -16,6 +16,21 @@ WHERE 0 <>ALL (i.indkey)  -- no index column is an expression
           WHERE c.conindid = s.indexrelid)
 ORDER BY s.idx_scan DESC;
 
+/*
+ * This query returns the most expensive queries
+ */
+
+SELECT 
+    query, 
+    make_interval(secs => total_time/1000),
+    calls, 
+    total_time/calls as time_per_call, 
+    rows,
+    100.0 * shared_blks_hit / nullif(shared_blks_hit + shared_blks_read, 0) AS hit_percent
+FROM pg_stat_statements 
+ORDER BY total_time 
+DESC LIMIT 10;
+
 /* 
  * this code updates the null hostname 
  *
