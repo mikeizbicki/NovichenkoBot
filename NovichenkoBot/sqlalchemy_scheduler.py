@@ -193,7 +193,6 @@ class Scheduler(object):
                     callback=parse_httpbin,
                     errback=errback_httpbin
                     )
-            #request=scrapy.http.Request(url)
             request.id_urls=frontier_row['id_urls']
             request.hostname=frontier_row['hostname']
             request.id_frontier=frontier_row['id_frontier']
