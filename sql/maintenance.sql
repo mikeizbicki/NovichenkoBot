@@ -39,6 +39,39 @@ FROM pg_stat_statements
 ORDER BY total_time 
 DESC LIMIT 10;
 
+/*
+ * Calculate the disk usage of each table
+ */
+SELECT
+    table_name,
+    pg_size_pretty(table_size) AS table_size,
+    pg_size_pretty(indexes_size) AS indexes_size,
+    pg_size_pretty(total_size) AS total_size
+FROM (
+    SELECT
+        table_name,
+        pg_table_size(table_name) AS table_size,
+        pg_indexes_size(table_name) AS indexes_size,
+        pg_total_relation_size(table_name) AS total_size
+    FROM (
+        SELECT ('"' || table_schema || '"."' || table_name || '"') AS table_name
+        FROM information_schema.tables
+    ) AS all_tables
+    ORDER BY total_size DESC
+) AS pretty_sizes;
+
+/*
+ * calculate the diskspace used by a column in 
+ * from: https://stackoverflow.com/questions/18316893/how-to-estimate-the-size-of-one-column-in-a-postgres-table
+
+select
+    pg_size_pretty(sum(pg_column_size(alltext))) as total_size,
+    pg_size_pretty(avg(pg_column_size(alltext))) as average_size,
+    sum(pg_column_size(alltext)) * 100.0 / pg_total_relation_size('articles') as percentage
+from articles;
+ */
+ 
+
 /* 
  * this code updates the null hostname 
  *
@@ -75,17 +108,6 @@ set priority=-100
 where hostname_reversed=reverse('.onfaith.washingtonpost.com');
 */
 
-/*
- * calculate the diskspace used by a column in 
- * from: https://stackoverflow.com/questions/18316893/how-to-estimate-the-size-of-one-column-in-a-postgres-table
-
-select
-    pg_size_pretty(sum(pg_column_size(alltext))) as total_size,
-    pg_size_pretty(avg(pg_column_size(alltext))) as average_size,
-    sum(pg_column_size(alltext)) * 100.0 / pg_total_relation_size('articles') as percentage
-from articles;
-*/
- 
 /*
 select hostname,count(1) as c from (select hostname,id_urls_canonical,title,count(1) as c from articles group by hostname,id_urls_canonical,title) as t group by hostname order by c desc;
 
