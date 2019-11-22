@@ -1,3 +1,11 @@
+-- FIXME: This is the beginnings of a query for finding responses that failed to parse and therefore have no article;
+-- we may need an index on articles.id_responses
+SELECT
+    id_responses
+FROM responses
+LEFT OUTER JOIN articles ON articles.id_responses = responses.id_responses
+WHERE articles.id_responses IS NULL;
+
 /*
  * This query returns the indexes ordered by how often they are scanned
  */
