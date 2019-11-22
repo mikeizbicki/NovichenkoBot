@@ -44,8 +44,6 @@ CREATE TABLE frontier (
 
 CREATE INDEX frontier_index_urls ON frontier(id_urls);
 CREATE INDEX frontier_index_timestamp_received ON frontier(timestamp_received);
-CREATE INDEX frontier_index_timestamp_processed ON frontier(timestamp_processed);
-CREATE INDEX frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority);
 CREATE INDEX frontier_index_nextrequest2 ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
 
 CREATE TABLE responses (
