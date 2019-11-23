@@ -87,7 +87,7 @@ JOIN pg_catalog.pg_locks blockingl ON(
 JOIN pg_stat_activity blockinga ON blockingl.pid = blockinga.pid
   AND blockinga.datid = blockeda.datid
 WHERE NOT blockedl.granted
-AND blockinga.datname = current_database()
+AND blockinga.datname = current_database();
 
 /*
  * calculate the diskspace used by a column in 

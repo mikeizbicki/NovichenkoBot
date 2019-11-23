@@ -226,6 +226,34 @@ CREATE TABLE articles (
 CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
 
+CREATE FUNCTION get_valid_articles(_hostname TEXT)
+RETURNS TABLE 
+    ( id_articles BIGINT
+    , id_urls_canonical BIGINT
+    , pub_time TIMESTAMP
+    , lang VARCHAR(2)
+    , text TEXT
+    , title TEXT
+    ) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT DISTINCT ON (id_urls_canonical) 
+        articles.id_articles,
+        articles.id_urls_canonical,
+        articles.pub_time,
+        articles.lang,
+        articles.text,
+        articles.title
+    FROM articles
+    WHERE
+        articles.pub_time is not null AND
+        articles.text is not null AND
+        articles.title is not null AND
+        articles.hostname = _hostname
+    ORDER BY id_urls_canonical; 
+END
+$$ LANGUAGE plpgsql;
+
 CREATE VIEW articles_per_year AS 
     SELECT 
         hostname,
