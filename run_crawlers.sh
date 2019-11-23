@@ -30,7 +30,7 @@ psql -c 'select pg_stat_statements_reset ();' > /dev/null
 ########################################
 
 res=$(psql $db -c "select hostname from crawlable_hostnames where priority='high' order by hostname;")
-hostnames_high=$(echo "$res" | tail -n +3 | head -n -1)
+hostnames_high=$(echo "$res" | tail -n +4 | head -n -3)
 
 for hostname in $hostnames_high; do
     echo "high priority crawl: $hostname"
@@ -43,7 +43,7 @@ done
 ########################################
 
 res=$(psql $db -c "select hostname from crawlable_hostnames where priority!='high' order by hostname;")
-hostnames_low=$(echo "$res" | tail -n +3 | head -n -1)
+hostnames_low=$(echo "$res" | tail -n +4 | head -n -3)
 
 i=0
 for hostname in $hostnames_low; do
