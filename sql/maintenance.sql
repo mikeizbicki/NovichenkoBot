@@ -30,7 +30,7 @@ ORDER BY s.idx_scan DESC;
 
 SELECT 
     query, 
-    make_interval(secs => total_time/1000),
+    make_interval(secs => total_time/1000) as total_time,
     calls, 
     total_time/calls as time_per_call, 
     rows,
@@ -38,6 +38,15 @@ SELECT
 FROM pg_stat_statements 
 ORDER BY total_time 
 DESC LIMIT 10;
+
+/*
+ * The total time used by postgres queries
+ * This should reset whenever run_crawlers.sh is run
+ */
+
+SELECT
+    make_interval(secs => sum(total_time)/1000) as total_time
+FROM pg_stat_statements;
 
 /*
  * Calculate the disk usage of each table
@@ -129,6 +138,24 @@ where hostname_reversed=reverse('.onfaith.washingtonpost.com');
 */
 
 /*
+ * Adjust how the frontier priorities are calculated so that 
+ * duplicate urls are less likely
+ *
+update frontier
+    set priority=priority-1000000
+where
+    id_frontier in (
+        select id_frontier
+        from frontier
+        inner join urls on urls.id_urls = frontier.id_urls
+        where
+            query!='' or
+            fragment!='' or
+            params!=''
+        );
+*/
+
+/*
 select hostname,count(1) as c from (select hostname,id_urls_canonical,title,count(1) as c from articles group by hostname,id_urls_canonical,title) as t group by hostname order by c desc;
 
 select hostname,id_urls,id_urls_canonical,title 
@@ -158,4 +185,3 @@ CREATE VIEW articles_deduped AS
         ) as dedupe_title
         ;
 */
-

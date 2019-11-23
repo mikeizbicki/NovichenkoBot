@@ -121,24 +121,17 @@ def get_url_info(connection,url,depth=0):
 
 
 def insert_request(connection,url,priority=0,allow_dupes=False,depth=0):
-    # if a url has already been indexed that has a similar structure
-    # (and therefore this url is likely to be a duplicate), 
-    # then lower the priority
-    url_parsed=parse_url(url)
-    sql=sqlalchemy.sql.text('''
-    select id_urls from urls where 
-        hostname=:hostname and 
-        path=:path;
-    ''')
-    values=copy.deepcopy(url_parsed)
-    if len(values['path'])>0:
-        values['path']=values['path'][:-1]+'%'
-    res=connection.execute(sql,values)
+    '''
+    Inserts a url into the frontier with the specified priority.
+    Returns the url_info object of the input url.
+    '''
+
     url_info=get_url_info(connection,url,depth=depth)
-    if url_info is None:
-        return None
-    if res is not None and url_info['id_urls'] != res.first():
-        priority-=10
+
+    # if url_info has non-empty query/fragment/params components,
+    # then it is likely to be a duplicate and the priority should be lowered
+    if url_info['query'] != '' or url_info['fragment'] != '' or url_info['params'] != '':
+        priority-=1000000
 
     # check if the url already exists in the frontier
     if not allow_dupes:
@@ -148,6 +141,7 @@ def insert_request(connection,url,priority=0,allow_dupes=False,depth=0):
         res=connection.execute(sql,{
             'id_urls':url_info['id_urls']
             }).first()
+
         # if select statement was successful,
         # then update the priority and return
         if res is not None:
