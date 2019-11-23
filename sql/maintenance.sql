@@ -17,11 +17,11 @@ SELECT s.schemaname,
        s.idx_scan
 FROM pg_catalog.pg_stat_user_indexes s
    JOIN pg_catalog.pg_index i ON s.indexrelid = i.indexrelid
-WHERE 0 <>ALL (i.indkey)  -- no index column is an expression
-  AND NOT i.indisunique   -- is not a UNIQUE index
-  AND NOT EXISTS          -- does not enforce a constraint
-         (SELECT 1 FROM pg_catalog.pg_constraint c
-          WHERE c.conindid = s.indexrelid)
+--WHERE 0 <>ALL (i.indkey)  -- no index column is an expression
+  --AND NOT i.indisunique   -- is not a UNIQUE index
+  --AND NOT EXISTS          -- does not enforce a constraint
+         --(SELECT 1 FROM pg_catalog.pg_constraint c
+          --WHERE c.conindid = s.indexrelid)
 ORDER BY s.idx_scan DESC;
 
 /*
@@ -59,6 +59,26 @@ FROM (
     ) AS all_tables
     ORDER BY total_size DESC
 ) AS pretty_sizes;
+
+/*
+ * list all the queries that are blocked and the reasons they are blocked
+ */
+SELECT
+  COALESCE(blockingl.relation::regclass::text,blockingl.locktype) as locked_item,
+  now() - blockeda.query_start AS waiting_duration, blockeda.pid AS blocked_pid,
+  blockeda.query as blocked_query, blockedl.mode as blocked_mode,
+  blockinga.pid AS blocking_pid, blockinga.query as blocking_query,
+  blockingl.mode as blocking_mode
+FROM pg_catalog.pg_locks blockedl
+JOIN pg_stat_activity blockeda ON blockedl.pid = blockeda.pid
+JOIN pg_catalog.pg_locks blockingl ON(
+  ( (blockingl.transactionid=blockedl.transactionid) OR
+  (blockingl.relation=blockedl.relation AND blockingl.locktype=blockedl.locktype)
+  ) AND blockedl.pid != blockingl.pid)
+JOIN pg_stat_activity blockinga ON blockingl.pid = blockinga.pid
+  AND blockinga.datid = blockeda.datid
+WHERE NOT blockedl.granted
+AND blockinga.datname = current_database()
 
 /*
  * calculate the diskspace used by a column in 

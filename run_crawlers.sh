@@ -19,6 +19,13 @@ mkdir -p $log
 ln -sfn "$(pwd)/$log" log/newest
 
 ########################################
+# reset postgres stats monitors
+########################################
+
+psql -c 'select pg_stat_reset ();' > /dev/null
+psql -c 'select pg_stat_statements_reset ();' > /dev/null
+
+########################################
 # launch the high priority crawls
 ########################################
 
@@ -27,7 +34,7 @@ hostnames_high=$(echo "$res" | tail -n +3 | head -n -1)
 
 for hostname in $hostnames_high; do
     echo "high priority crawl: $hostname"
-    nohup scrapy crawl general -s HOSTNAME_RESTRICTIONS=$hostname -a db=$db_rfc > $log/general-$hostname 2>&1 &
+    nice -n -20 scrapy crawl general -s HOSTNAME_RESTRICTIONS=$hostname -a db=$db_rfc > $log/general-$hostname 2>&1 &
     echo $! >> $log/pids
 done
 

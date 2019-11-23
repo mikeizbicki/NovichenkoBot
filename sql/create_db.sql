@@ -19,7 +19,6 @@ CREATE TABLE urls (
     UNIQUE(scheme,hostname,port,path,params,query,fragment,other)
 );
 
-CREATE INDEX urls_index_hostname ON urls(hostname);
 CREATE INDEX urls_index_hostname_path ON urls(hostname,path);
 
 /*
@@ -44,7 +43,7 @@ CREATE TABLE frontier (
 
 CREATE INDEX frontier_index_urls ON frontier(id_urls);
 CREATE INDEX frontier_index_timestamp_received ON frontier(timestamp_received);
-CREATE INDEX frontier_index_nextrequest2 ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
+CREATE INDEX frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
 
 CREATE TABLE responses (
     id_responses BIGSERIAL PRIMARY KEY,
