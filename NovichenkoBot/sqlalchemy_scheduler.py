@@ -64,9 +64,10 @@ class Scheduler(object):
         self.connection.close()
 
     def enqueue_request(self, request):
-        insert_request(self.connection,request.url,priority=request.priority)
-        self.stats.inc_value('scheduler/enqueued', spider=self.spider)
-        return True
+        url_info = insert_request(self.connection,request.url,priority=request.priority)
+        if url_info is not None:
+            self.stats.inc_value('scheduler/enqueued', spider=self.spider)
+            return True
 
     def next_request(self):
 

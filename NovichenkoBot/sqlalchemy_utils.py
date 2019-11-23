@@ -135,6 +135,8 @@ def insert_request(connection,url,priority=0,allow_dupes=False,depth=0):
         values['path']=values['path'][:-1]+'%'
     res=connection.execute(sql,values)
     url_info=get_url_info(connection,url,depth=depth)
+    if url_info is None:
+        return None
     if res is not None and url_info['id_urls'] != res.first():
         priority-=10
 
