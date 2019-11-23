@@ -3,7 +3,7 @@ from urllib.parse import urlparse,urlunparse
 import sqlalchemy
 from sqlalchemy.sql import text
 import copy
-import psycopg2
+import re
 
 def reverse_hostname(hostname):
     return hostname[::-1]+'.'
@@ -132,6 +132,12 @@ def insert_request(connection,url,priority=0,allow_dupes=False,depth=0):
     # then it is likely to be a duplicate and the priority should be lowered
     if url_info['query'] != '' or url_info['fragment'] != '' or url_info['params'] != '':
         priority-=1000000
+
+    # if there is a year in the path, 
+    # then this is likely to be an article,
+    # so we up the priority
+    if re.match(r'.*([1-3][0-9]{3})',url_info['path']):
+        priority+=100
 
     # check if the url already exists in the frontier
     if not allow_dupes:
