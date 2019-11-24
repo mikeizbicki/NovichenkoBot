@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en-US">
+    <head>
+        <!-- Piano ad blocker -->
+        <script>
+            document.cookie = "__adblocker=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+            var setNptTechAdblockerCookie = function(adblocker) {
+                var d = new Date();
+                d.setTime(d.getTime() + 60 * 60 * 24 * 2 * 1000);
+                document.cookie = "__adblocker=" + (adblocker ? "true" : "false") + "; expires=" + d.toUTCString() + "; path=/";
+            }
+            var script = document.createElement("script");
+            script.setAttribute("async", true);
+            script.setAttribute("src", "//www.npttech.com/advertising.js");
+            script.setAttribute("onerror", "setNptTechAdblockerCookie(true);");
+            document.getElementsByTagName("head")[0].appendChild(script);
+        </script>
+        <!-- End Piano ad blocker -->
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Pulp Liberation Army &#8211; Foreign Policy</title>
+
+        <meta name="wapoGroupsX" content="default">
+        <meta name="google-site-verification" content="7Z5A6Xlt7BhqqooipJUtw0cu2IjSQ-_RnNbEA2c6pfc">
+        <meta name="apple-itunes-app" content="app-id=1034756405">
+        <meta name="pocket-site-verification" content="21de1071947281ccc893fa0bbfb1f6" />
+        
+                <!-- CANONICAL -->
+        <link rel="canonical" href="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/">
+
+                    <!-- FB Tags -->
+            <meta property="og:title" content="Pulp Liberation Army">
+            <meta property="og:image" content="https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg">
+            <meta property="og:url" content="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/">
+            <meta property="og:description" content="Welcome to the strange -- and terrifying -- underground world of Chinese military fantasy novels.">
+            <meta property="og:site_name" content="Foreign Policy">
+            <meta property="fb:app_id" content="107151292643652" />
+            <meta property="og:type" content="article" />
+
+            <!-- Twitter Tags -->
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:site" content="@ForeignPolicy">
+            <meta name="twitter:title" content="Pulp Liberation Army">
+            <meta name="twitter:description" content="Welcome to the strange -- and terrifying -- underground world of Chinese military fantasy novels.">
+            <meta name="twitter:image" content="https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg">
+            <meta property="twitter:domain" value="foreignpolicy.com"/>
+
+            <!-- Author Tags -->
+            <meta property="article:author" content="Isaac Stone Fish, Helen Gao">
+            <meta name="author" content="Isaac Stone Fish, Helen Gao">
+
+        
+                
+        
+        <meta
+    name="application-name"
+    content="Foreign Policy">
+<meta
+    name="apple-mobile-web-app-title"
+    content="Foreign Policy">
+<meta name="theme-color" content="#eb372e">
+<meta name="msapplication-TileColor" content="#eb372e">
+<meta
+    name="msapplication-TileImage"
+    content="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/logos/favicon-256.png">
+<link
+    rel="apple-touch-icon"
+    sizes="192x192"
+    type="image/png"
+    href="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/logos/favicon-192.png">
+<link
+    rel="icon"
+    sizes="192x192"
+    type="image/png"
+    href="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/logos/favicon-192.png">
+<link
+    rel="icon"
+    sizes="16x16 32x32"
+    type="image/x-icon"
+    href="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/logos/favicon.ico">
+        <script>
+    window.FP = window.FP || {};
+    FP.Config = {"api":{"ip_access":"https:\/\/foreignpolicy.com\/r\/api\/ip-access\/","link_access":"https:\/\/foreignpolicy.com\/r\/api\/link-access\/{0}\/","users_by_id":"https:\/\/foreignpolicy.com\/r\/api\/users\/{0}\/"},"context":{"is_home":false,"is_sponsored":false,"is_events":false,"is_chinadaily":false},"current_site_admin_hostname":"foreignpolicy.com","current_site_hostname":"foreignpolicy.com","fonts":[{"family":"Dala Moa","option":{"style":"normal","weight":800}},{"family":"Solido","option":{"style":"normal","weight":400}},{"family":"Tiempos","option":{"style":"normal","weight":400}},{"family":"Tiempos","option":{"style":"normal","weight":600}},{"family":"Solido","option":{"style":"normal","weight":800}},{"family":"Solido Condensed","option":{"style":"normal","weight":600}}],"is_production":true,"marketing":{"after_content_messaging":"<p>Like this article? Read an unlimited number of articles, plus access to our entire 47-year printed archive, the FP App, and the Digital Magazine when you <strong><a href=\"https:\/\/foreignpolicy.com\/subscribe?utm_source=AMP%20-%20Launched%2018_08_23&amp;utm_medium=AMP&amp;utm_campaign=Premium\">subscribe to FP Premium<\/a><\/strong>!<\/p>","after_content_messaging_fbia":"<p>Like this article? Read an unlimited number of articles, plus access to our entire 47-year printed archive, the FP App, and the Digital Magazine when you <strong><a href=\"https:\/\/foreignpolicy.com\/subscribe?utm_source=FBIA%20-%20Launched%2018_09_04&amp;utm_medium=FBIA&amp;utm_campaign=Premium\">subscribe to FP Premium<\/a><\/strong>!<\/p>"},"misc":{"current_magazine_issue":{"isset":true,"link":"https:\/\/foreignpolicy.com\/the-magazine\/"}},"referrers":["google.com"],"user":{"login_url":"https:\/\/fp-reg.onecount.net\/onecount\/login\/loginlogout.cgi","logout_url":"https:\/\/fp-reg.onecount.net\/onecount\/login\/loginlogout.cgi","edit_profile_url":"https:\/\/fp-reg.onecount.net\/onecount\/flexreg\/displayform.php?g=0&form=387","registration_url":"http:\/\/fp-reg.onecount.net\/onecount\/flexreg\/displayform.php?form=137&brand=fp","customer_service_url":"https:\/\/subscribe.foreignpolicy.com\/FRP\/?f=custcare","view_count_limit":null,"paywall_resource_id":null,"registration_product_ids":[34],"subscription_product_ids":[26,235],"premium_product_ids":[145],"newsletter_ids":[177,185,129,161,227,317]},"widgets":[]};
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    lazySizesConfig = {"lazyClass":"-lazy","preloadClass":"-preloaded","loadingClass":"-loading","loadedClass":"-loaded"};
+</script>
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//ajax.googleapis.com' />
+<link rel='dns-prefetch' href='//validate.onecount.net' />
+<link rel='dns-prefetch' href='//ap.lijit.com' />
+<link rel='dns-prefetch' href='//cdn.taboola.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Foreign Policy &raquo; Pulp Liberation Army Comments Feed" href="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/foreignpolicy.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.2.4"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='all-css-0' href='https://foreignpolicy.com/_static/??-eJytksFuw0AIRH+ohDpK5FPVT4nwLrG3ZpfVghv57+tEvvXW+obQzBsxAh8VUgmyRDYMZhiTOQ6iYQZJQ6O2ovkqfMqpnDbBG26OoMW5OPrEefPdtXEaC1SVFFY4v3c9khn7jnsBDAcyxlumf4OC5qpl8xnaRI3j0dSJKXI7mlp1Wx/MzFRoPLzVu6r/5X5z8hR24MTPBIoGJNzcgAfVGSqtDxIBp5n1m5tB1iEJA8VbThZAeKSw/orNC1RZxlQMv9grhfn1r/v8lH/mj+7aX67n86XvfgDosA8S' type='text/css' media='all' />
+<script type="application/javascript">var googletag=googletag||{};googletag.cmd=googletag.cmd||[];googletag.cmd.push(	function(){googletag.pubads().disableInitialLoad()});</script><script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
+<script type='text/javascript' src='https://foreignpolicy.com/_static/??-eJytkFEKgzAQRC/UuFW0fpWeJY2rRpJs2N1a9PRV6AWq/RsG3hsYeGfjKCkmBR0xokBPjH5IJlPwbjHVtWzBiqAKCDsQxz5vecbUEQPKzWSm6AUL+1IqJrnAWWm/wb11SE9BnpELUZs6GyjhOf+32v3yg2mbV+9gEhg1hkZGPx+iGSVT6g6xQ6CnDX+5N9h1Eb/ifsEj3sumrZuqqtty+gDTVcGI'></script>
+<script type='text/javascript' src='https://validate.onecount.net/js/all.min.js#d98c7c783d091f556b12685e1604e895b8253f83'></script>
+<script type='text/javascript' src='//ap.lijit.com/www/headerauction/headersuite.min.js?configId=1472'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var FPSharesEndpoint = {"endpoint":"https:\/\/foreignpolicy.com\/_share_count\/"};
+var ajaxurl = {"ajaxurl":"https:\/\/foreignpolicy.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://foreignpolicy.com/_static/??-eJydzFEKwjAMgOELGWPLRp/Eo4wS4pqytaWJ093e7Qj69sMPH74bUC3GxdASr6z4rJ1lLtDqIrSDv7mAatGEMCtOrdfPPkUiVr1mveCvgsZNynxMNdAUO//HxE5JNgbls+BgXoud1GO9uzEMo/dDcPkLmhBRTQ=='></script>
+<link rel='https://api.w.org/' href='https://foreignpolicy.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://foreignpolicy.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://foreignpolicy.com/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 5.2.4" />
+<link rel="canonical" href="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/" />
+<link rel='shortlink' href='https://foreignpolicy.com/?p=25819' />
+<link rel="alternate" type="application/json+oembed" href="https://foreignpolicy.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fforeignpolicy.com%2F2013%2F05%2F23%2Fpulp-liberation-army%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://foreignpolicy.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fforeignpolicy.com%2F2013%2F05%2F23%2Fpulp-liberation-army%2F&#038;format=xml" />
+<style type='text/css'>img#wpstats{display:none}</style>		<style>
+		.getty.alignleft {
+			margin-right: 5px;
+		}
+		.getty.alignright {
+			margin-left: 5px;
+		}
+		</style>
+		<link rel="icon" href="https://foreignpolicy.com/wp-content/uploads/2017/12/cropped-favicon-512_2017.png?w=32" sizes="32x32" />
+<link rel="icon" href="https://foreignpolicy.com/wp-content/uploads/2017/12/cropped-favicon-512_2017.png?w=192" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="https://foreignpolicy.com/wp-content/uploads/2017/12/cropped-favicon-512_2017.png?w=180" />
+<meta name="msapplication-TileImage" content="https://foreignpolicy.com/wp-content/uploads/2017/12/cropped-favicon-512_2017.png?w=270" />
+
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-6874192-41"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    // Add additional data for GA / GTM
+    dataLayer.push({
+        'author': "Isaac Stone Fish, Helen Gao",
+        'category': "Feature", 
+        'datePublished': "2013-05-23",
+        'region': "Asia",
+        'tags': "China, Covers, Culture, Default, East Asia, Economics, Feature, Free, Internet, Media, Military, Science &amp; Technology, Web Exclusive", 
+        'vertical': "Asia, Economics, Economics &amp; Finance, Features, Tech &amp; Cyber",
+        'pageType': "Article",
+        'inMagazine': "",
+        // Values below defined after OC JS runs
+        'accessId': "",
+        'accessGroup': "",
+        'subscriberState': ""
+    });
+
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    // GA set config and WP post content group
+    // GA track page group -  syntax: gtag('config', 'GA_TRACKING_ID', {'content_group5': '/news/sports'});
+    if ('undefined' !== typeof realReferer && '' !== document.referrer && realReferer !== document.referrer) {
+        // ONECount tracking override
+        dataLayer.push({
+            'dimension2': 'LID',
+            'dimension3': 'RGRP',
+            'dimension4': 'VID',
+            'realReferer': realReferer,
+            // track category as content group, may be replaced by dataLayer below
+            'content_group1': "Feature"        });
+    } else {
+        // Standard tracking
+        dataLayer.push({
+            'dimension2': 'LID',
+            'dimension3': 'RGRP',
+            'dimension4': 'VID',
+            // track category as content group, may be replaced by dataLayer below
+            'content_group1': "Feature"        });
+    }
+</script>
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-KVBCHJC');</script>
+        <!-- End Google Tag Manager -->
+
+        
+        <script type="text/javascript">googletag.pubads().setTargeting("tags",["China","Covers","Culture","Default","East Asia","Economics","Feature","Free","Internet","Media","Military","Science &amp; Technology","Web Exclusive","Feature"]);</script><script type="text/javascript">googletag.pubads().setTargeting("postID","25819");</script><script type="text/javascript">googletag.pubads().setTargeting("author",["Isaac Stone Fish","Helen Gao"]);</script>            </head>
+    <body class="post-template-default single single-post postid-25819 single-format-standard site-root">
+
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVBCHJC"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+
+        <div id="site-wrapper">            <header class="site-header">
+                                <a href="https://foreignpolicy.com/" class="logo">
+    <svg class="site-icon -inline -textonly" width="75" height="47.5" viewBox="0 0 75 47.5"><path fill="#EE3524" d="M39.4,8.7H40V0.5H0v0.8c4.5,0.2,7.4,0.8,7.4,4.9v36c0,4.2-2.9,4.8-7.4,4.9V48h26.2v-0.8c-5.2-0.3-9-0.8-9-4.9
+		V25.2h8.7c3,0,4.2,2.2,4.9,6.2h0.5V18h-0.5c-0.7,4-1.9,6.2-4.9,6.2h-8.7V1.3h13.3C35.9,1.3,37.7,2.8,39.4,8.7 M52.9,25.2h6.2
+		c11.1,0,15.9-5.8,15.9-13.1c0-6.4-4.5-11.7-17.3-11.7H40.9l0,41.8c0,4.2-2.9,4.8-7.4,4.9V48h27.3v-0.8c-5.2-0.3-9-0.8-9-4.9V1.5
+		h3.4c6.1,0,9.5,5.5,9.5,12c0,7.5-3.5,10.8-9.6,10.8h-2.4V25.2z"/></svg><!--hide-mobile-->
+<!--svg class="site-icon -inline -textonly hide-desktop" width="75" height="47.5" viewBox="0 0 75 47.5"><path fill="#FFFFFF" d="M39.4,8.7H40V0.5H0v0.8c4.5,0.2,7.4,0.8,7.4,4.9v36c0,4.2-2.9,4.8-7.4,4.9V48h26.2v-0.8c-5.2-0.3-9-0.8-9-4.9
+		V25.2h8.7c3,0,4.2,2.2,4.9,6.2h0.5V18h-0.5c-0.7,4-1.9,6.2-4.9,6.2h-8.7V1.3h13.3C35.9,1.3,37.7,2.8,39.4,8.7 M52.9,25.2h6.2
+		c11.1,0,15.9-5.8,15.9-13.1c0-6.4-4.5-11.7-17.3-11.7H40.9l0,41.8c0,4.2-2.9,4.8-7.4,4.9V48h27.3v-0.8c-5.2-0.3-9-0.8-9-4.9V1.5
+		h3.4c6.1,0,9.5,5.5,9.5,12c0,7.5-3.5,10.8-9.6,10.8h-2.4V25.2z"/></svg-->    <span class="hide">Foreign Policy Magazine</span>
+</a>
+
+                <div class="header-nav-wrapper">
+                    <nav class="header-nav">
+                        <ul class="header-menu -top">
+                            <li class="header-menu-item">
+                                <a href="/channel/news/" class="navlink">News</a>
+                            </li>
+                            <li class="header-menu-item">
+                                <a href="/channel/analysis/" class="navlink">Analysis</a>
+                            </li>
+                            <li class="header-menu-item">
+                                <a href="/podcasts/" class="navlink">Podcasts</a>
+                            </li>
+                            <li class="header-menu-item">
+                                <a href="/the-magazine/" class="navlink">The Magazine</a>
+                            </li>
+                            <li class="header-menu-item -parent">
+                                <a class="navlink">Channels</a>
+                                <ul class="header-menu -top">
+                                    <li class="header-menu-item"><a href="/channel/economics/" class="navlink">Economics</a></li>
+                                    <li class="header-menu-item"><a href="/channel/security-2/" class="navlink">Security</a></li>
+                                    <li class="header-menu-item"><a href="/category/elephants-in-the-room/" class="navlink">Elephants in the Room</a></li>
+                                    <li class="header-menu-item"><a href="/category/shadow-government/" class="navlink">Shadow Government</a></li>
+                                    <li class="header-menu-item"><a href="/channel/her-power/" class="navlink">Her Power</a></li>
+                                </ul>
+                            </li>
+                            <li class="header-menu-item">
+                                <a href="/newsletters/" class="navlink">Newsletters</a>
+                            </li>
+                        </ul>
+
+                        <span class="close-nav">
+                            <img draggable="false" class="emoji" alt="❌" src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/close.svg" />&nbsp;&nbsp;Close
+                        </span>
+
+                        <div class="header-mobile-subnav">
+                                                        <ul class="manage-account account">
+                                <li class="header-menu-item"><a href="/manage" class="navlink navlink-border">Manage Your Account</a></li>
+                            </ul>
+                            <div class="expando-search">
+    <div class="icon">
+        <svg viewBox="0 0 18 18">
+	<circle class="search-icon" cx="7.5" cy="7.3" r="6.5"/>
+	<line class="search-icon" x1="12.1" y1="11.9" x2="17.5" y2="17.3"/>
+</svg>    </div>
+        <form role="search" method="get" id="searchform-mobile" class="searchform" action="/">
+    	<label class="hide" for="searchfield-mobile">Search</label>
+    	<input class="search" type="search" name="s" id="searchfield-mobile" />
+    	<input type="submit" value="search-submit" style="display:none" />
+    </form>
+</div>
+                                                        
+                            <span>
+                                <ul class="mobile-subnav-menu">
+                                    <li class="header-menu-item"><a href="http://fpgroup.foreignpolicy.com/" class="navlink">About FP</a></li>
+                                    <li class="header-menu-item"><a href="/staff/" class="navlink">Meet The Staff</a></li>
+                                    <li class="header-menu-item"><a href="/reprint-permissions/" class="navlink">Reprint Permissions</a></li>
+                                    <li class="header-menu-item"><a href="http://fpgroup.foreignpolicy.com/" class="navlink">Advertising</a></li>
+                                </ul>
+
+                                <ul class="mobile-subnav-menu">
+                                    <li class="header-menu-item"><a href="/writers-guidelines/" class="navlink">Writers’ Guidelines</a></li>
+                                    <li class="header-menu-item"><a href="http://fpgroup.foreignpolicy.com/news" class="navlink">Press Room</a></li>
+                                    <li class="header-menu-item"><a href="/employment-opportunities/" class="navlink">Work At FP</a></li>
+                                    <li class="header-menu-item"><a href="/subscription-services/" class="navlink">Subscription Services</a></li>
+                                </ul>
+                            </span>
+                            <span>
+                                <ul class="mobile-subnav-menu">
+                                    <li class="header-menu-item"><a href="https://fpguide.foreignpolicy.com" class="navlink">FP Guides – Graduate Education</a></li>
+                                    <li class="header-menu-item"><a href="/subscribe-academic/" class="navlink">Academic Program – FP Premium</a></li>
+                                    <li class="header-menu-item"><a href="/magazine/" class="navlink">FP Archive</a></li>
+                                    <li class="header-menu-item"><a href="/buy-back-issues/" class="navlink">Buy Back Issues</a></li>
+                                </ul>
+
+                                <ul class="mobile-subnav-menu">
+                                    <li class="header-menu-item"><a href="/privacy/" class="navlink">Privacy Policy</a></li>
+                                    <li class="header-menu-item"><a href="/contact-us/" class="navlink">Contact Us</a></li>
+                                </ul>
+                            </span>
+                        </div>
+
+                    </nav>
+                </div>
+                               <div class="header-subnav-wrapper">
+                    <nav class="header-subnav">
+                        <ul class="header-menu -top">
+                            <li class="header-menu-item">
+                                <a href="https://fp-reg.onecount.net/onecount/login/loginlogout.php?return=http%3A%2F%2Fforeignpolicy.com%2F" class="navlink -top -user -signin FP-paywall--login">Sign In</a>
+                            </li>
+                            <li class="header-menu-item">
+                                <a href="https://foreignpolicy.com/subscribe" class="navlink -top -user -emph"><span class="subscribe--long">Subscribe for $2.25/week</span><span class="subscribe--short">Subscribe</span></a>                            </li>
+                        </ul>
+
+                        <div class="expando-search">
+    <div class="icon">
+        <svg viewBox="0 0 18 18">
+	<circle class="search-icon" cx="7.5" cy="7.3" r="6.5"/>
+	<line class="search-icon" x1="12.1" y1="11.9" x2="17.5" y2="17.3"/>
+</svg>    </div>
+        <form role="search" method="get" id="searchform-desktop" class="searchform" action="/">
+    	<label class="hide" for="searchfield-desktop">Search</label>
+    	<input class="search" type="search" name="s" id="searchfield-desktop" />
+    	<input type="submit" value="search-submit" style="display:none" />
+    </form>
+</div>
+                    </nav>
+                </div>
+                
+                <button class="hamburger-button">
+    <span class="line"></span>
+    <span class="hide">Toggle display of website navigation</span>
+</button>
+                                                <div class="header-alt-layout__title">
+                    <p class="header-alt-title">
+                                                <span class="department-title">
+                            Feature:
+                        </span>
+                                                <span class="header-alt-title__desktop">
+                            Pulp Liberation Army                        </span>
+                        <span class="header-alt-title__mobile">
+                            Pulp Liberation Army...                        </span>
+                    </p>
+                    <div class="header-social-shares">
+                        <span class="share-title">SHARE:</span>
+                        <a data-endpoint="facebook" data-title="Pulp Liberation Army" data-text="Welcome to the strange -- and terrifying -- underground world of Chinese military fantasy novels." data-url="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/" onclick="socialshares.share(this);">
+                            <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/facebook_blue.svg" alt="Share on Facebook" class="facebook-button" />
+                        </a>
+                        <a data-endpoint="twitter" data-title="Welcome to the strange -- and terrifying -- underground world of Chinese military fantasy novels." data-text="Welcome to the strange -- and terrifying -- underground world of Chinese military fantasy novels." data-url="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/" onclick="socialshares.share(this);">
+                            <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/twitter_blue.svg" alt="Share on Twitter" class="twitter-button" />
+                        </a>
+                        <a data-endpoint="linkedin" data-title="Pulp Liberation Army" data-text="Welcome to the strange -- and terrifying -- underground world of Chinese military fantasy novels." data-url="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/" onclick="socialshares.share(this);">
+                            <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/linkedin_blue.svg" alt="Share on LinkedIn" class="linkedin-button" />
+                        </a>
+                        <a href="#" title="Print" onclick="window.print();">
+                            <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/print_black.svg" alt="Print this page" class="print-button" />
+                        </a>
+                        <a href="mailto:?subject=Check%20out%20this%20story%20on%20Foreign%20Policy&amp;body=Pulp Liberation Army%20-%20https://foreignpolicy.com/2013/05/23/pulp-liberation-army/%2F" title="Share via Email">
+                            <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/email_black.svg" alt="Share via Email" class="email-button" />
+                        </a>
+                                            </div>
+                </div>
+                        
+
+        </header>
+
+<script type="text/javascript">/* Load GPT asynchronously */var googletag = googletag || {};googletag.cmd = googletag.cmd || [];(function() {var gads = document.createElement("script");gads.async = true;gads.type = "text/javascript";var useSSL = "https:" == document.location.protocol;gads.src = (useSSL ? "https:" : "http:") +"//securepubads.g.doubleclick.net/tag/js/gpt.js";var node = document.getElementsByTagName("script")[0];node.parentNode.insertBefore(gads, node);})();googletag.cmd.push( function() { window.FP_gtagBannerSlots = {};/* Define a size mapping object. The first parameter to addSize is a viewport size, while the second is a list of allowed ad sizes. */var mappingMobileFooter = googletag.sizeMapping()./* Mobile fixed footer ad */addSize([320, 50], [320, 50]).build();var mappingSidebar = googletag.sizeMapping()./* Desktop sidebar and mobile ad */addSize([300, 250], [300, 250]).build();var mappingSidebarLarge = googletag.sizeMapping()./* Desktop sidebar and mobile ad */addSize([300, 250], [300, 250])./* Taller desktop sidebar and mobile ad */addSize([300, 600], [[300, 250], [300, 600]]).build();var mappingMainLarge = googletag.sizeMapping()./* Do not display these ads on smaller screens */addSize([0, 0], [])./* Small banner ad */addSize([728, 90], [728, 90])./* Large banner ad */addSize([970, 90], [[970, 90], [728, 90]]).build();var mappingMainLargeAndSmall = googletag.sizeMapping()./* Desktop sidebar and mobile ad */addSize([300, 250], [300, 250])./* Small banner ad */addSize([728, 90], [728, 90])./* Large banner ad */addSize([970, 90], [[970, 90], [728, 90]]).build();var mappingMainSmall = googletag.sizeMapping()./* Desktop sidebar and mobile ad */addSize([300, 250], [300, 250])./* Small banner ad */addSize([728, 90], [728, 90]).build();googletag.defineSlot("/7971222/global_superleaderboard_top", [[970, 90], [728, 90]], "div-gpt-ad-1452807828370-0").defineSizeMapping(mappingMainLarge).addService(googletag.pubads());googletag.pubads().disableInitialLoad();googletag.pubads().enableLazyLoad({fetchMarginPercent: 0,renderMarginPercent: 0,mobileScaling: 2.0});
+			googletag.enableServices(); } );/* Refresh ads on window resize */var refreshAdSlots = function() {googletag.cmd.push(function() {googletag.pubads().refresh(null, {changeCorrelator: false});});};window.addEventListener("resize", refreshAdSlots);</script><div id="div-gpt-ad-1452807828370-0" class="home-ad-region-1 _970">
+
+			<script type="text/javascript">
+
+				googletag.cmd.push( function() {
+
+					googletag.display( "div-gpt-ad-1452807828370-0" );
+
+				} );
+
+			</script>
+
+		</div>
+<div id="main" data-context="article" class="default default_text_style text_above_photo  ">
+
+	<div class="post-content" data-post-id="25819" data-premium="no" data-premium-trigger="yes" data-whitelist="">
+
+		<article class="article" data-post-id="25819" data-post-url="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/" data-lfcollectionmeta="eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJ0aXRsZSI6IlB1bHAgTGliZXJhdGlvbiBBcm15IiwidXJsIjoiaHR0cHM6XC9cL2ZvcmVpZ25wb2xpY3kuY29tXC9hcnRpY2xlc1wvMjAxM1wvMDVcLzIzXC9jaGluZXNlX21pbGl0YXJ5X2xpYmVyYXRpb25fbm92ZWxzIiwic3RyZWFtX3R5cGUiOiJsaXZlY29tbWVudHMiLCJjaGVja3N1bSI6ImM0NzkxODFmMDUwMGFkZjMzNzYxNzk1YzUyNzE5MDNlIiwiYXJ0aWNsZUlkIjoiZm9yZWlnbnBvbGljeV8xNDI2MTQxIn0.IJ1MLt8ZH47dmiTKUX9gTi3XXOq8i4r1O4tCNjzfykk" data-lfchecksum="c479181f0500adf33761795c5271903e" data-lfarticleid="foreignpolicy_1426141">
+
+			
+				
+
+
+<a
+    href="https://foreignpolicy.com/category/feature/"
+    class="department-name">
+    <h3 class="department">Feature</h3></a>
+<span
+    class="hed-heading"
+    href="https://foreignpolicy.com/2013/05/23/pulp-liberation-army/">
+    <h1 class="hed">Pulp Liberation Army</h1>
+</span>
+<h2 class="dek-heading">Welcome to the strange -- and terrifying --
+underground world of Chinese military fantasy novels.
+</h2>
+<div class="meta-data ">
+    <address class="author-list">
+    <span class="pre">By</span>
+    <a
+        href="https://foreignpolicy.com/author/isaac-stone-fish/"
+        rel="author"
+        class="author">
+    Isaac Stone Fish</a><span class="separator">,</span> <a
+        href="https://foreignpolicy.com/author/helen-gao/"
+        rel="author"
+        class="author">
+    Helen Gao</a></address>
+    <span class="separator">|</span>
+    <time
+    pubdate
+    datetime="2013-05-23"
+    title="May 23rd, 2013"
+    class="date-time">
+May 23, 2013, 9:15 PM</time>
+</div>
+
+
+
+
+				<figure class="figure-image ">
+            <span
+            style="padding-bottom:66.666666666667%;
+        "
+                class="image-attachment -ratioscale  horizontal-orientation">
+        <img
+            data-sizes="(max-width: 625px) 100vw, 625px"
+            data-srcset="https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?quality=90 625w, https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?resize=150,96&amp;quality=90 150w, https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?resize=550,352&amp;quality=90 550w, https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?resize=400,256&amp;quality=90 400w, https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?resize=401,257&amp;quality=90 401w, https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?resize=275,176&amp;quality=90 275w, https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?resize=325,208&amp;quality=90 325w, https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?resize=600,384&amp;quality=90 600w"
+            data-src="https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?w=625&#038;h=400&#038;quality=90"
+            sizes="(max-width: 625px) 100vw, 625px"
+            src=""
+            alt="Larry Downing-Pool/Getty Images"
+            style="width:auto;"
+            class="image -fit -lazy"
+        >
+        <noscript>
+            <img
+                src="https://foreignpolicy.com/wp-content/uploads/2013/05/15233970921.jpg?w=625&#038;h=400&#038;quality=90"
+                alt="Larry Downing-Pool/Getty Images"
+                class="image -fit-3-2">
+        </noscript>
+        </span>
+                    <div class="caption">
+            Larry Downing-Pool/Getty Images            <span class="attribution"></span>
+        </div>
+    </figure>
+
+
+				
+			
+						
+			<div class="post-content-main initial-drop-cap shares-position">
+								<p> It is the year 2049. China&#8217;s economic development has so disturbed the world&#8217;s other major powers that the United States, Japan, and Russia form an alliance and invade China. Fierce battles break out on the plains of northeast China, where Japanese troops and U.S. fighter jets besiege Chinese infantry. Caught by surprise, China&#8217;s army nonetheless stages a glorious counterattack by deploying levitating tanks, and employing a strategy based on lessons learned from the Anti-Japanese War and the Resist America War (better known in the West as WWII and the Korean War, respectively).<b></b> </p>
+<p> Such is the plot of <i><a href="http://www.junshishu.com/Book22187/">The Last Counterattack</a></i>, a serial novel published on <a href="http://www.junshishu.com/">Blood and Iron Reading,</a> a Chinese military literature website. In one of the latest installments, published<b> </b>on May 2, U.S. government-sponsored hackers have infiltrated the Chinese military&#8217;s network and accidently launched a Chinese nuclear missile directed at the United States. The anonymous author&#8217;s online profile says he is a former colonel in the People&#8217;s Liberation Army and currently a staff officer in charge of operations and reconnaissance in the 12th Armored Division at China&#8217;s 21st Army Group. Going by the online pseudonym &quot;the Old Staff Officer,&quot; he told <span class="fp_red">FP</span> in an interview conducted over the Chinese messaging service QQ that he &quot;enjoys the feeling of letting [his] imagination fly.&quot; But Li, as I&#8217;ll call him, believes that what he&#8217;s writing may actually come to pass. In an April blog <a href="http://blog.ifeng.com/article/25392549.html">post</a>, he explained his thinking for the book:  &quot;The world besieges China and attacks it from all sides. Is this possible? Yes!&quot; </p>
+<p> There are thousands of Chinese war fantasy novels on the Internet &#8212; too sensitive to be published in book form, they circulate on blogs, and websites like Blood and Iron Reading.<b> </b>Most languish, but the more popular ones get read millions of times. As a rising China struggles to define its military aspirations, and as the country&#8217;s vast propaganda apparatus encourages citizens to define their version of President Xi Jinping&#8217;s vague slogan &quot;Chinese Dream,&quot; these military fantasy novels provide insight into what Chinese people&#8217;s war dreams look like.<b></b> </p>
+<p> The novels follow one of two distinctive patterns. Most take place in the past, often during periods when China suffered a series of traumatic invasions. &quot;In China, science fiction demonstrates people&#8217;s hope to transcend reality, and the reality is that China often loses,&quot; says Wu Yan, an education professor at Beijing Normal University and a scholar of Chinese science fiction. (Military fantasy novels fit into this genre, though compared with other science fiction, tend to focus more on international relations and less on technology.) Some of the novels feature modern characters that travel back in time to defend China from humiliation. In <i>1894: China Rises</i>, an unsuccessful businessman <a href="http://www.junshishu.com/Book16760/">finds himself</a> hurled back to 1883, the beginning of the Sino-French War, where he becomes an army general and defeats the invading French forces. Another novel, <i>Resist Japan and Expel the Japanese Pirates</i>, <a href="http://www.junshishu.com/Book20469/">tells</a> of an army major who returns to the Anti-Japanese War, and, armed with today&#8217;s technology, drives the Japanese forces out of Manchuria<b>.</b> Other novels, like <i>The Last Counterattack</i>, project into the near future, when China&#8217;s growth in economic and military strength prompts other major world powers to contain it through warfare. China always vanquishes these threats, however, through ingenious military strategies and advanced weaponry, and eventually gains the respect and prestige it deserves on the world stage. </p>
+<p> Li declined to go into further detail about his thought process, saying he &quot;doesn&#8217;t need fame,&quot; but he did mention his admiration for Caspar Weinberger, Ronald Reagan&#8217;s secretary of defense, and his book <i>The Next War</i>. Published in 1997, it imagines a series of regional conflicts arising out of the United States&#8217; &quot;<a href="http://www.chuckbaldwinlive.com/caspar.html">very deep cuts</a>&quot; in military capability, including one in which a nuclear war breaks on the Korean Peninsula and China seizes the opportunity to conquer Taiwan. &quot;Anybody who studies war should remember Weinberger,&quot; Li says. </p>
+<p> Military fantasies are only a subset of a broader, thriving market in military books. Unlike in the United States, where Tom Clancy can imagine a scenario where Washington <a href="http://www.goodreads.com/book/show/15985392-threat-vector">attacks</a> Beijing, Chinese censorship precludes their publishing in book form. &quot;I was told by publishers that any novel that describes wars among different countries are strictly off-limits,&quot; says Zheng Jun, a Chongqing-based science fiction writer and an independent sci-fi literary agent who helps publishes close to 100 science fiction books each year. China &quot;can only fight aliens or a fictional country,&quot; he says. <i>The Golden Bullet Series</i>, the last major Chinese military fantasy novels allowed to be published in book form, in 2003, accordingly focuses on conflicts between human beings and aliens or unidentified terrorists.<b></b> </p>
+<p> Such restrictions have led military fantasy writers to publish their work online, where censorship is less strict. Blood and Iron Reading, the largest web platform for military literature, provides roughly 2,500<b> </b>free military novels to download, and boasts an average of 30 million unique visitors per month. It is named after a famous speech delivered by German Chancellor Otto von Bismarck in 1862, about the unification of German territories. &quot;Bismarck is a popular figure among Chinese military aficionados,&quot; explains Jiang Lei, the website&#8217;s founder, in a 2012 interview with the Chinese magazine <i>People Weekly</i>. </p>
+<p> China has a long tradition of fantasy writing, from the 16th century novel <i>Journey to the West</i>, about a monkey who fights demons, to the 18th-century ghost story collection <i>Strange Tales from a Chinese Studio</i>. But the utopia/dystopian tradition prevalent in Western science fiction is shorter in China &#8212; the first major work to explore it was the 1902 book <i>The Future of New China</i>. Written by prominent early 20th-century scholar Liang Qichao, the book imagines China in 1962, when it has achieved constitutional democracy. Liang&#8217;s writings on the need for radical change in China had a big influence on Mao Zedong, who<b> </b>bought into the idea of constructing a future mortgaged on the present. (The chairman was less interested in constitutional democracy, however.)<b></b> </p>
+<p> After the founding of the People&#8217;s Republic in 1949, science fiction and fantasy novels became heavily guided by communist ideology. The goal of these literature works became describing &quot;the future of communist society, free from class struggle and committed to the reconciliation of humanity and nature,&quot; wrote Wu, the Chinese sci-fi scholar, in an <a href="http://www.depauw.edu/sfs/abstracts/a119.html#yan">essay</a> titled &quot;Great Wall Planet: Introducing Chinese Science Fiction.&quot; In an interview, he cited the story &quot;A Fantasia of Communism,&quot; set in 2000 and written in 1958, during the Great Leap Forward. In it, a worker visits Beijing to report on his progress and meets a 107-year-old Chairman Mao amid &quot;abundant vegetable gardens&quot; and &quot;automated factories that produce hundreds of thousands of tons of steel every day.&quot; </p>
+<p> The novels have always been linked to China&#8217;s exploration of its national identity. &quot;Chinese science fiction writers have been dreaming the Chinese dream since the end of the Qing dynasty,&quot; wrote Han Song, one of China&#8217;s best-known sci-fi writers,<br />
+in a blog <a href="http://hansong.blog.caixin.com/archives/55468">post</a> in April. &quot;Now, we have the responsibility of dreaming a better dream,&quot; echoing Xi&#8217;s slogan, which he <a href="http://news.xinhuanet.com/english/china/2012-11/29/c_132008231.htm">described</a> as &quot;the great renewal of the Chinese nation&quot; &#8212; often interpreted as a return to 18th- or 8th-century China, when the country dominated world affairs. </p>
+<p> Many military fantasy novels use history as a mirror for self-examination. A large number portray the Chinese as valiant and fierce warriors unflinching in the face of foreign troops and weapons &#8212; very different from how they feel about themselves. &quot;The so-called modern Chinese are in fact the post-Qing Chinese, castrated of their martial spirit,&quot; Li wrote in an April blog <a href="http://blog.ifeng.com/article/25392549.html">post</a>. Often, beneath a veneer of national pride flows an undercurrent of self-examination and criticism. Han&#8217;s novel <i>2066: Red Star Over America</i>, portrays the United States in the throes of a Cultural Revolution, where bands of marauding U.S. students fight battles in the country&#8217;s ravaged countryside. China is the world&#8217;s top superpower, and an earthquake has sunk Japan, erasing it from the map. The protagonist, a Chinese Go player and diplomatic envoy, tries to return civilization to a crumbling United States. On the surface, the novel portrays a powerful future China and a decaying America &#8212; but another way to read it is as a subtle rebuke of the Chinese regime&#8217;s weakness and xenophobia during its own Cultural Revolution.<b></b> </p>
+<p> Another common theme running through the books is China &#8212; sometimes violently &#8212; forcing the world to become more harmonious. The motif is present in Liang&#8217;s <i>The Future of New China</i>, set at an international conference in Shanghai, in which countries from all over the world come to pay tribute to China, as well as in recent works such as<b> </b><i>Being with You</i>, about a seven-man group that<b> </b>leads<b> </b>humans to resist the invasion of aliens. &quot;Chinese science fiction writers are often preoccupied with the feeling that the world should be united,&quot; Wu says. &quot;But they still seem to feel China is marginalized, not included in the world order.&quot; Throughout history, Li<b> </b>observes, China has often evoked suspicion and hostility abroad: &quot;China&#8217;s biggest strength lies in its giant population, which is a major historical reason why it became known as the Yellow Peril.&quot;<b></b> </p>
+<p> In the United States, the term Yellow Peril originated in the late 19th century and referred to the supposed dangers posed by Chinese immigrants working in Western countries.<b> </b>In China, the term is broader, referring to the prejudice and suppression Chinese experienced in the hands of Western imperial powers.<b> </b>The best-known recent use of the term is as the title of a 1991 dystopian novel by Beijing-based dissident writer Wang Lixiong, which is also probably the best-selling Chinese military fantasy novel (though mostly from international sales &#8212; it was banned in China). <i>Yellow Peril </i>imagines a civil war breaking out in China after the June 4, 1989, massacre in Tiananmen Square, unleashing hundreds of millions of Chinese refugees who cause international political mayhem by their sheer numbers.<b></b> </p>
+<p> Like Han&#8217;s <i>2066</i>, many Chinese military fantasy novels feature the destruction of Japan. The most popular novel on Blood and Iron Reading is entitled <i>Sino-Japanese War-The Prologue to World War 3</i>, which has attracted more than 140 million pageviews. Gao Yan, a young woman who grew up near a military camp, started it in 2005 under the pen name &quot;The Last Defender of Principles.&quot; The book envisions a full-scale Sino-Japanese War in the first decade of the 21st century, ignited by a naval clash between Japan and Taiwan near the disputed Diaoyu Islands, which the Japanese call the Senkakus. &quot;The beginning of the novel is strong and realistic,&quot; one reader wrote in a <a href="http://bbs.tiexue.net/post2_2902433_1.html">book review</a>. &quot;There has always been little trust and communication between us and those guys on that archipelago [Japan]. It&#8217;s never hard to imagine the hatred between the two peoples.&quot; In the preface to the novel, Gao writes that she thinks a war between China and Japan is inevitable: &quot;China will only become a superpower after it has pushed Japan &#8212; the obstacle &#8212; aside.&quot; </p>
+<p> Nearly half of Chinese TV dramas made in 2012 showcase that same animosity: They take place during World War II, with cartoonish levels of violence against Japanese: Chinese soldiers hurl grenades that bring down Japanese fighter jets and tear Japanese in half with their hands (picture <i>Inglorious Bastards</i> shot without any sense of irony, and with Japanese in the place of Nazis, and you get the idea).<b></b> </p>
+<p> Frustration with the Chinese military is another common theme. When <span class="fp_red">FP</span> mentions the fast development of Chinese weaponry and military to Li, he says, &quot;Yes, but we never use it.&quot; During the anti-Japanese protests in August 2012, another military fantasy writer who goes by the name &quot;Smoking Coffee&quot; <a href="http://t.163.com/chouyandekafei/status/-2330082603050535180">vented</a> a similar feeling on his Weibo account. &quot;The Chinese anger over the Diaoyu Islands dispute is not enough to start a war, and is still being suppressed by the state,&quot; he wrote. &quot;I want to ask, how much longer is it going to be suppressed?&quot; </p>
+<p> In his April blog <a href="http://blog.ifeng.com/article/25392549.html">post</a>, Li describes the time when China was attacked by allied forces at the end of the Qing Dynasty, and draws sharp parallels to today. &quot;In a word,&quot; he writes, &quot;thinking of a war in which China is attacked by all sides is extremely necessary.&quot;<i></i> </p>
+<div data-fp-lazy-load-image></div>							</div>
+			
+			
+<section class="bio-no-photo">
+	<div>
+		<strong>Isaac Stone Fish</strong> is a journalist and senior fellow at the Asia Society’s Center on U.S-China Relations. He was formerly the Asia editor at Foreign Policy Magazine.&nbsp;Twitter:&nbsp;<a href="http://www.twitter.com/isaacstonefish" target="_blank">@isaacstonefish</a>	</div>
+	<div class="last-author">
+		A Beijing native, <strong>Helen Gao</strong> is a frequent contributor to Foreign Policy and an MA candidate in East Asian Studies at Harvard.&nbsp;Twitter:&nbsp;<a href="http://www.twitter.com/yuxin_gao" target="_blank">@yuxin_gao</a>	</div>
+</section>
+			<div class="the-comments">
+				<a href="/comments_view/?view_post_comments=https%3A%2F%2Fforeignpolicy.com%2F2013%2F05%2F23%2Fpulp-liberation-army%2F" style="color:#fff">View<br />Comments</a>
+			</div>
+
+			<div class="the-tags">
+    <span class="title">Tags:</span>
+    <a
+        href="https://foreignpolicy.com/tag/china/"
+        class="tag">
+        China</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/covers/"
+        class="tag">
+        Covers</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/culture/"
+        class="tag">
+        Culture</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/default/"
+        class="tag">
+        Default</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/east-asia/"
+        class="tag">
+        East Asia</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/economics/"
+        class="tag">
+        Economics</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/feature/"
+        class="tag">
+        Feature</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/free/"
+        class="tag">
+        Free</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/internet/"
+        class="tag">
+        Internet</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/media/"
+        class="tag">
+        Media</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/military/"
+        class="tag">
+        Military</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/science-technology/"
+        class="tag">
+        Science &amp; Technology</a><span class="separator">,</span><a
+        href="https://foreignpolicy.com/tag/web-exclusive/"
+        class="tag">
+        Web Exclusive</a></div>
+
+						<div class="taboola">
+				<div class="taboola--inner border-top">
+					<p class="taboola--heading">Trending Now <a href="http://www.taboola.com/" class="taboola--subheading" target="_blank">Sponsored Links by Taboola</a></p>
+					<div id="taboola-below-article-thumbs"></div>
+					<div class="taboola--subheading taboola--subheading__right">By Taboola</div>
+				</div>
+			</div>
+
+			<div class="taboola taboola__fp">
+				<div class="taboola--inner">
+					<p class="taboola--heading heading__red">More from Foreign Policy</p>
+					<div id="taboola-below-article-thumbs_fp"></div>
+					<div class="taboola--subheading taboola--subheading__right">By Taboola</div>
+				</div>
+			</div>
+					</article>
+
+		
+<div class="sidebar">
+	<div>
+		<script type="text/javascript">/* Load GPT asynchronously */var googletag = googletag || {};googletag.cmd = googletag.cmd || [];(function() {var gads = document.createElement("script");gads.async = true;gads.type = "text/javascript";var useSSL = "https:" == document.location.protocol;gads.src = (useSSL ? "https:" : "http:") +"//securepubads.g.doubleclick.net/tag/js/gpt.js";var node = document.getElementsByTagName("script")[0];node.parentNode.insertBefore(gads, node);})();googletag.cmd.push( function() { window.FP_gtagBannerSlots = {};/* Define a size mapping object. The first parameter to addSize is a viewport size, while the second is a list of allowed ad sizes. */var mappingMobileFooter = googletag.sizeMapping()./* Mobile fixed footer ad */addSize([320, 50], [320, 50]).build();var mappingSidebar = googletag.sizeMapping()./* Desktop sidebar and mobile ad */addSize([300, 250], [300, 250]).build();var mappingSidebarLarge = googletag.sizeMapping()./* Desktop sidebar and mobile ad */addSize([300, 250], [300, 250])./* Taller desktop sidebar and mobile ad */addSize([300, 600], [[300, 250], [300, 600]]).build();var mappingMainLarge = googletag.sizeMapping()./* Do not display these ads on smaller screens */addSize([0, 0], [])./* Small banner ad */addSize([728, 90], [728, 90])./* Large banner ad */addSize([970, 90], [[970, 90], [728, 90]]).build();var mappingMainLargeAndSmall = googletag.sizeMapping()./* Desktop sidebar and mobile ad */addSize([300, 250], [300, 250])./* Small banner ad */addSize([728, 90], [728, 90])./* Large banner ad */addSize([970, 90], [[970, 90], [728, 90]]).build();var mappingMainSmall = googletag.sizeMapping()./* Desktop sidebar and mobile ad */addSize([300, 250], [300, 250])./* Small banner ad */addSize([728, 90], [728, 90]).build();googletag.defineSlot("/7971222/default_fp2_bigbox_ATF", [[300, 250],[300, 600]], "div-gpt-ad-1385102181603-0").defineSizeMapping(mappingSidebarLarge).addService(googletag.pubads());googletag.defineSlot("/7971222/default_fp2_bigbox_CENTER", [300, 250], "div-gpt-ad-1390433129530-0").defineSizeMapping(mappingSidebar).addService(googletag.pubads());googletag.defineSlot("/7971222/default_fp2_bigbox_BTF", [[300, 250],[300, 600]], "div-gpt-ad-1385071228815-0").defineSizeMapping(mappingSidebarLarge).addService(googletag.pubads());googletag.pubads().disableInitialLoad();googletag.pubads().enableLazyLoad({fetchMarginPercent: 0,renderMarginPercent: 0,mobileScaling: 2.0});
+			googletag.enableServices(); } );/* Refresh ads on window resize */var refreshAdSlots = function() {googletag.cmd.push(function() {googletag.pubads().refresh(null, {changeCorrelator: false});});};window.addEventListener("resize", refreshAdSlots);</script><div id="div-gpt-ad-1385102181603-0" class="channel-sidebar-big-box-ad _300">
+
+				<script type="text/javascript">
+
+					googletag.cmd.push( function() {
+
+						googletag.display( "div-gpt-ad-1385102181603-0" );
+
+					} );
+
+				</script>
+
+			</div>
+		<div class="sidebar-list">
+    <div class="title">Latest</div>
+<div class="excerpt-content">
+    <a
+    class="hed-heading -excerpt"
+    href="https://foreignpolicy.com/2019/11/23/chile-upheaval-protests-model-muddle-free-market/">
+    <h3 class="hed">From Model to Muddle: Chile’s Sad Slide Into Upheaval</h3>
+</a>
+<div class="meta-data -ago">
+    <time
+    pubdate
+    datetime="2019-11-23"
+    title="November 23rd, 2019"
+    class="date-time">
+November 23, 2019, 12:33 PM</time>
+</div>
+</div>
+<div class="excerpt-content">
+    <a
+    class="hed-heading -excerpt"
+    href="https://foreignpolicy.com/2019/11/23/life-on-the-front-lines-in-northern-syria/">
+    <h3 class="hed">Life on the Front Lines in Northern Syria</h3>
+</a>
+<div class="meta-data -ago">
+    <time
+    pubdate
+    datetime="2019-11-23"
+    title="November 23rd, 2019"
+    class="date-time">
+November 23, 2019, 8:07 AM</time>
+</div>
+</div>
+<div class="excerpt-content">
+    <a
+    class="hed-heading -excerpt"
+    href="https://foreignpolicy.com/2019/11/23/trump-impeachment-israel-settlements-bolivia-morales/">
+    <h3 class="hed">Our Top Weekend Reads</h3>
+</a>
+<div class="meta-data -ago">
+    <time
+    pubdate
+    datetime="2019-11-23"
+    title="November 23rd, 2019"
+    class="date-time">
+November 23, 2019, 7:00 AM</time>
+</div>
+</div>
+<div class="excerpt-content">
+    <a
+    class="hed-heading -excerpt"
+    href="https://foreignpolicy.com/2019/11/23/very-possible-iran-will-attack-again-top-us-general-says/">
+    <h3 class="hed">Top U.S. General: It’s ‘Very Possible’ Iran Will Attack Again</h3>
+</a>
+<div class="meta-data -ago">
+    <time
+    pubdate
+    datetime="2019-11-23"
+    title="November 23rd, 2019"
+    class="date-time">
+November 23, 2019, 6:25 AM</time>
+</div>
+</div>
+<div class="excerpt-content">
+    <a
+    class="hed-heading -excerpt"
+    href="https://foreignpolicy.com/2019/11/22/kashmir-muslims-india-pakistan-afghanistan/">
+    <h3 class="hed">Kashmir Could Wreck India’s Reputation Among Afghans</h3>
+</a>
+<div class="meta-data -ago">
+    <time
+    pubdate
+    datetime="2019-11-22"
+    title="November 22nd, 2019"
+    class="date-time">
+November 22, 2019, 9:56 PM</time>
+</div>
+</div>
+</div>
+
+<div class="sidebar-list-more">
+    <a href="/category/latest/">See All Stories</a>
+</div>
+	</div>
+	<div class="fp-trending-wrapper trending-articles--no-video">
+    <div class="trending-articles">
+        <p><span class="heading">Trending</span></p>
+        <ol>
+                    <li class="fp-trending-content">
+                <div class="fp-trending-count">1</div>
+                <div class="title">
+                    <a href="/2019/11/23/very-possible-iran-will-attack-again-top-us-general-says/">Top U.S. General: It’s ‘Very Possible’ Iran Will Attack Again</a>
+                                    </div>
+            </li>
+                    <li class="fp-trending-content">
+                <div class="fp-trending-count">2</div>
+                <div class="title">
+                    <a href="/2019/11/22/kashmir-muslims-india-pakistan-afghanistan/">Kashmir Could Wreck India’s Reputation Among Afghans</a>
+                                    </div>
+            </li>
+                    <li class="fp-trending-content">
+                <div class="fp-trending-count">3</div>
+                <div class="title">
+                    <a href="/2019/11/22/why-impeachment-is-failing-trump-may-win-2020-election/">Why Impeachment Is Failing—and Trump May Win in 2020</a>
+                                    </div>
+            </li>
+                    <li class="fp-trending-content">
+                <div class="fp-trending-count">4</div>
+                <div class="title">
+                    <a href="/2019/11/23/chile-upheaval-protests-model-muddle-free-market/">From Model to Muddle: Chile’s Sad Slide Into Upheaval</a>
+                                    </div>
+            </li>
+                    <li class="fp-trending-content">
+                <div class="fp-trending-count">5</div>
+                <div class="title">
+                    <a href="/2019/11/22/germany-kaiser-wilhelm-hohenzollern-family-prussia/">The Kaiser’s Family Wants Its Stuff Back. Germany Isn’t Sure They Deserve It.</a>
+                                    </div>
+            </li>
+                </ol>
+    </div>
+</div>
+	<div id="div-gpt-ad-1390433129530-0" class="ad-container _300">
+
+				<script type="text/javascript">
+
+					googletag.cmd.push( function() {
+
+						googletag.display( "div-gpt-ad-1390433129530-0" );
+
+					} );
+
+				</script>
+
+			</div>
+	<div class="sidebar-list">
+    <div class="title">Voices</div>
+
+    <div class="excerpt-content">
+        <a
+    class="hed-heading -excerpt"
+    href="https://foreignpolicy.com/2019/11/16/trump-is-happy-to-seem-weak-next-to-erdogan-impeachment-syria/">
+    <h3 class="hed">Trump Is Happy to Seem Weak Next to Erdogan</h3>
+</a>
+                <div class="meta-data -excerpt">
+            <address class="author-list -excerpt">
+                <a href="https://foreignpolicy.com/author/steven-a-cook/" rel="author" class="author">
+    Steven A. Cook</a>            </address>
+        </div>
+    </div>
+
+    <div class="excerpt-content">
+        <a
+    class="hed-heading -excerpt"
+    href="https://foreignpolicy.com/2019/11/16/china-bubonic-plague-outbreak-pandemic/">
+    <h3 class="hed">The Real Reason to Panic About China’s Plague Outbreak</h3>
+</a>
+                <div class="meta-data -excerpt">
+            <address class="author-list -excerpt">
+                <a href="https://foreignpolicy.com/author/laurie-garrett/" rel="author" class="author">
+    Laurie Garrett</a>            </address>
+        </div>
+    </div>
+
+    <div class="excerpt-content last">
+        <a
+    class="hed-heading -excerpt"
+    href="https://foreignpolicy.com/2019/11/14/stephen-walt-foreign-policy-establishment-my-apologies-to-the-blob/">
+    <h3 class="hed">Impeachment Is Redeeming the Blob</h3>
+</a>
+                <div class="meta-data -excerpt">
+            <address class="author-list -excerpt">
+                <a href="https://foreignpolicy.com/author/stephen-m-walt/" rel="author" class="author">
+    Stephen M. Walt</a>            </address>
+        </div>
+    </div>
+</div>
+
+	<div id="div-gpt-ad-1385071228815-0" class="channel-sidebar-big-box-ad _300">
+
+				<script type="text/javascript">
+
+					googletag.cmd.push( function() {
+
+						googletag.display( "div-gpt-ad-1385071228815-0" );
+
+					} );
+
+				</script>
+
+			</div></div>
+
+
+	</div>
+
+</div>
+
+            <div class="sticky_content"></div>
+            
+            <footer class="site-footer-wrapper">
+                <div class="site-footer">
+                    <div class="logo">
+                                    <a
+                style="padding-bottom:42%;
+        "
+                href="https://foreignpolicy.com/"
+            class="image-attachment -ratioscale">
+        <img
+            data-srcset=""
+            data-src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/logos/FP.svg"
+            alt="Foreign Policy Magazine"
+            class="image -fit -lazy">
+        <noscript>
+            <img
+                src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/logos/FP.svg"
+                alt="Foreign Policy Magazine"
+                class="image -fit">
+        </noscript>
+        </a>
+                            </div>
+                    <nav class="nav">
+                        <ul id="menu-footer-column-1" class="footer-menu"><li id="menu-item-660877" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-660877 footer-menu-item"><a href="http://fpgroup.foreignpolicy.com" class="navlink">About FP</a></li>
+<li id="menu-item-783354" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-783354 footer-menu-item"><a href="https://foreignpolicy.com/staff/" class="navlink">Meet the Staff</a></li>
+<li id="menu-item-660950" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-660950 footer-menu-item"><a href="https://foreignpolicy.com/reprint-permissions/" class="navlink">Reprint Permissions</a></li>
+<li id="menu-item-660880" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-660880 footer-menu-item"><a href="http://fpgroup.foreignpolicy.com" class="navlink">Advertise/Events</a></li>
+</ul><ul id="menu-footer-column-2" class="footer-menu"><li id="menu-item-939400" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-939400 footer-menu-item"><a href="https://foreignpolicy.submittable.com/submit" class="navlink">Writer&#8217;s Guidelines</a></li>
+<li id="menu-item-660882" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-660882 footer-menu-item"><a href="http://fpgroup.foreignpolicy.com/news" class="navlink">Press Room</a></li>
+<li id="menu-item-927639" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-927639 footer-menu-item"><a href="/employment-opportunities/" class="navlink">Work At FP</a></li>
+<li id="menu-item-660957" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-660957 footer-menu-item"><a href="https://foreignpolicy.com/subscription-services/" class="navlink">Subscription Services</a></li>
+</ul><ul id="menu-footer-column-3" class="footer-menu"><li id="menu-item-927960" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-927960 footer-menu-item"><a href="https://fpguide.foreignpolicy.com" class="navlink">FP Guides &#8211; Graduate Education</a></li>
+<li id="menu-item-927640" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-927640 footer-menu-item"><a href="https://foreignpolicy.com/subscribe-academic/" class="navlink">Academic Program &#8211; FP Premium</a></li>
+<li id="menu-item-660886" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-660886 footer-menu-item"><a href="/magazine" class="navlink">FP Archive</a></li>
+<li id="menu-item-660961" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-660961 footer-menu-item"><a href="https://foreignpolicy.com/buy-back-issues/" class="navlink">Buy Back Issues</a></li>
+</ul><ul id="menu-footer-column-4" class="footer-menu"><li id="menu-item-927961" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-927961 footer-menu-item"><a href="https://foreignpolicy.com/privacy/" class="navlink">Privacy Policy</a></li>
+<li id="menu-item-660967" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-660967 footer-menu-item"><a href="https://foreignpolicy.com/contact-us/" class="navlink">Contact Us</a></li>
+</ul>                        <span class="powered-by-wpcom--parent">
+                            <div>Powered by <a href="https://wpvip.com/?utm_source=vip_powered_wpcom&#038;utm_medium=web&#038;utm_campaign=VIP%20Footer%20Credit&#038;utm_term=foreignpolicy.com" rel="generator nofollow" class="powered-by-wpcom">WordPress.com VIP</a></div>
+                            <div>&copy; 2019, The Slate Group</div>
+                        </span>
+                    </nav>
+                </div>
+            </footer>
+
+        </div><!-- end site-wrapper -->
+
+
+                                    <div
+                data-campaign="HSBC ROS nd Econ"
+                data-stay-closed="false"
+                data-mobile-ad="div-gpt-ad-1453402331387-0"
+                data-refresh="30000"
+                data-closeable="false"
+                class="FP-mobile-ad FP-mobile-ad_fixedbottom"></div>
+        
+
+        <script id="template-mobile-regwall" type="text/template">
+            <div id="paywall_bg" class="mobile-regwall">
+    <div id="paywallWrapper">
+        <div class="medium_header" style="color: #fff;">
+            Please Log In / Register
+        </div>
+        <div class="paywall_header_h2">Returning Users</div>
+        <a
+            href="https://fp-reg.onecount.net/onecount/login/loginlogout.cgi"
+            class="overlay-button-large m-regwall-link FP-paywall--login"
+            data-gael="MobiRegwallLogin">Log in</a>
+        <div class="paywall_header_h2">Want Unlimited Access?</div>
+        <a
+            href="javascript:void(0);"
+            class="overlay-button-large m-regwall_sublink"
+            data-gael="MobiRegwallSub">Subscribe &mdash; 20% Off</a>
+        <a href="https://foreignpolicy.com/" class="paywall_close_btn" data-gael="MobiRegwallClose">
+            <img
+                src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/static/images/articlecounter-close.png"
+                class="paywall_close simplemodal-close"
+                alt="[X]">
+        </a>
+    </div>
+</div>
+        </script>
+        <script id="template-ip-access" type="text/template">
+            <div class="overlay-container-dark overlay-the-week">
+    <button class="overlay-close">
+        Close this window <span></span>
+    </button>
+    <div class="overlay-content">
+        <div class="overlay-title">Welcome to <cite>ForeignPolicy.com</cite></div>
+        <div class="overlay-body">
+            <p>
+                Your FP All Access subscription is provided by US Department of State, Bunche Library.
+            </p>
+            <p>
+                Click <a class="overlay-close-link" href="javascript:void(0);">here</a>
+                to access <cite>ForeignPolicy.com</cite>.
+            </p>
+        </div>
+    </div>
+</div>
+        </script>
+        <script id="template-paywall-a" type="text/template">
+            <div id="paywall_bg" class="updated_paywall">
+  <div id="paywallWrapper">
+    <div id="paywall_header">
+      <div class="paywall_header_h1">
+        How does this story end?
+      </div>
+    </div>
+
+    <div class="paywall_text">
+      <p>Get access to all of Foreign Policy's content, subscriber-only newsletters, and the digital version of FP's award-winning magazine with our Basic subscription.</p>
+
+      <div class="sub_btn_wrapper">
+        <a href="javascript:void(0);" data-action="Sub" class="sub_btn paywall_button">
+          Keep reading for $2.25/week
+        </a>
+      </div>
+
+      <p class="learn-more">Learn More</p>
+
+      <div class="learn-more-content">
+        <p><strong>INCLUDED:</strong></p>
+        <ul>
+          <li>Unlimited access to articles</li>
+          <li>Five FP email newsletters</li>
+          <li>Digital access to FP's print edition</li>
+        </ul>
+        <p class="close-learn-more"><img draggable="false" class="emoji" alt="❌" src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/close-white.svg">&nbsp;&nbsp;Close</p>
+      </div>
+
+      <p class="paywall_footer_cta">
+        <a href="https://fp-reg.onecount.net/onecount/login/loginlogout.php" data-action="Log" class="already_sub_link FP-paywall--login">
+          Already a subscriber? <strong>Sign in to keep reading</strong>.
+        </a>
+      </p>
+
+    </div>
+
+    <a href="javascript:void(0);" data-action="Close" class="paywall_close_btn">
+      <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/close-white.svg" class="paywall_close simplemodal-close" alt="[X]">
+    </a>
+
+  </div>
+</div>
+        </script>
+        <script id="template-paywall-b" type="text/template">
+            <div id="paywall_bg" class="updated_paywall">
+  <div id="paywallWrapper">
+    <div id="paywall_header">
+      <div class="paywall_header_h1">
+        How does this story end?
+      </div>
+    </div>
+
+    <div class="paywall_text">
+      <p>Get access to all of Foreign Policy's content, subscriber-only newsletters, and the digital version of FP's award-winning magazine with our Basic subscription.</p>
+
+      <div class="sub_btn_wrapper">
+        <a href="javascript:void(0);" data-action="Sub" class="sub_btn paywall_button">
+          Keep reading for $2.25/week
+        </a>
+      </div>
+
+      <p class="learn-more">Learn More</p>
+
+      <div class="learn-more-content">
+        <p><strong>INCLUDED:</strong></p>
+        <ul>
+          <li>Unlimited access to articles</li>
+          <li>Five FP email newsletters</li>
+          <li>Digital access to FP's print edition</li>
+        </ul>
+        <p class="close-learn-more"><img draggable="false" class="emoji" alt="❌" src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/close-white.svg">&nbsp;&nbsp;Close</p>
+      </div>
+
+      <p class="paywall_footer_cta">
+        <a href="https://fp-reg.onecount.net/onecount/login/loginlogout.php" data-action="Log" class="already_sub_link FP-paywall--login">
+          Already a subscriber? <strong>Sign in to keep reading</strong>.
+        </a>
+      </p>
+
+    </div>
+
+    <a href="javascript:void(0);" data-action="Close" class="paywall_close_btn">
+      <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/close-white.svg" class="paywall_close simplemodal-close" alt="[X]">
+    </a>
+
+  </div>
+</div>
+        </script>
+
+
+                <div class="overlay-container-dark login-modal-container">
+  <div class="login-modal">
+    <span class="close-button"></span>
+    <div class="sign-in">
+      <h3>Welcome back</h3>
+      <p>Sign in to your <span class="fp-red">Foreign Policy</span> account</p>
+      <form action="https://fp-reg.onecount.net/onecount/login/loginlogout.php" method="POST" name="loginform">
+        <label for="loginlogout_username">Email Address</label>
+        <input type="text" name="loginlogout_username" id="loginlogout_username" placeholder="Enter your Email Address" />
+        <a class="show-sign-in--step-2 modal-button">Next</a>
+
+        <div class="sign-in--step-2">
+          <label for="loginlogout_passwd">Password</label>
+          <input type="password" name="loginlogout_passwd" id="loginlogout_passwd" placeholder="Enter your Password" />
+          <a href="//fp-reg.onecount.net/onecount/login/forgotpassword.php?return=https%3A%2F%2Fforeignpolicy.com%2F&brand=fp" class="small-link" target="_blank">Forgot Password?</a>
+          <input type="submit" class="button" value="Sign In" name="loginlogoutSubmit_login" />
+        </div>
+      </form>
+    </div>
+    <div class="create-account">
+      <div class="create-account--step-1">
+        <h4>Need an account?</h4>
+        <p>Sign up for free access to 1 article per month and weekly email updates from expert policy analysts</p>
+        <a class="show-create-account--step-2 modal-button">Sign Up</a>
+      </div>
+
+      <div class="create-account--step-2">
+        <p class="sign-in--option">Already have an account? <a class="show-sign-in--step-2">Log in</a></p>
+        <h3>Sign Up</h3>
+        <p>Create a <span class="fp-red">Foreign Policy</span> account to access 1 article per month and free newsletters developed by policy experts</p>
+        <div class="loading-placeholder">
+          <p>Loading</p>
+        </div>
+        <div id="oc-create-account-form"></div>
+      </div>
+    </div>
+    <div class="callouts">
+      <p>Want unlimited access? <a href="/subscribe">Subscribe today</a>.</p>
+    </div>
+    <div class="back">
+      <span class="show-sign-in--step-1">Go Back</span>
+    </div>
+  </div>
+</div>
+
+                
+<div class="js-takeover default" id="premium-only-takeover" style="display:none">
+  <div class="js-takeover-content premium-only-takeover" id="premium-only-takeover--default">
+    <div class="oc-premium-subscription-takeover">
+      <div class="oc-premium-subscription-text">
+          <div class="oc-premium-subscription-text--inner">
+              <p class="close-back"><a href="/">&#9664; Go Back</a></p>
+              <p class="premium-subhead">Premium Content</p>
+              <div class="oc-premium-subscription-takeover_h2">Pulp Liberation Army</div>
+              <p>This page is only accessible by Foreign Policy Premium subscribers.</p>
+              <p>FP Premium subscribers get insider access to in-depth research reports on complex topics with far-reaching geopolitical implications, as well as exclusive conference calls with FP’s editors and reporters, Foreign Policy’s award-winning print magazine, and advanced access to live events.</p>
+          </div>
+          <div class="oc-premium-subscription-text--form">
+            <div class="login-options">
+              <h3>Sign in or Subscribe to Continue</h3>
+              <h4>Sign in to your Foreign Policy account</h4>
+              <a href="https://fp-reg.onecount.net/onecount/login/loginlogout.cgi" class="FP-paywall--login FP-paywall--login--login button button--grey">Sign In</a>
+
+              <h4 class="border-top">Not an FP Premium subscriber?</h4>
+              <a href="https://fp-reg.onecount.net/onecount/flexreg/displayform.php?g=0&form=597&signup=1" class="button button--grey">Subscribe Now</a>
+            </div>
+            <div class="subscription-options" style="display:none">
+              <div class="basic-options" style="display:none">
+                <h3>Upgrade to FP Premium to Continue</h3>
+                <p>Thank you for being an FP Basic subscriber. To get access to this special FP Premium benefit, upgrade your subscription by clicking the button below.</p>
+                <a href="https://fp-reg.onecount.net/onecount/flexreg/displayform.php?g=0&form=597&upgrade=premium" class="button">Upgrade Now</a>
+              </div>
+              <div class="registered-options" style="display:none">
+                <h3>Subscribe to Continue Reading</h3>
+                <p>Thank you for being an FP reader. To get access to this special FP Premium benefit, subscribe by clicking the button below.</p>
+                <a href="https://fp-reg.onecount.net/onecount/flexreg/displayform.php?g=0&form=597" class="button">Subscribe Now</a>
+              </div>
+            </div>
+          </div>
+      </div>
+      <a href="javascript:void(0);" data-action="Close" class="paywall_close_btn" style="display:none;"">
+        <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/close-black.svg" class="paywall_close simplemodal-close" alt="[X]">
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="js-takeover default" id="premium-only-takeover--webinars" style="display:none">
+  <div class="js-takeover-content premium-only-takeover">
+    <div class="oc-premium-subscription-takeover">
+      <div class="oc-premium-subscription-text">
+          <div class="oc-premium-subscription-text--inner">
+            <p class="premium-subhead">Premium Content</p>
+            <div class="oc-premium-subscription-takeover_h2">Subscribe Now</div>
+            <p>This page is only accessible by Foreign Policy Premium subscribers.</p>
+            <p>FP Premium subscribers get insider access to in-depth research reports on complex topics with far-reaching geopolitical implications, as well as exclusive conference calls with FP’s editors and reporters, Foreign Policy’s award-winning print magazine, and advanced access to live events.</p>
+          </div>
+          
+          <div class="oc-premium-subscription-text--form">
+            <div class="login-options">
+              <h3>Sign in or Subscribe to Continue</h3>
+              <h4>Sign in to your Foreign Policy account</h4>
+              <a href="https://fp-reg.onecount.net/onecount/login/loginlogout.cgi" class="FP-paywall--login FP-paywall--login--login button button--grey">Sign In</a>
+
+              <h4 class="border-top">Not an FP Premium subscriber?</h4>
+              <a href="https://fp-reg.onecount.net/onecount/flexreg/displayform.php?g=0&form=581&signup=1" class="button button--grey">Subscribe Now</a>
+            </div>
+            <div class="subscription-options" style="display:none">
+              <div class="basic-options" style="display:none">
+                <h3>Upgrade to FP Premium to Continue</h3>
+                <p>Thank you for being an FP Basic subscriber. To get access to this special FP Premium benefit, upgrade your subscription by clicking the button below.</p>
+                <a href="https://fp-reg.onecount.net/onecount/flexreg/displayform.php?g=0&form=581&upgrade=premium" class="button">Upgrade Now</a>
+              </div>
+              <div class="registered-options" style="display:none">
+                <h3>Subscribe to Continue Reading</h3>
+                <p>Thank you for being an FP reader. To get access to this special FP Premium benefit, subscribe by clicking the button below.</p>
+                <a href="https://fp-reg.onecount.net/onecount/flexreg/displayform.php?g=0&form=581" class="button">Subscribe Now</a>
+              </div>
+            </div>
+          </div>
+      </div>
+      <a href="javascript:void(0);" data-action="Close" class="paywall_close_btn">
+        <img src="https://foreignpolicy.com/wp-content/themes/foreign-policy-2017/assets/src/images/icons/close-black.svg" class="paywall_close simplemodal-close" alt="[X]">
+      </a>
+    </div>
+  </div>
+</div>
+
+
+                
+
+                                        <script>
+            window.onload = function() {
+                var userStatus = FP.Singletons.User.isStatus().then(function (is) {
+                    var userStatus = 'anon';
+
+                    if(is.sub) {
+                        userStatus = 'paid';
+                    } else if(is.prem) { 
+                        userStatus = 'paid';
+                    } else if(is.reg) {
+                        userStatus = 'lgdin';
+                    }
+
+                    dataLayer.push({
+                        'sections': "Feature",
+                        'authors': "Isaac Stone Fish, Helen Gao",
+                        'userStatus': userStatus
+                    });
+                });
+            }
+            </script>
+        
+
+        <script type="application/ld+json">{"@context":"http:\/\/schema.org","publisher":{"@type":"Organization","name":"Foreign Policy","url":"https:\/\/foreignpolicy.com","logo":{"@type":"ImageObject","height":60,"url":"https:\/\/foreignpolicy.com\/wp-content\/uploads\/2016\/04\/logo.png","width":74}},"@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/foreignpolicy.com\/2013\/05\/23\/pulp-liberation-army\/"},"headline":"Pulp Liberation Army","description":"Welcome to the strange -- and terrifying --\nunderground world of Chinese military fantasy novels.","Articlebody":"<p> It is the year 2049. China's economic development has so disturbed the world's other major powers that the United States, Japan, and Russia form an alliance and invade China. Fierce battles break out on the plains of northeast China, where Japanese troops and U.S. fighter jets besiege Chinese infantry. Caught by surprise, China's army nonetheless stages a glorious counterattack by deploying levitating tanks, and employing a strategy based on lessons learned from the Anti-Japanese War and the Resist America War (better known in the West as WWII and the Korean War, respectively).<b><\/b> <\/p> <p> Such is the plot of <i><a href=\"http:\/\/www.junshishu.com\/Book22187\/\">The Last Counterattack<\/a><\/i>, a serial novel published on <a href=\"http:\/\/www.junshishu.com\/\">Blood and Iron Reading,<\/a> a Chinese military literature website. In one of the latest installments, published<b> <\/b>on May 2, U.S. government-sponsored hackers have infiltrated the Chinese military's network and accidently launched a Chinese nuclear missile directed at the United States. The anonymous author's online profile says he is a former colonel in the People's Liberation Army and currently a staff officer in charge of operations and reconnaissance in the 12th Armored Division at China's 21st Army Group. Going by the online pseudonym &quot;the Old Staff Officer,&quot; he told <span class=\"fp_red\">FP<\/span> in an interview conducted over the Chinese messaging service QQ that he &quot;enjoys the feeling of letting [his] imagination fly.&quot; But Li, as I'll call him, believes that what he's writing may actually come to pass. In an April blog <a href=\"http:\/\/blog.ifeng.com\/article\/25392549.html\">post<\/a>, he explained his thinking for the book:\u00a0 &quot;The world besieges China and attacks\u00a0it from all sides. Is this possible? Yes!&quot; <\/p> <p> There are thousands of Chinese war fantasy novels on the Internet -- too sensitive to be published in book form, they circulate on blogs, and websites like Blood and Iron Reading.<b> <\/b>Most languish, but the more popular ones get read millions of times. As a rising China struggles to define its military aspirations, and as the country's vast propaganda apparatus encourages citizens to define their version of President Xi Jinping's vague slogan &quot;Chinese Dream,&quot; these military fantasy novels provide insight into what Chinese people's war dreams look like.<b><\/b> <\/p> <p> The novels follow one of two distinctive patterns. Most take place in the past, often during periods when China suffered a series of traumatic invasions. &quot;In China, science fiction demonstrates people's hope to transcend reality, and the reality is that China often loses,&quot; says Wu Yan, an education professor at Beijing Normal University and a scholar of Chinese science fiction. (Military fantasy novels fit into this genre, though compared with other science fiction, tend to focus more on international relations and less on technology.) Some of the novels feature modern characters that travel back in time to defend China from humiliation. In <i>1894: China Rises<\/i>, an unsuccessful businessman <a href=\"http:\/\/www.junshishu.com\/Book16760\/\">finds himself<\/a> hurled back to 1883, the beginning of the Sino-French War, where he becomes an army general and defeats the invading French forces. Another novel, <i>Resist Japan and Expel the Japanese Pirates<\/i>, <a href=\"http:\/\/www.junshishu.com\/Book20469\/\">tells<\/a> of an army major who returns to the Anti-Japanese War, and, armed with today's technology, drives the Japanese forces out of Manchuria<b>.<\/b> Other novels, like <i>The Last Counterattack<\/i>, project into the near future, when China's growth in economic and military strength prompts other major world powers to contain it through warfare. China always vanquishes these threats, however, through ingenious military strategies and advanced weaponry, and eventually gains the respect and prestige it deserves on the world stage. <\/p> <p> Li declined to go into further detail about his thought process, saying he &quot;doesn't need fame,&quot; but he did mention his admiration for Caspar Weinberger, Ronald Reagan's secretary of defense, and his book <i>The Next War<\/i>. Published in 1997, it imagines a series of regional conflicts arising out of the United States' &quot;<a href=\"http:\/\/www.chuckbaldwinlive.com\/caspar.html\">very deep cuts<\/a>&quot; in military capability, including one in which a nuclear war breaks on the Korean Peninsula and China seizes the opportunity to conquer Taiwan. &quot;Anybody who studies war should remember Weinberger,&quot; Li says. <\/p> <p> Military fantasies are only a subset of a broader, thriving market in military books. Unlike in the United States, where Tom Clancy can imagine a scenario where Washington <a href=\"http:\/\/www.goodreads.com\/book\/show\/15985392-threat-vector\">attacks<\/a> Beijing, Chinese censorship precludes their publishing in book form. &quot;I was told by publishers that any novel that describes wars among different countries are strictly off-limits,&quot; says Zheng Jun, a Chongqing-based science fiction writer and an independent sci-fi literary agent who helps publishes close to 100 science fiction books each year. China &quot;can only fight aliens or a fictional country,&quot; he says. <i>The Golden Bullet Series<\/i>, the last major Chinese military fantasy novels allowed to be published in book form, in 2003, accordingly focuses on conflicts between human beings and aliens or unidentified terrorists.<b><\/b> <\/p> <p> Such restrictions have led military fantasy writers to publish their work online, where censorship is less strict. Blood and Iron Reading, the largest web platform for military literature, provides roughly 2,500<b> <\/b>free military novels to download, and boasts an average of 30 million unique visitors per month. It is named after a famous speech delivered by German Chancellor Otto von Bismarck in 1862, about the unification of German territories. &quot;Bismarck is a popular figure among Chinese military aficionados,&quot; explains Jiang Lei, the website's founder, in a 2012 interview with the Chinese magazine <i>People Weekly<\/i>. <\/p> <p> China has a long tradition of fantasy writing, from the 16th century novel <i>Journey to the West<\/i>, about a monkey who fights demons, to the 18th-century ghost story collection <i>Strange Tales from a Chinese Studio<\/i>. But the utopia\/dystopian tradition prevalent in Western science fiction is shorter in China -- the first major work to explore it was the 1902 book <i>The Future of New China<\/i>. Written by prominent early 20th-century scholar Liang Qichao, the book imagines China in 1962, when it has achieved constitutional democracy. Liang's writings on the need for radical change in China had a big influence on Mao Zedong, who<b> <\/b>bought into the idea of constructing a future mortgaged on the present. (The chairman was less interested in constitutional democracy, however.)<b><\/b> <\/p> <p> After the founding of the People's Republic in 1949, science fiction and fantasy novels became heavily guided by communist ideology. The goal of these literature works became describing &quot;the future of communist society, free from class struggle and committed to the reconciliation of humanity and nature,&quot; wrote Wu, the Chinese sci-fi scholar, in an <a href=\"http:\/\/www.depauw.edu\/sfs\/abstracts\/a119.html#yan\">essay<\/a> titled &quot;Great Wall Planet: Introducing Chinese Science Fiction.&quot; In an interview, he cited the story &quot;A Fantasia of Communism,&quot; set in 2000 and written in 1958, during the Great Leap Forward. In it, a worker visits Beijing to report on his progress and meets a 107-year-old Chairman Mao amid &quot;abundant vegetable gardens&quot; and &quot;automated factories that produce hundreds of thousands of tons of steel every day.&quot; <\/p> <p> The novels have always been linked to China's exploration of its national identity. &quot;Chinese science fiction writers have been dreaming the Chinese dream since the end of the Qing dynasty,&quot; wrote Han Song, one of China's best-known sci-fi writers,\nin a blog <a href=\"http:\/\/hansong.blog.caixin.com\/archives\/55468\">post<\/a> in April. &quot;Now, we have the responsibility of dreaming a better dream,&quot; echoing Xi's slogan, which he <a href=\"http:\/\/news.xinhuanet.com\/english\/china\/2012-11\/29\/c_132008231.htm\">described<\/a> as &quot;the great renewal of the Chinese nation&quot; -- often interpreted as a return to 18th- or 8th-century China, when the country dominated world affairs. <\/p> <p> Many military fantasy novels use history as a mirror for self-examination. A large number portray the Chinese as valiant and fierce warriors unflinching in the face of foreign troops and weapons -- very different from how they feel about themselves. &quot;The so-called modern Chinese are in fact the post-Qing Chinese, castrated of their martial spirit,&quot; Li wrote in an April blog <a href=\"http:\/\/blog.ifeng.com\/article\/25392549.html\">post<\/a>. Often, beneath a veneer of national pride flows an undercurrent of self-examination and criticism. Han's novel <i>2066: Red Star Over America<\/i>, portrays the United States in the throes of a Cultural Revolution, where bands of marauding U.S. students fight battles in the country's ravaged countryside. China is the world's top superpower, and an earthquake has sunk Japan, erasing it from the map. The protagonist, a Chinese Go player and diplomatic envoy, tries to return civilization to a crumbling United States.\u00a0On the surface, the novel portrays a powerful future China and a decaying America -- but another way to read it is as a subtle rebuke of the Chinese regime's weakness and xenophobia during its own Cultural Revolution.<b><\/b> <\/p> <p> Another common theme running through the books is China -- sometimes violently -- forcing the world to become more harmonious. The motif is present in Liang's <i>The Future of New China<\/i>, set at an international conference in Shanghai, in which countries from all over the world come to pay tribute to China, as well as in recent works such as<b> <\/b><i>Being with You<\/i>, about a seven-man group that<b> <\/b>leads<b> <\/b>humans to resist the invasion of aliens. &quot;Chinese science fiction writers are often preoccupied with the feeling that the world should be united,&quot; Wu says. &quot;But they still seem to feel China is marginalized, not included in the world order.&quot; Throughout history, Li<b> <\/b>observes, China has often evoked suspicion and hostility abroad: &quot;China's biggest strength lies in its giant population, which is a major historical reason why it became known as the Yellow Peril.&quot;<b><\/b> <\/p> <p> In the United States, the term Yellow Peril originated in the late 19th century and referred to the supposed dangers posed by Chinese immigrants working in Western countries.<b> <\/b>In China, the term is broader, referring to the prejudice and suppression Chinese experienced in the hands of Western imperial powers.<b> <\/b>The best-known recent use of the term is as the title of a 1991 dystopian novel by Beijing-based dissident writer Wang Lixiong, which is also probably the best-selling Chinese military fantasy novel (though mostly from international sales -- it was banned in China). <i>Yellow Peril <\/i>imagines a civil war breaking out in China after the June 4, 1989, massacre in Tiananmen Square, unleashing hundreds of millions of Chinese refugees who cause international political mayhem by their sheer numbers.<b><\/b> <\/p> <p> Like Han's <i>2066<\/i>, many Chinese military fantasy novels feature the destruction of Japan. The most popular novel on Blood and Iron Reading is entitled <i>Sino-Japanese War-The Prologue to World War 3<\/i>, which has attracted more than 140 million pageviews.\u00a0Gao Yan, a young woman who grew up near a military camp, started it in 2005 under the pen name &quot;The Last Defender of Principles.&quot; The book envisions a full-scale Sino-Japanese War in the first decade of the 21st century, ignited by a naval clash between Japan and Taiwan near the disputed Diaoyu Islands, which the Japanese call the Senkakus. &quot;The beginning of the novel is strong and realistic,&quot; one reader wrote in a <a href=\"http:\/\/bbs.tiexue.net\/post2_2902433_1.html\">book review<\/a>. &quot;There has always been little trust and communication between us and those guys on that archipelago [Japan]. It's never hard to imagine the hatred between the two peoples.&quot; In the preface to the novel, Gao writes that she thinks a war between China and Japan is inevitable: &quot;China will only become a superpower after it has pushed Japan -- the obstacle -- aside.&quot; <\/p> <p> Nearly half of Chinese TV dramas made in 2012 showcase that same animosity: They take place during World War II, with cartoonish levels of violence against Japanese: Chinese soldiers hurl grenades that bring down Japanese fighter jets and tear Japanese in half with their hands (picture <i>Inglorious Bastards<\/i> shot without any sense of irony, and with Japanese in the place of Nazis, and you get the idea).<b><\/b> <\/p> <p> Frustration with the Chinese military is another common theme. When <span class=\"fp_red\">FP<\/span> mentions the fast development of Chinese weaponry and military to Li, he says, &quot;Yes, but we never use it.&quot; During the anti-Japanese protests in August 2012, another military fantasy writer who goes by the name &quot;Smoking Coffee&quot; <a href=\"http:\/\/t.163.com\/chouyandekafei\/status\/-2330082603050535180\">vented<\/a> a similar feeling on his Weibo account. &quot;The Chinese anger over the Diaoyu Islands dispute is not enough to start a war, and is still being suppressed by the state,&quot; he wrote. &quot;I want to ask, how much longer is it going to be suppressed?&quot; <\/p> <p> In his April blog <a href=\"http:\/\/blog.ifeng.com\/article\/25392549.html\">post<\/a>, Li describes the time when China was attacked by allied forces at the end of the Qing Dynasty, and draws sharp parallels to today. &quot;In a word,&quot; he writes, &quot;thinking of a war in which China is attacked by all sides is extremely necessary.&quot;<i><\/i> <\/p> ","datePublished":"2013-05-23T21:15:00+00:00","dateModified":"2013-05-23T21:15:00+00:00","url":"https:\/\/foreignpolicy.com\/2013\/05\/23\/pulp-liberation-army\/","author":[{"@type":"Person","name":"Isaac Stone Fish","url":"https:\/\/foreignpolicy.com\/author\/isaac-stone-fish\/"},{"@type":"Person","name":"Helen Gao","url":"https:\/\/foreignpolicy.com\/author\/helen-gao\/"}],"image":{"@type":"ImageObject","url":"https:\/\/foreignpolicy.com\/wp-content\/uploads\/2013\/05\/15233970921.jpg?w=625","height":400,"width":625},"isAccessibleForFree":"False","hasPart":{"@type":"WebPageElement","isAccessibleForFree":"False","cssSelector":".post-content-main"}}</script>
+<script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201947'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var fpUtilsLoc = {"isDev":"","redirectUri":"https:\/\/foreignpolicy.com\/share_redirect\/"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://foreignpolicy.com/_static/??-eJytkFEOgkAMRC/kWiEQvoxnWWuFwtKSbQW9vZt4ApWvmZ950w5sS0AVJ3HwgWYyuGsm7iUsmhhfoT5VHUQzcgPLCIaZl+KvNMSVNRtI0T46qxxHO8AeRNrCxnLTLdDTKUtMIbFM9l/BSgWZAaMNX4DMy28Io8HDORkkxZjMNceefsfsNRWqTkyhZO1zz2U+V23XtHXddNX4BhMRsMQ='></script>
+<script type='text/javascript' src='//cdn.taboola.com/libtrc/foreignpolicy/loader.js'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var FPMarketingSettings = {"_preview":null,"sponsored":null,"anon":null,"print":null,"premium":null,"__meta":{"disable_paywall":false,"localdata_prefix":"__FPMarketingTakeover_","tracking_prefix":""}};
+/* ]]> */
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var myFpAlertsLoc = {"isVIPEnv":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var fpIPAccessState = {"printArchiveUrl":"https:\/\/foreignpolicy.com\/print-archive\/","ipAccessEnabled":"1","fpAnalyticsUrl":"https:\/\/foreignpolicy.com\/fp-insights\/"};
+/* ]]> */
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var fpPaywallAfterArticle = {"links":["https:\/\/foreignpolicy.com\/subscribe"],"links_text":["<b>The story doesn\u2019t end here, but this month\u2019s free articles soon will. <\/b><br \/>Subscribe for unlimited content today."],"offers_text":["Subscribe for $2.25\/week"],"links_b":[""],"links_b_text":[""],"offers_b_text":[""]};
+/* ]]> */
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var fpPaywallPopup = {"links":{"links":"https:\/\/foreignpolicy.com\/subscribe","links_text":"<b>The story doesn\u2019t end here, but this month\u2019s free articles soon will. <\/b><br \/>Subscribe for unlimited content today.","offers_text":"Subscribe for $2.25\/week","links_b":"\/subscribe","links_b_text":"","offers_b_text":"","popup":"https:\/\/foreignpolicy.com\/subscribe","popupB":""}};
+/* ]]> */
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var fpPaywallRegwall = {"link":"https:\/\/foreignpolicy.com\/?modal=login"};
+/* ]]> */
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var zMoatADVERTISER = {"moatPassback":"editorial"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://foreignpolicy.com/_static/??-eJy1lcFu2zAMhl9ojpagRU7DLnuB7dQrI7M2HUpURSpB3n7MhizFCgxw7J0kw+bnX+RPKpxLFyUbZgs2YkINr1KRhtwVYYqXbvd5uw+giqZBawwaKxXfnzD3UoPBQYRhM+mn8DCrGbGGUiWR4hootUp5WIPUKi/DqAthNMnOUqxraKJ+GaXA5QzMnnBM1JJ/XlpZhjzgCCeSqoFloNwl6WFO4tTAKIZJw/TWsF42UeRIC71wFxWBY2Mw7DsjJxikOQf+oO615eigeR77QBlJTXxdgFBKhXGFbFd9KB4Yq2d6+v4L8/JNElD+gU5VewhI6t45EM8p/bvo0kGMqHMO848GYcrHhai7B6G6SMbuDBbHpYPgTwv/Xv8P1EMVBlwpmTfqCtPmb2TF4bougxocUU5Y3+2WAaOkItnjrpfAtU07ZepnFenu7NKY35rYaiPxZsfiFX5IURKwW8Qqd7ZEAtYR6t1xlCO33kn+P3/EdMB+42PX339NX7bP+6fn3e5pv51+ArDkQT4='></script>
+<script type='text/javascript' src='https://stats.wp.com/e-201947.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:7.9.1',blog:'162972146',post:'25819',tz:'-5',srv:'foreignpolicy.com'} ]);
+	_stq.push([ 'clickTrackerInit', '162972146', '25819' ]);
+</script>
+
+
+                <script>
+        (function(src){var a=document.createElement("script");a.type="text/javascript";a.async=true;a.src=src;var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)})("//experience.tinypass.com/xbuilder/experience/load?aid=beVmoi3WRm");
+
+        tp = window.tp || [];
+        tp.push(["setTags", ["China","Covers","Culture","Default","East Asia","Economics","Feature","Free","Internet","Media","Military","Science &amp; Technology","Web Exclusive","article"]]);
+        </script>
+
+
+
+        <!--START Lightbox Javascript-->
+<script type="text/javascript">
+    /*<![CDATA[*/ window.lightboxjs || function (c) { function g(b, d) { d && (d += (/\?/.test(d) ? "&" : "?") + "lv=1"); c[b] || function () { var i = window, h = document, j = b, g = h.location.protocol, l = "load", k = 0; (function () { function b() { a.P(l); a.w = 1; c[j]("_load") } c[j] = function () { function m() { m.id = e; return c[j].apply(m, arguments) } var b, e = ++k; b = this && this != i ? this.id || 0 : 0; (a.s = a.s || []).push([e, b, arguments]); m.then = function (b, c, h) { var d = a.fh[e] = a.fh[e] || [], j = a.eh[e] = a.eh[e] || [], f = a.ph[e] = a.ph[e] || []; b && d.push(b); c && j.push(c); h && f.push(h); return m }; return m }; var a = c[j]._ = {}; a.fh = {}; a.eh = {}; a.ph = {}; a.l = d ? d.replace(/^\/\//, (g == "https:" ? g : "http:") + "//") : d; a.p = { 0: +new Date }; a.P = function (b) { a.p[b] = new Date - a.p[0] }; a.w && b(); i.addEventListener ? i.addEventListener(l, b, !1) : i.attachEvent("on" + l, b); var q = function () { function b() { return ["<head></head><", c, ' onload="var d=', n, ";d.getElementsByTagName('head')[0].", d, "(d.", g, "('script')).", i, "='", a.l, "'\"></", c, ">"].join("") } var c = "body", e = h[c]; if (!e) return setTimeout(q, 100); a.P(1); var d = "appendChild", g = "createElement",
+    i = "src", k = h[g]("div"), l = k[d](h[g]("div")), f = h[g]("iframe"), n = "document", p; k.style.display = "none"; e.insertBefore(k, e.firstChild).id = o + "-" + j; f.frameBorder = "0"; f.id = o + "-frame-" + j; /MSIE[ ]+6/.test(navigator.userAgent) && (f[i] = "javascript:false"); f.allowTransparency = "true"; l[d](f); try { f.contentWindow[n].open() } catch (s) { a.domain = h.domain, p = "javascript:var d=" + n + ".open();d.domain='" + h.domain + "';", f[i] = p + "void(0);" } try { var r = f.contentWindow[n]; r.write(b()); r.close() } catch (t) { f[i] = p + 'd.write("' + b().replace(/"/g, String.fromCharCode(92) + '"') + '");d.close();' } a.P(2) }; a.l && q() })() }(); c[b].lv = "1"; return c[b] } var o = "lightboxjs", k = window[o] = g(o); k.require = g; k.modules = c }({}); /*]]>*/</script><script type="text/javascript">window.lightboxlib = lightboxjs.require("lightboxlib", "//www.lightboxcdn.com/vendor/044b8435-d6a0-427d-af56-eec8f6ae795a/lightbox.js?mb=" + (new Date().getTime()));</script>
+<!--END Lightbox Javascript-->
+    </body>
+</html>

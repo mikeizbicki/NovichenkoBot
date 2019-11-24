@@ -201,6 +201,10 @@ def html2article(url,html):
     if 'foxnews.com' in url:
         article.publish_date=parse(soup.find('div',class_='article-date').find('time').text)
 
+    if 'janes.com' in url:
+        article.publish_date=parse(soup.find('div',class_='date').text)
+        article.authors=soup.find('div',class_='byline').find('b').text.split(',')[0]
+
     if 'politico.eu' in url:
         article.publish_date=parse(soup.find('p',class_='timestamp').find('time')['timestamp'])
         article.authors=soup.find('div',class_='byline').text.split('and')
@@ -208,6 +212,9 @@ def html2article(url,html):
     if 'thediplomat.com' in url:
         article.publish_date=parse(soup.find('span',itemprop='datePublished').text)
         article.authors=soup.find('div',class_='td-author').find('strong').text.split('and')
+
+    if 'https://thehill.com' in url:
+        article.authors=soup.find('span',class_='submitted-by').find('a').text.split('and')
 
     if 'usatoday.com' in url:
         article.authors=soup.find('a',class_='gnt_ar_by_a').text.split('and')

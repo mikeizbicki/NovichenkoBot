@@ -29,7 +29,11 @@ urls=[
     'http://russianforces.org/blog/2007/07/russia_calls_for_cooperation.shtml',
 
     'https://thediplomat.com/2019/06/north-korea-the-missing-link-in-northeast-asias-air-pollution-fight/',
+    'https://foreignpolicy.com/2013/05/23/pulp-liberation-army/',
+    'https://thehill.com/policy/defense/overnights/471731-overnight-defense-presented-by-boeing-house-chairmen-demand-answers',
     'https://www.csis.org/analysis/ending-cycle-crisis-and-complacency-us-global-health-security',
+    'https://www.janes.com/article/91085/north-korea-releases-images-of-10-september-weapon-test',
+    'https://carnegieendowment.org/2019/02/19/benchmarking-second-trump-kim-summit-pub-78407',
 
     'https://www.washingtonpost.com/news/worldviews/wp/2017/10/02/north-korea-appears-to-have-a-new-internet-connection-thanks-to-the-help-of-a-state-owned-russian-firm/',
     'https://www.nytimes.com/2005/09/19/world/asia/north-korea-says-it-will-abandon-nuclear-efforts.html',
