@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import sqlalchemy
 from sqlalchemy.sql import text
 import datetime
+from dateutil.parser import parse
 import langid
 import newspaper 
 
@@ -191,7 +192,24 @@ def html2article(url,html):
 
     # for some domains, newspaper3k doesn't work well
     # and so we have manual rules for extracting information
+    if 'armscontrolwonk.com' in url:
+        article.publish_date=parse(soup.find('span',class_='date published time').text)
+
+    if 'www.csis.org' in url:
+        article.publish_date=parse(soup.find('article',role='article').find('p').text)
+
+    if 'foxnews.com' in url:
+        article.publish_date=parse(soup.find('div',class_='article-date').find('time').text)
+
+    if 'politico.eu' in url:
+        article.publish_date=parse(soup.find('p',class_='timestamp').find('time')['timestamp'])
+        article.authors=soup.find('div',class_='byline').text.split('and')
+
     if 'thediplomat.com' in url:
-        soup.find('span',class_='pubTime')
+        article.publish_date=parse(soup.find('span',itemprop='datePublished').text)
+        article.authors=soup.find('div',class_='td-author').find('strong').text.split('and')
+
+    if 'usatoday.com' in url:
+        article.authors=soup.find('a',class_='gnt_ar_by_a').text.split('and')
 
     return article

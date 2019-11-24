@@ -20,11 +20,25 @@ urltests_file=os.path.join(cache_dir,'urltests.json')
 testkeys=['publish_date','lang','authors']
 
 urls=[
-    'http://www.granma.cu/cuba/2019-11-05/suspenden-la-decima-liga-nacional-femenina-de-balonmano-05-11-2019-11-11-00',
+    #'http://www.granma.cu/cuba/2019-11-05/suspenden-la-decima-liga-nacional-femenina-de-balonmano-05-11-2019-11-11-00',
+    #'https://www.prensa-latina.cu/index.php?o=rn&id=318493&SEO=congreso-de-argentina-retoma-proyecto-de-ley-de-alquileres',
+    #'https://ezln.eluniversal.com.mx/caracoles-escuela-de-las-nuevas-semillas/',
+
     'https://www.nknews.org/2019/10/why-north-korean-and-russian-state-media-are-joining-forces-to-fight-fake-news/',
-    'https://www.prensa-latina.cu/index.php?o=rn&id=318493&SEO=congreso-de-argentina-retoma-proyecto-de-ley-de-alquileres',
-    'https://ezln.eluniversal.com.mx/caracoles-escuela-de-las-nuevas-semillas/',
     'https://www.armscontrolwonk.com/archive/1208302/norm-building-and-tear-downs',
+    'http://russianforces.org/blog/2007/07/russia_calls_for_cooperation.shtml',
+
+    'https://thediplomat.com/2019/06/north-korea-the-missing-link-in-northeast-asias-air-pollution-fight/',
+    'https://www.csis.org/analysis/ending-cycle-crisis-and-complacency-us-global-health-security',
+
+    'https://www.washingtonpost.com/news/worldviews/wp/2017/10/02/north-korea-appears-to-have-a-new-internet-connection-thanks-to-the-help-of-a-state-owned-russian-firm/',
+    'https://www.nytimes.com/2005/09/19/world/asia/north-korea-says-it-will-abandon-nuclear-efforts.html',
+    'https://www.usatoday.com/story/news/world/2019/05/31/north-korea-executes-senior-officials-over-failed-trump-summit-report/1296383001/',
+    #'https://www.politico.eu/article/how-us-north-korea-could-stumble-into-world-war-iii/',
+    'https://www.politico.com/latest-news-updates/trump-kim-jong-un-meeting-us-north-korea-summit-2018',
+    'https://www.foxnews.com/politics/trump-kim-jong-uns-vietnam-summit-joins-long-list-of-key-moments-between-world-leaders-a-timeline',
+    'https://www.cnn.com/2019/11/18/asia/north-korea-us-meeting-intl/index.html',
+    'https://www.cnbc.com/2018/09/06/north-korean-hackers-will-be-charged-for-sony-pictures-wannacry-ransomware-attacks.html',
     ]
 
 def download_url(url):
@@ -68,22 +82,18 @@ def get_urltests():
     try:
         with open(urltests_file) as f:
             return json.load(f)
-    except FileNotFoundError:
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
         pass
 
 def print_test_quality():
     urltests=get_urltests()
     numtests=len(urltests)
-    hostnames_to_fix=[]
-    print(f'bad test count: (/{numtests})')
     for testkey in testkeys:
-        badtests=0
+        print(f'hostnames with invalid {testkey}')
+        hostnames_to_fix=[]
         for urltest in urltests:
             if urltest['tests'][testkey]=='' or urltest['tests'][testkey]==[] or urltest['tests'][testkey] is None:
-                badtests+=1
-                hostnames_to_fix.append(urlparse(urltest['url']).hostname)
-        print(f'{testkey.rjust(20)} : {badtests}')
-    print('hostnames_to_fix=',set(hostnames_to_fix))
+                print('  ',urlparse(urltest['url']).hostname)
 
 @pytest.mark.parametrize('urltest',get_urltests())
 def test_html2article(urltest):
@@ -103,6 +113,6 @@ def test_html2article(urltest):
         assert str(getattr(article,'publish_date')) == urltest['tests']['publish_date']
 
 if __name__=='__main__':
-    #update_urltests()
+    update_urltests()
     print_test_quality()
 
