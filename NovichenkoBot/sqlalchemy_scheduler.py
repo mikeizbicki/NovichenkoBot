@@ -12,6 +12,7 @@ from urllib.parse import urlparse,urlunparse
 from six.moves.urllib.parse import urljoin
 from w3lib.url import safe_url_string
 import logging
+import random
 import sqlalchemy
 from sqlalchemy.sql import text
 import scrapy
@@ -31,6 +32,7 @@ class Scheduler(object):
     """
     def __init__(self, stats=None, crawler=None, db=None):
         settings=crawler.settings
+        self.ENABLE_PROXY = settings.getbool('ENABLE_PROXY',False)
         self.INFINITY_CRAWLER = settings.getbool('INFINITY_CRAWLER',False)
         self.HOSTNAME_RESTRICTIONS = settings.getlist('HOSTNAME_RESTRICTIONS')
         self.HOSTNAME_RESTRICTIONS_loop = [
@@ -174,6 +176,8 @@ class Scheduler(object):
             def errback_httpbin(failure):
                 twisted_status=failure.value.__class__.__name__
                 twisted_status_long=str(failure.value)
+                logger.debug('twisted_status=',twisted_status)
+                logger.debug('twisted_status_long=',twisted_status_long)
                 sql=text('''
                 insert into responses
                     (id_frontier,hostname,timestamp_received,twisted_status,twisted_status_long)
@@ -210,6 +214,12 @@ class Scheduler(object):
                 'id_frontier':frontier_row['id_frontier']
                 })
             self.stats.inc_value('scheduler/dequeued', spider=self.spider)
+
+            # add proxy information to request
+            if self.ENABLE_PROXY:
+                # FIXME: add proxies to list
+                proxies=[]
+                request.meta['proxy']=random.choice(proxies)
 
             return request
 
