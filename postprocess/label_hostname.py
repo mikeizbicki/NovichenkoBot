@@ -96,22 +96,24 @@ def label_hostname(connection,hostname):
             SELECT id_articles,text,title
             FROM get_valid_articles(:hostname)
             WHERE id_articles NOT IN (SELECT id_articles FROM sentences)
-            LIMIT 1;
+            LIMIT 100;
         ''')
         res=connection.execute(sql,{
             'hostname':hostname
-            }).first()
+            })
+        rows=list(res)
 
         # if no results, then terminate the loop
-        if res is None:
+        if rows is []:
             print(f'ERROR: no rows found for {hostname}')
             return i
 
         # otherwise, create the labels
-        id_articles,text,title = res
-        sentences = get_sentences(connection,id_articles,text=text,title=title)
-        for id_sentences,sentence in enumerate(sentences):
-            for label_func in label_funcs:
-                get_label(connection,id_articles,id_sentences,label_func,sentence=sentence)
+        for row in rows:
+            id_articles,text,title = row
+            sentences = get_sentences(connection,id_articles,text=text,title=title)
+            for id_sentences,sentence in enumerate(sentences):
+                for label_func in label_funcs:
+                    get_label(connection,id_articles,id_sentences,label_func,sentence=sentence)
 
 label_hostname(connection,args.hostname)
