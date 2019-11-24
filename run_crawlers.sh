@@ -42,7 +42,14 @@ done
 # launch the low priority crawls
 ########################################
 
-res=$(psql $db -c "select hostname from crawlable_hostnames where priority!='high' order by hostname;")
+res=$(psql $db -c "
+select hostname 
+from crawlable_hostnames 
+where 
+    priority!='high' and 
+    (lang='en' or lang='')
+order by hostname;
+")
 hostnames_low=$(echo "$res" | tail -n +4 | head -n -3)
 
 i=0

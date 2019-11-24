@@ -34,10 +34,10 @@ with open(args.seeds_csv) as f:
 
         # add seed URLS into the frontier
         for url in [
-                'http://'+hostname,
-                'http://www.'+hostname,
-                'https://'+hostname,
-                'https://www.'+hostname
+                'http://'+hostname+'/'+url_info['path'],
+                'http://www.'+hostname+'/'+url_info['path'],
+                'https://'+hostname+'/'+url_info['path'],
+                'https://www.'+hostname+'/'+url_info['path'], 
                 ]:
             insert_request(connection,url,allow_dupes=True,priority=float('Inf'))
 
