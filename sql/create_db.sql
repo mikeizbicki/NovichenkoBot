@@ -369,6 +369,9 @@ CREATE TABLE sentences (
     FOREIGN KEY (id_articles) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED
 );
 
+CREATE EXTENSION btree_gist;
+CREATE INDEX sentences_ids_tsv ON sentences USING GIST (id_articles,id_sentence,to_tsvector('english', sentence_resolved));
+
 CREATE TABLE labels (
     id_articles BIGINT,
     id_sentences INTEGER,

@@ -12,6 +12,8 @@ ALTER INDEX urls_scheme_hostname_port_path_params_query_fragment_other_key SET T
 ALTER INDEX articles_pkey SET TABLESPACE fastdata;
 ALTER INDEX frontier_pkey SET TABLESPACE fastdata;
 ALTER INDEX responses_pkey SET TABLESPACE fastdata;
+ALTER INDEX sentences_pkey SET TABLESPACE fastdata;
+ALTER INDEX labels_pkey SET TABLESPACE fastdata;
 
 ALTER INDEX urls_index_hostname_path SET TABLESPACE fastdata;
 ALTER INDEX frontier_index_urls SET TABLESPACE fastdata;
@@ -23,3 +25,4 @@ ALTER INDEX responses_index_frontier SET TABLESPACE fastdata;
 ALTER INDEX articles_index_urls SET TABLESPACE fastdata;
 ALTER INDEX frontier_index_timestamp_received SET TABLESPACE fastdata;
 ALTER INDEX responses_index_timestamp_processed SET TABLESPACE fastdata;
+ALTER INDEX sentences_ids_tsv SET TABLESPACE fastdata;
