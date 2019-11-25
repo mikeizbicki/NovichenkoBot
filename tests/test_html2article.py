@@ -43,6 +43,11 @@ urls=[
     'https://www.foxnews.com/politics/trump-kim-jong-uns-vietnam-summit-joins-long-list-of-key-moments-between-world-leaders-a-timeline',
     'https://www.cnn.com/2019/11/18/asia/north-korea-us-meeting-intl/index.html',
     'https://www.cnbc.com/2018/09/06/north-korean-hackers-will-be-charged-for-sony-pictures-wannacry-ransomware-attacks.html',
+]
+urls=[
+    'https://angrystaffofficer.com/2018/01/09/world-war-i-stands-as-a-lesson-against-a-bloody-nose-strike-on-north-korea/',
+    'https://www.stripes.com/news/pacific/north-korea-s-kim-attends-military-air-show-lauds-pilots-1.607540',
+    'https://www.stripes.com/news/pacific/north-korean-leader-orders-artillery-drill-near-disputed-sea-border-with-south-korea-1.608565',
     ]
 
 def download_url(url):
@@ -58,15 +63,34 @@ def download_url(url):
         with open(filename) as f:
             html=f.read()
     except FileNotFoundError:
-        r=requests.get(url)
+        r=requests.get(url,headers={'User-Agent':'NovichenkoBot'})
         html=r.text
         with open(filename,'x') as f:
             f.write(html)
     return html
 
-def update_urltests():
-    urltests=[]
+def update_urltests(from_scratch=False):
+
+    if from_scratch:
+        urltests={}
+    else:
+        urltests=get_urltests()
+
+    urls=[]
+    with open('tests/test_urls') as f:
+        for line in f.readlines():
+            urls.append(line.strip())
+            
     for url in urls:
+        if url in urltests.keys():
+            tests=urltests[url]
+            valid_test=True
+            for k in testkeys:
+                if tests[k]==None or tests[k]=='' or tests[k]==[]:
+                    valid_test=False
+            if valid_test:
+                continue
+
         print(f'{datetime.datetime.now()}: {url}')
         html=download_url(url)
         article=html2article(url,html)
@@ -77,7 +101,7 @@ def update_urltests():
                 tests[k]=str(attr)
             else:
                 tests[k]=attr
-        urltests.append({'url':url,'tests':tests})
+        urltests[url]=tests
 
     with open(urltests_file,'w') as f:
         f.write(json.dumps(urltests))
@@ -95,9 +119,9 @@ def print_test_quality():
     for testkey in testkeys:
         print(f'hostnames with invalid {testkey}')
         hostnames_to_fix=[]
-        for urltest in urltests:
-            if urltest['tests'][testkey]=='' or urltest['tests'][testkey]==[] or urltest['tests'][testkey] is None:
-                print('  ',urlparse(urltest['url']).hostname)
+        for url,tests in urltests.items():
+            if tests[testkey]=='' or tests[testkey]==[] or tests[testkey] is None:
+                print('  ',urlparse(url).hostname)
 
 @pytest.mark.parametrize('urltest',get_urltests())
 def test_html2article(urltest):
