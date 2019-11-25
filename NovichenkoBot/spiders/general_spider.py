@@ -212,13 +212,13 @@ def html2article(url,html):
 
     if 'janes.com' in url:
         article.publish_date=parse(soup.find('div',class_='date').text)
-        article.authors=soup.find('div',class_='byline').find('b').text.split(',')[0]
+        article.authors=soup.find('div',class_='byline').find('b').text.split(',')[0].split('and')
 
     if 'www.northkoreatech.org' in url:
         article.authors=soup.find('span',class_='entry-meta-author vcard author').text.split(':')[-1].split('and')
 
     if 'www.nkleadershipwatch.org' in url or 'nkleadershipwatch.wordpress.com' in url:
-        article.authors='__NOAUTHOR__'
+        article.authors=['__NOAUTHOR__']
 
     if 'politico.eu' in url:
         article.publish_date=parse(soup.find('p',class_='timestamp').find('time')['datetime'])
@@ -226,7 +226,7 @@ def html2article(url,html):
 
     if 'www.stripes.com' in url:
         credits=soup.find('div',class_='article_credits')
-        article.authors=credits.text.split('|')[0][3:]
+        article.authors=credits.text.split('|')[0][3:].split('and')
         article.publish_date=parse(credits.text.split(':')[1])
 
     if 'thediplomat.com' in url:

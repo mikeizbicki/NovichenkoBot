@@ -123,10 +123,11 @@ def print_test_quality():
             if tests[testkey]=='' or tests[testkey]==[] or tests[testkey] is None:
                 print('  ',urlparse(url).hostname)
 
-@pytest.mark.parametrize('urltest',get_urltests())
-def test_html2article(urltest):
-    html=download_url(urltest['url'])
-    article=html2article(urltest['url'],html)
+@pytest.mark.parametrize('urltests',get_urltests().items())
+def test_html2article(urltests):
+    url,tests=urltests
+    html=download_url(url)
+    article=html2article(url,html)
 
     # for all urls, we check that the articles extracted are non-empty
     assert article.title != ''
@@ -137,10 +138,15 @@ def test_html2article(urltest):
     assert article.html is not None
 
     # for other aspects of the article, we check to ensure they have a specific value
-    if 'publish_date' in urltest:
-        assert str(getattr(article,'publish_date')) == urltest['tests']['publish_date']
+    if 'publish_date' in tests:
+        assert str(getattr(article,'publish_date')) == tests['publish_date']
+    if 'authors' in tests:
+        assert type(getattr(article,'authors')) == list
+        assert getattr(article,'authors') == tests['authors']
+    if 'lang' in tests:
+        assert getattr(article,'lang') == tests['lang']
 
 if __name__=='__main__':
-    update_urltests()
+    update_urltests(True)
     print_test_quality()
 
