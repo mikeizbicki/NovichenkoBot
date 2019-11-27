@@ -57,7 +57,7 @@ def urlinfo2url(urlinfo):
     return url
 
 
-def get_url_info(connection,url,depth=0):
+def get_url_info(connection,url,depth=0,flexible_url=False):
     '''
     This function returns a dictionary containing the information of the urls table in the database.
     If there is no entry for the url in the table, then an entry is created.
@@ -77,9 +77,15 @@ def get_url_info(connection,url,depth=0):
     # but the failed insert still causes postgres to terminate the transaction,
     # resulting in InternalError exceptions on future inputs.
     # Somehow, we would need to prevent the failed insert from aborting the transaction.
+    if flexible_url:
+        if len(url_parsed['query'   ])>1024: url_parsed['query'   ]=''
+        if len(url_parsed['fragment'])>256 : url_parsed['fragment']=''
+        if len(url_parsed['path'    ])>256 : url_parsed['path'    ]=''
+            
     if ( len(url_parsed['path'])>1024 or 
          len(url_parsed['query'])>1024 or 
-         len(url_parsed['fragment'])>256
+         len(url_parsed['fragment'])>256 or
+         len(url_parsed['params'])>256
          ):
         return None
 
@@ -120,13 +126,15 @@ def get_url_info(connection,url,depth=0):
     return url_info
 
 
-def insert_request(connection,url,priority=0,allow_dupes=False,depth=0):
+def insert_request(connection,url,priority=0,allow_dupes=False,depth=0,flexible_url=False):
     '''
     Inserts a url into the frontier with the specified priority.
     Returns the url_info object of the input url.
     '''
 
-    url_info=get_url_info(connection,url,depth=depth)
+    url_info=get_url_info(connection,url,depth=depth,flexible_url=flexible_url)
+    if url_info is None:
+        return
 
     # if url_info has non-empty query/fragment/params components,
     # then it is likely to be a duplicate and the priority should be lowered
