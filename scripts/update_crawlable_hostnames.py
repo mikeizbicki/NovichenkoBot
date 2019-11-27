@@ -2,7 +2,8 @@
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--db',default='postgres:///novichenkobot')
-parser.add_argument('--seeds_csv',required=True)
+parser.add_argument('--add_seeds',action='store_true')
+parser.add_argument('--csv',required=True)
 args = parser.parse_args()
 
 # imports
@@ -20,7 +21,7 @@ engine = sqlalchemy.create_engine(args.db)
 connection = engine.connect()
 
 # add seeds
-with open(args.seeds_csv) as f:
+with open(args.csv) as f:
     
     reader = csv.DictReader(f)
     for row in reader:
@@ -33,13 +34,14 @@ with open(args.seeds_csv) as f:
         print(f'adding {hostname}')
 
         # add seed URLS into the frontier
-        for url in [
-                'http://'+hostname+'/'+url_info['path'],
-                'http://www.'+hostname+'/'+url_info['path'],
-                'https://'+hostname+'/'+url_info['path'],
-                'https://www.'+hostname+'/'+url_info['path'], 
-                ]:
-            insert_request(connection,url,allow_dupes=True,priority=float('Inf'))
+        if args.add_seeds:
+            for url in [
+                    'http://'+hostname+'/'+url_info['path'],
+                    'http://www.'+hostname+'/'+url_info['path'],
+                    'https://'+hostname+'/'+url_info['path'],
+                    'https://www.'+hostname+'/'+url_info['path'], 
+                    ]:
+                insert_request(connection,url,allow_dupes=True,priority=float('Inf'))
 
         # populate the crawlable_hostnames table
         sql=sqlalchemy.sql.text('''
