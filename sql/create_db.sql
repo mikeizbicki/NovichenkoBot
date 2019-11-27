@@ -239,7 +239,7 @@ BEGIN
     RETURN QUERY
     SELECT DISTINCT ON (id_urls_canonical) 
         articles.id_articles,
-        articles.id_urls_canonical,
+        CASE WHEN articles.id_urls_canonical = 2425 THEN articles.id_urls ELSE articles.id_urls_canonical END,
         articles.pub_time,
         articles.lang,
         articles.text,
