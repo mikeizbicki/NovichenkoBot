@@ -13,7 +13,10 @@ def parse_url(url):
     # into lower case and ensures non-alphanumeric characters
     # are properly formatted
     from url_normalize import url_normalize
-    url_parsed=urlparse(url_normalize(url))
+    try:
+        url_parsed=urlparse(url_normalize(url))
+    except:
+        url_parsed=urlparse(url)
 
     # remove trailing slash from url if present
     #path=url_parsed.path
