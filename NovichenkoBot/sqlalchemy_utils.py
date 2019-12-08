@@ -126,6 +126,7 @@ def get_url_info(connection,url,depth=0,flexible_url=False):
     id_urls=res[0]
     url_info=url_parsed
     url_info['id_urls']=id_urls
+    url_info['depth']=depth
     return url_info
 
 
@@ -138,17 +139,6 @@ def insert_request(connection,url,priority=0,allow_dupes=False,depth=0,flexible_
     url_info=get_url_info(connection,url,depth=depth,flexible_url=flexible_url)
     if url_info is None:
         return
-
-    # if url_info has non-empty query/fragment/params components,
-    # then it is likely to be a duplicate and the priority should be lowered
-    if url_info['query'] != '' or url_info['fragment'] != '' or url_info['params'] != '':
-        priority-=1000000
-
-    # if there is a year in the path, 
-    # then this is likely to be an article,
-    # so we up the priority
-    if re.match(r'.*([1-3][0-9]{3})',url_info['path']):
-        priority+=100
 
     # check if the url already exists in the frontier
     if not allow_dupes:
@@ -173,7 +163,32 @@ def insert_request(connection,url,priority=0,allow_dupes=False,depth=0,flexible_
             return url_info
 
     # we reach this line if either no duplicates were found or allow_dupes is True,
-    # so we insert into the table
+    # so we insert into the table;
+    # but first, we adjust the priority based on properties of the url
+
+    # if url_info has non-empty query/fragment/params components,
+    # then it is likely to be a duplicate and the priority should be lowered
+    if url_info['query'] != '' or url_info['fragment'] != '' or url_info['params'] != '':
+        priority-=1000000
+
+    # for each slash in the url, 
+    # we add an exponentially increasing penalty to the priority;
+    # this helps ensure that we crawl "simpler" urls before "complex" ones,
+    # and in particular helps work around broken websites that have unlimited nesting of subfolders
+    # (sinonk.com was the motivating example domain)
+    priority-=4**url_info['path'].count('/')
+
+    # we want to emphasize a BFS over DFS, 
+    # so we penalize based on the depth
+    priority-=2**url_info['depth']
+
+    # if there is a year in the path, 
+    # then this is likely to be an article,
+    # so we up the priority
+    if re.match(r'.*([1-3][0-9]{3})',url_info['path']):
+        priority+=100
+
+    # insert into table
     sql=sqlalchemy.sql.text('''
     insert into frontier
         (id_urls,timestamp_received,priority,hostname_reversed)
@@ -279,173 +294,4 @@ def get_id_articles(connection,urls):
 
     return id_articles_list
 
-
-def tokenize_by_sentence(text):
-    '''
-    This function takes an input text and returns a list of sentences.
-    It is intended as a helper function for `get_sentences` and not for direct use.
-    '''
-
-    # split into sentences
-    import nltk
-    paragraphs=text.split('\n\n')
-    sentences_raw = []
-    for paragraph in paragraphs:
-        sentences_raw += nltk.tokenize.sent_tokenize(paragraph)
-    
-    # remove extra whitespace and empty sentences
-    sentences = []
-    for sentence_raw in sentences_raw:
-        sentence=sentence_raw.strip()
-        if sentence!='':
-            sentences.append(sentence)
-
-    return sentences
-
-
-def get_sentences(connection,id_articles,text=None,title=None):
-    '''
-    Returns the list of sentences associated with an article.
-    If the sentences have not already been added into the `sentences` table,
-    then they are added.
-    '''
-
-    # if the sentences have already been extracted and inserted into the table,
-    # then simply select those sentences and return
-    sql=sqlalchemy.sql.text('''
-        SELECT id_sentences,sentence
-        FROM sentences
-        WHERE id_articles=:id_articles
-        ''')
-    res=connection.execute(sql,{
-        'id_articles':id_articles
-        })
-    sentences_with_ids=list(res)
-    if sentences_with_ids != []:
-        return [ text for id_sentences,text in sentences_with_ids ]
-
-    # get the article text
-    if title is None or text is None:
-        sql=sqlalchemy.sql.text('''
-            SELECT text,title 
-            FROM articles 
-            WHERE id_articles=:id_articles;
-        ''')
-        res=connection.execute(sql,{
-            'id_articles':id_articles
-            })
-        text,title=res.first()
-
-    # compute the sentences 
-    sentences = [title]+tokenize_by_sentence(text)
-
-    # if spacy/neuralcoref nlp toolbox not loaded, then load it
-    global nlp
-    try:
-        nlp
-    except NameError:
-        import nltk
-        import spacy
-        nlp = spacy.load('en_core_web_lg')
-        import neuralcoref
-        neuralcoref.add_to_pipe(nlp)
-
-    # compute the coref resolved sentences;
-    # this process substitutes all pronouns with the referred to noun;
-    text_resolved=nlp(text)._.coref_resolved
-    sentences_resolved = [title]+tokenize_by_sentence(text_resolved)
-    
-    # there should be a 1-1 correspondence between the resolved and original sentences;
-    # sometimes, the tokenizer breaks the resolved text into too many sentences,
-    # and in that case we do not store any resolved text to indicate that a failure occurred
-    if len(sentences) != len(sentences_resolved):
-        sentences_resolved = [ None for sentence in sentences ]
-    assert(len(sentences)==len(sentences_resolved))
-
-    # insert sentences into table;
-    # all insertions are in a single transaction to ensure that if any sentence 
-    # of the article is included in the table `sentences`, then they all are
-    with connection.begin() as trans:
-        for i in range(len(sentences)):
-            sql=sqlalchemy.sql.text('''
-                INSERT INTO sentences
-                    (id_articles,id_sentences,sentence,sentence_resolved)
-                    VALUES
-                    (:id_articles,:id_sentences,:sentence,:sentence_resolved)
-            ''')
-            connection.execute(sql,{
-                'id_articles':id_articles,
-                'id_sentences':i,
-                'sentence':sentences[i],
-                'sentence_resolved':sentences_resolved[i]
-                })
-
-    return sentences
-
-
-def get_label(connection,id_articles,id_sentences,label_func,sentence=None):
-    '''
-    Returns the label of the sentence calculated according to `label_func`.
-    If the label has previously been calculated and is stored in the `labels` table,
-    then this function merely looks up the value and returns it.
-    Otherwise, this function calculates the value and stores it in the table.
-    '''
-
-    # id_labels is a concatenation of the module and variable name
-    # used in the original definition of label_func
-    #id_labels=label_func.__module__+':'+label_func.__name__
-    id_labels=label_func.__name__
-
-    # if the label has already been calculated, 
-    # then simply return the cached label
-    sql=sqlalchemy.sql.text('''
-        SELECT score
-        FROM labels
-        WHERE 
-            id_articles=:id_articles AND 
-            id_sentences=:id_sentences AND
-            id_labels=:id_labels;
-    ''')
-    res=connection.execute(sql,{
-        'id_articles':id_articles,
-        'id_sentences':id_sentences,
-        'id_labels':id_labels
-        })
-    val=res.first()
-    if val is not None:
-        return val[0]
-
-    # if sentence not passed in, then we'll look it up in the database
-    if sentence is None:
-        sql=sqlalchemy.sql.text('''
-            SELECT sentence
-            FROM sentences
-            WHERE 
-                id_articles=:id_articles AND 
-                id_sentences=:id_sentences;
-        ''')
-        res=connection.execute(sql,{
-            'id_articles':id_articles,
-            'id_sentences':id_sentences,
-            })
-        sentence=res.first()[0]
-
-    # calculate the label
-    score=label_func(sentence)
-
-    # insert the label
-    sql=sqlalchemy.sql.text('''
-        INSERT INTO labels
-        (id_articles,id_sentences,id_labels,score)
-        VALUES
-        (:id_articles,:id_sentences,:id_labels,:score);
-    ''')
-    res=connection.execute(sql,{
-        'id_articles':id_articles,
-        'id_sentences':id_sentences,
-        'id_labels':id_labels,
-        'score':score,
-        })
-
-    return score
 

@@ -42,6 +42,7 @@ CREATE TABLE frontier (
 );
 
 CREATE INDEX frontier_index_urls ON frontier(id_urls);
+CREATE INDEX frontier_index_hostname_reversed ON frontier(hostname_reversed);
 CREATE INDEX frontier_index_timestamp_received ON frontier(timestamp_received);
 CREATE INDEX frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
 
@@ -229,7 +230,7 @@ CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
     ( id_articles BIGINT
-    , id_urls_canonical BIGINT
+    , id_urls_canonical_ BIGINT
     , pub_time TIMESTAMP
     , lang VARCHAR(2)
     , text TEXT
@@ -237,9 +238,9 @@ RETURNS TABLE
     ) AS $$
 BEGIN
     RETURN QUERY
-    SELECT DISTINCT ON (id_urls_canonical) 
+    SELECT DISTINCT ON (id_urls_canonical_) 
         articles.id_articles,
-        CASE WHEN articles.id_urls_canonical = 2425 THEN articles.id_urls ELSE articles.id_urls_canonical END,
+        CASE WHEN articles.id_urls_canonical = 2425 THEN articles.id_urls ELSE articles.id_urls_canonical END as id_urls_canonical_,
         articles.pub_time,
         articles.lang,
         articles.text,
@@ -250,9 +251,15 @@ BEGIN
         articles.text is not null AND
         articles.title is not null AND
         articles.hostname = _hostname
-    ORDER BY id_urls_canonical; 
+    ORDER BY id_urls_canonical_; 
 END
 $$ LANGUAGE plpgsql;
+
+CREATE TABLE articles_valid (
+    id_articles BIGINT,
+    PRIMARY KEY(id_articles),
+    FOREIGN KEY(id_articles) REFERENCES articles(id_articles)
+);
 
 CREATE VIEW articles_per_year AS 
     SELECT 
@@ -282,7 +289,7 @@ CREATE TABLE authors (
 
 CREATE TABLE refs (
     id_refs BIGSERIAL PRIMARY KEY,
-    source BIGINT, -- FIXME: add not null constraint
+    source BIGINT NOT NULL,
     target BIGINT, -- NOTE: this column is NULL whenever a target URL does not match the constraints of the urls table
     type VARCHAR(10),
     text VARCHAR(2084),
@@ -378,7 +385,7 @@ CREATE TABLE labels (
     id_labels VARCHAR(1024),
     score REAL,
     PRIMARY KEY (id_articles,id_sentences,id_labels),
-    FOREIGN KEY (id_articles,id_sentences) REFERENCES sentences(id_articles,id_sentences) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (id_articles) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (id_articles,id_sentences) REFERENCES sentences(id_articles,id_sentences) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (id_articles) REFERENCES articles(id_articles) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED 
 );
 
