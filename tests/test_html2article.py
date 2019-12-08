@@ -147,6 +147,6 @@ def test_html2article(urltests):
         assert getattr(article,'lang') == tests['lang']
 
 if __name__=='__main__':
-    update_urltests(True)
+    update_urltests()
     print_test_quality()
 

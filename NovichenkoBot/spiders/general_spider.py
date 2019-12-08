@@ -198,45 +198,49 @@ def html2article(url,html):
         except:
             pass
 
-    if 'https://angrystaffofficer.com' in url:
-        article.authors=soup.find('span',class_='author vcard').find('a').text.split('and')
+    try:
+        if 'https://angrystaffofficer.com' in url:
+            article.authors=soup.find('span',class_='author vcard').find('a').text.split('and')
 
-    if 'armscontrolwonk.com' in url:
-        article.publish_date=parse(soup.find('span',class_='date published time').text)
+        if 'armscontrolwonk.com' in url:
+            article.publish_date=parse(soup.find('span',class_='date published time').text)
 
-    if 'www.csis.org' in url:
-        article.publish_date=parse(soup.find('article',role='article').find('p').text)
+        if 'www.csis.org' in url:
+            article.publish_date=parse(soup.find('article',role='article').find('p').text)
 
-    if 'foxnews.com' in url:
-        article.publish_date=parse(soup.find('div',class_='article-date').find('time').text)
+        if 'foxnews.com' in url:
+            article.publish_date=parse(soup.find('div',class_='article-date').find('time').text)
 
-    if 'janes.com' in url:
-        article.publish_date=parse(soup.find('div',class_='date').text)
-        article.authors=soup.find('div',class_='byline').find('b').text.split(',')[0].split('and')
+        if 'janes.com' in url:
+            article.publish_date=parse(soup.find('div',class_='date').text)
+            article.authors=soup.find('div',class_='byline').find('b').text.split(',')[0].split('and')
 
-    if 'www.northkoreatech.org' in url:
-        article.authors=soup.find('span',class_='entry-meta-author vcard author').text.split(':')[-1].split('and')
+        if 'www.northkoreatech.org' in url:
+            article.authors=soup.find('span',class_='entry-meta-author vcard author').text.split(':')[-1].split('and')
 
-    if 'www.nkleadershipwatch.org' in url or 'nkleadershipwatch.wordpress.com' in url:
-        article.authors=['__NOAUTHOR__']
+        if 'www.nkleadershipwatch.org' in url or 'nkleadershipwatch.wordpress.com' in url:
+            article.authors=['__NOAUTHOR__']
 
-    if 'politico.eu' in url:
-        article.publish_date=parse(soup.find('p',class_='timestamp').find('time')['datetime'])
-        article.authors=soup.find('span',class_='byline').text.split('and')
+        if 'politico.eu' in url:
+            article.publish_date=parse(soup.find('p',class_='timestamp').find('time')['datetime'])
+            article.authors=soup.find('span',class_='byline').text.split('and')
 
-    if 'www.stripes.com' in url:
-        credits=soup.find('div',class_='article_credits')
-        article.authors=credits.text.split('|')[0][3:].split('and')
-        article.publish_date=parse(credits.text.split(':')[1])
+        if 'www.stripes.com' in url:
+            credits=soup.find('div',class_='article_credits')
+            article.authors=credits.text.split('|')[0][3:].split('and')
+            article.publish_date=parse(credits.text.split(':')[1])
 
-    if 'thediplomat.com' in url:
-        article.publish_date=parse(soup.find('span',itemprop='datePublished').text)
-        article.authors=soup.find('div',class_='td-author').find('strong').text.split('and')
+        if 'thediplomat.com' in url:
+            article.publish_date=parse(soup.find('span',itemprop='datePublished').text)
+            article.authors=soup.find('div',class_='td-author').find('strong').text.split('and')
 
-    if 'https://thehill.com' in url:
-        article.authors=soup.find('span',class_='submitted-by').find('a').text.split('and')
+        if 'https://thehill.com' in url:
+            article.authors=soup.find('span',class_='submitted-by').find('a').text.split('and')
 
-    if 'usatoday.com' in url:
-        article.authors=soup.find('a',class_='gnt_ar_by_a').text.split('and')
+        if 'usatoday.com' in url:
+            article.authors=soup.find('a',class_='gnt_ar_by_a').text.split('and')
+
+    except AttributeError:
+        pass
 
     return article
