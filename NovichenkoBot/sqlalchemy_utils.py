@@ -85,10 +85,13 @@ def get_url_info(connection,url,depth=0,flexible_url=False):
         if len(url_parsed['fragment'])>256 : url_parsed['fragment']=''
         if len(url_parsed['path'    ])>256 : url_parsed['path'    ]=''
             
-    if ( len(url_parsed['path'])>1024 or 
+    if ( len(url_parsed['scheme'])>8 or
+         len(url_parsed['hostname'])>253 or
+         len(url_parsed['path'])>1024 or 
+         len(url_parsed['params'])>256 or
          len(url_parsed['query'])>1024 or 
          len(url_parsed['fragment'])>256 or
-         len(url_parsed['params'])>256
+         len(url_parsed['other'])>2048 
          ):
         return None
 
@@ -180,13 +183,19 @@ def insert_request(connection,url,priority=0,allow_dupes=False,depth=0,flexible_
 
     # we want to emphasize a BFS over DFS, 
     # so we penalize based on the depth
-    priority-=2**url_info['depth']
+    priority-=url_info['depth']**2
 
     # if there is a year in the path, 
     # then this is likely to be an article,
     # so we up the priority
     if re.match(r'.*([1-3][0-9]{3})',url_info['path']):
         priority+=100
+
+    # if the priority is so low that it would result in underflow,
+    # then set the priority to minimum value
+    min_priority = -10**38
+    if priority < min_priority:
+        priority = min_priority
 
     # insert into table
     sql=sqlalchemy.sql.text('''
