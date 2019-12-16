@@ -101,6 +101,25 @@ from articles;
  */
  
 
+/*
+ * this query reinserts processed requests into the frontier so that they get crawled again
+ *
+ * this query has been run on: 
+ * www.armscontrolwonk.com
+ * thediplomat.com
+ *
+INSERT INTO frontier (id_urls, priority, timestamp_received, hostname_reversed)
+SELECT DISTINCT ON (id_urls)
+    id_urls,
+    priority,
+    current_timestamp,
+    hostname_reversed
+FROM frontier
+WHERE
+    timestamp_processed is not null AND
+    hostname_reversed=reverse('.thediplomat.com');
+*/
+
 /* 
  * this code updates the null hostname 
  *
@@ -185,3 +204,80 @@ CREATE VIEW articles_deduped AS
         ) as dedupe_title
         ;
 */
+
+select count(1) from (
+SELECT DISTINCT ON (id_urls_canonical_) 
+    urls.scheme,
+    urls.hostname,
+    urls.port,
+    urls.path,
+    urls.params,
+    urls.query,
+    urls.fragment,
+    urls.other,
+    articles.id_urls,
+    articles.id_urls_canonical,
+    CASE WHEN articles.id_urls_canonical = 2425 
+         THEN articles.id_urls 
+         ELSE articles.id_urls_canonical 
+    END AS id_urls_canonical_
+FROM articles
+INNER JOIN urls ON urls.id_urls = articles.id_urls
+WHERE
+    --articles.pub_time is not null AND 
+    articles.text is not null AND 
+    articles.title is not null AND 
+    articles.hostname = 'sinonk.com'
+ORDER BY id_urls_canonical_
+) t;
+
+select distinct on (path)
+    path
+from urls
+where hostname='sinonk.com';
+
+SELECT count(1) 
+FROM (
+    SELECT DISTINCT articles.id_articles
+    FROM sentences
+    INNER JOIN articles on sentences.id_articles = articles.id_articles
+    WHERE hostname='www.armscontrolwonk.com'
+) AS t;
+
+SELECT
+    t1.timeunit,
+    responses,
+    articles,
+    valid_articles,
+    valid_articles/(1.0*articles) as va_per_a,
+    valid_articles/(1.0*responses) as va_per_r,
+    articles/(1.0*responses) as a_per_r
+FROM (
+    SELECT date_trunc('day',timestamp_processed) AS timeunit, count(1) AS valid_articles
+    FROM get_valid_articles2('armscontrol.org') as t
+    inner join articles on articles.id_articles = t.id_articles
+    inner join responses on responses.id_responses = articles.id_responses
+    group by timeunit
+    ) as t1
+INNER JOIN (
+    SELECT date_trunc('day',timestamp_processed) AS timeunit, count(1) AS articles
+    FROM (
+        SELECT articles.id_articles
+        FROM articles
+        WHERE
+            articles.pub_time IS NOT NULL AND
+            articles.text IS NOT NULL AND
+            articles.title IS NOT NULL AND
+            articles.hostname = 'armscontrol.org'
+    ) AS t
+    INNER JOIN articles on articles.id_articles = t.id_articles
+    INNER JOIN responses on responses.id_responses = articles.id_responses
+    GROUP BY timeunit
+    ) AS t2 ON t1.timeunit=t2.timeunit
+INNER JOIN (
+    select date_trunc('day',timestamp_processed) AS timeunit, count(1) AS responses 
+    FROM responses 
+    WHERE hostname = 'armscontrol.org'
+    GROUP BY timeunit
+    ) AS t3 ON t1.timeunit = t3.timeunit
+ORDER BY timeunit DESC;
