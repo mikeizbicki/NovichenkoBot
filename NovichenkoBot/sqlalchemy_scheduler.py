@@ -148,10 +148,10 @@ class Scheduler(object):
                     })
                 response.id_responses=res.first()[0]
 
-                # run the spider on the response only if the response is not a redirect
+                # run the spider on the response only for successful http_status codes
                 parse_generator=None
                 parse_error=None
-                if id_urls_redirected is None:
+                if response.status >= 200 and response.status < 300:
                     try:
                         parse_generator=self.crawler.spider.parse(response)
                     except e:
