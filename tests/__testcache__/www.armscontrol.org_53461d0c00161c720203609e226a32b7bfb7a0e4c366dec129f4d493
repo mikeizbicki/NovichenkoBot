@@ -1,0 +1,462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+  "https://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" version="XHTML+RDFa 1.0" dir="ltr">
+<head profile="https://www.w3.org/1999/xhtml/vocab">
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--[if IE]><![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="canonical" href="/policy-white-papers/2015-05/understanding-north-korean-nuclear-threat" />
+<link rel="shortlink" href="/node/6969" />
+<link rel="shortcut icon" href="https://www.armscontrol.org/sites/all/themes/armscontrol/fav.ico" type="image/vnd.microsoft.icon" />
+<title>Understanding the North Korean Nuclear Threat | Arms Control Association</title>
+<link type="text/css" rel="stylesheet" href="https://www.armscontrol.org/sites/default/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.armscontrol.org/sites/default/files/css/css_ERHvL-80PnMbgW2qP4WpuaUoFc05IB9tZ6lxSVHu88c.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.armscontrol.org/sites/default/files/css/css_cSS1zwSvYc-k1bFHewpHKSKgRF96LLwtjPbiPBKj9qc.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.armscontrol.org/sites/default/files/css/css_TL9mxIasXiA0xyAkbGaq84ERkLaNrYpPjT9JCfQFfOU.css" media="all" />
+<script type="text/javascript" src="https://www.armscontrol.org/sites/default/files/js/js_dYOGV15VEcvR5zyP3UKzyEH3a6wcYkaWkQCEZ8Wpd8c.js"></script>
+<script type="text/javascript" src="https://www.armscontrol.org/sites/default/files/js/js_5DNpzKtIQs6cv35RBvxDBbHIhCy2GoZuxBeClrZ7nH4.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var a2a_config=a2a_config||{},da2a={done:false,html_done:false,script_ready:false,script_load:function(){var a=document.createElement('script'),s=document.getElementsByTagName('script')[0];a.type='text/javascript';a.async=true;a.src='https://static.addtoany.com/menu/page.js';s.parentNode.insertBefore(a,s);da2a.script_load=function(){};},script_onready:function(){if(a2a.type=='page'){da2a.script_ready=true;if(da2a.html_done)da2a.init();}},init:function(){for(var i=0,el,target,targets=da2a.targets,length=targets.length;i<length;i++){el=document.getElementById('da2a_'+(i+1));target=targets[i];a2a_config.linkname=target.title;a2a_config.linkurl=target.url;if(el){a2a.init('page',{target:el});el.id='';}da2a.done=true;}da2a.targets=[];}};a2a_config.tracking_callback=['ready',da2a.script_onready];
+//--><!]]>
+</script>
+<script type="text/javascript" src="https://www.armscontrol.org/sites/default/files/js/js_gPqjYq7fqdMzw8-29XWQIVoDSWTmZCGy9OqaHppNxuQ.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-712842-1", {"cookieDomain":"auto"});ga("set", "anonymizeIp", true);ga("send", "pageview");
+//--><!]]>
+</script>
+<script type="text/javascript" src="https://www.armscontrol.org/sites/default/files/js/js_8uc66yubHDPIO8gFA0jjqkw-Hv7o3qmEwpVTqqgQkNA.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"armscontrol","theme_token":"gE45xQHaOSe3AKAiy1B9YDD15TPow6YBDYqd8LSGwN8","js":{"0":1,"sites\/all\/modules\/jquery_update\/replace\/jquery\/1.8\/jquery.min.js":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/libraries\/colorbox\/jquery.colorbox-min.js":1,"sites\/all\/modules\/colorbox\/js\/colorbox.js":1,"sites\/all\/modules\/colorbox\/styles\/plain\/colorbox_style.js":1,"sites\/all\/modules\/jcaption\/jcaption.js":1,"sites\/all\/libraries\/jstorage\/jstorage.min.js":1,"sites\/all\/modules\/responsive_menus\/styles\/meanMenu\/jquery.meanmenu.min.js":1,"sites\/all\/modules\/responsive_menus\/styles\/meanMenu\/responsive_menus_mean_menu.js":1,"1":1,"sites\/all\/modules\/google_analytics\/googleanalytics.js":1,"2":1,"sites\/all\/themes\/armscontrol\/js\/vendor\/modernizr.js":1,"sites\/all\/themes\/armscontrol\/js\/jquery.meanmenu.js":1,"sites\/all\/themes\/armscontrol\/js\/jquery.navgoco.min.js":1,"sites\/all\/themes\/armscontrol\/js\/foundation.min.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/aggregator\/aggregator.css":1,"sites\/all\/modules\/date\/date_api\/date.css":1,"sites\/all\/modules\/date\/date_popup\/themes\/datepicker.1.7.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/logintoboggan\/logintoboggan.css":1,"modules\/node\/node.css":1,"modules\/poll\/poll.css":1,"modules\/search\/search.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/views\/css\/views.css":1,"sites\/all\/modules\/colorbox\/styles\/plain\/colorbox_style.css":1,"sites\/all\/modules\/ctools\/css\/ctools.css":1,"sites\/all\/modules\/panels\/css\/panels.css":1,"sites\/all\/modules\/nice_menus\/css\/nice_menus.css":1,"sites\/all\/modules\/nice_menus\/css\/nice_menus_default.css":1,"sites\/all\/modules\/panels\/plugins\/layouts\/twocol\/twocol.css":1,"sites\/all\/modules\/addtoany\/addtoany.css":1,"sites\/all\/modules\/print\/print_ui\/css\/print_ui.theme.css":1,"sites\/all\/modules\/responsive_menus\/styles\/meanMenu\/meanmenu.min.css":1,"sites\/all\/modules\/civicrm\/css\/crm-i.css":1,"sites\/all\/modules\/civicrm\/css\/civicrm.css":1,"sites\/all\/themes\/armscontrol\/css\/foundation.css":1,"sites\/all\/themes\/armscontrol\/css\/meanmenu.min.css":1,"sites\/all\/themes\/armscontrol\/css\/style.css":1,"sites\/all\/themes\/armscontrol\/css\/style1.css":1}},"colorbox":{"transition":"elastic","speed":"350","opacity":"0.20","slideshow":false,"slideshowAuto":true,"slideshowSpeed":"2500","slideshowStart":"start slideshow","slideshowStop":"stop slideshow","current":"{current} of {total}","previous":"\u00ab Prev","next":"Next \u00bb","close":"Close","overlayClose":true,"returnFocus":true,"maxWidth":"98%","maxHeight":"98%","initialWidth":"300","initialHeight":"250","fixed":true,"scrolling":true,"mobiledetect":true,"mobiledevicewidth":"480px"},"jcaption":{"jcaption_selectors":[".content .content img"],"jcaption_alt_title":"title","jcaption_requireText":1,"jcaption_copyStyle":1,"jcaption_removeStyle":1,"jcaption_removeClass":1,"jcaption_removeAlign":1,"jcaption_copyAlignmentToClass":0,"jcaption_copyFloatToClass":1,"jcaption_copyClassToClass":1,"jcaption_autoWidth":1,"jcaption_keepLink":0,"jcaption_styleMarkup":"","jcaption_animate":0,"jcaption_showDuration":"200","jcaption_hideDuration":"200"},"better_exposed_filters":{"views":{"cover_image_and_pdf":{"displays":{"panel_pane_2":{"filters":[]}}},"arms_control_today_cover":{"displays":{"panel_pane_2":{"filters":[]}}},"panel_blocks":{"displays":{"panel_pane_8":{"filters":[]}}},"news":{"displays":{"panel_pane_9":{"filters":[]}}},"issuebriefs":{"displays":{"block_1":{"filters":[]}}},"related_content":{"displays":{"block_related":{"filters":[]}}},"testimonials":{"displays":{"block_1":{"filters":[]}}}}},"responsive_menus":[{"selectors":"#block-nice-menus-1","trigger_txt":"\u003Cspan \/\u003E\u003Cspan \/\u003E\u003Cspan \/\u003E","close_txt":"X","close_size":"18px","position":"right","media_size":"1024","show_children":"1","expand_children":"1","expand_txt":"+","contract_txt":"-","remove_attrs":"1","responsive_menus_style":"mean_menu"}],"googleanalytics":{"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip","trackColorbox":1},"urlIsAjaxTrusted":{"\/policy-white-papers\/2015-05\/understanding-north-korean-nuclear-threat":true}});
+//--><!]]>
+</script>
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+<meta name="google-site-verification" content="l4oosjGuaeRzuwmgqRGc6BF1c7ca9rBAA_GdSE9kdvI" />
+<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">require(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us10.list-manage.com","uuid":"94d82a9d1fc1a60f0138613f1","lid":"0bf155a1a2"}) })</script>
+<meta name="msvalidate.01" content="D67778171489B9C4FEBD89E0F9FB6914" />
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="be0c7b94-f24f-4b28-8b1d-1b40a569a653" type="text/javascript" async></script>
+</head>
+<body class="html not-front not-logged-in one-sidebar sidebar-first page-node page-node- page-node-6969 node-type-content-resource-page role-anonymous-user">
+<div id="skip-link">
+<a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+</div>
+<div class="row">
+
+<header>
+<div class="small-12 medium-12 large-12 columns ">
+<div class="small-9 medium-6 large-8 columns site_logo alpha">
+<h2 class="web_title">
+<a href="/" title="Home" rel="home" id="logo">
+<img src="https://www.armscontrol.org/sites/all/themes/armscontrol/logo.png" alt="Home" />
+</a>
+</h2>
+</div>
+<div class="small-3 medium-5 large-4 columns alpha">
+<div class="small-12 medium-12 large-12 columns text-right font16 register_email_update  bluelink customfont1 alpha boldtxt show-for-large-only">
+<a href="https://eepurl.com/brP58r" class="hide-for-small hide-for-medium">Register for Email Updates </a>
+
+</div>
+<div class="small-12 medium-12 large-12 columns top-search alpha hide-for-small">
+<div class="small-2 medium-2 large-2 columns ">
+</div>
+<div class="small-10 medium-10 large-10  columns alpha">
+<div class="region region-header-search-block">
+<div id="block-search-form" class="block block-search">
+<div class="content">
+<form action="/policy-white-papers/2015-05/understanding-north-korean-nuclear-threat" method="post" id="search-block-form" accept-charset="UTF-8"><div><div class="small-9 medium-9 large-9 columns alpha"><div class="form-item form-type-textfield form-item-search-block-form">
+<label class="element-invisible" for="edit-search-block-form--2">Search </label>
+<input title="Enter the terms you wish to search for." type="text" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" class="form-text" />
+</div>
+</div> <div class="form-actions form-wrapper" id="edit-actions"><div class="small-3 medium-3 large-3 columns alpha"> <input type="submit" id="edit-submit" name="op" value="Search" class="form-submit search_button font16 customfont1" /></div> </div><input type="hidden" name="form_build_id" value="form-1SLnkuZ6WysDZ2Y03F1h9uU-wA2fCzkN8SMDxojIKOU" />
+<input type="hidden" name="form_id" value="search_block_form" />
+</div></form> </div>
+</div>
+</div>
+</div>
+</div>
+<div class="small-12 medium-12 large-12 columns login_social  text-right alpha mobright">
+<div class="small-12 medium-12 large-6 columns mobright alpha">
+<a href="https://eepurl.com/brP58r" class="font16 customfont1 boldtxt moblogin bluelink show-for-medium-only">Register for Email Updates</a>
+<a href="/user" class="font16 customfont1 boldtxt moblogin">Login</a>
+</div>
+<a href="https://www.flickr.com/photos/armscontrolassociation/" target="_blank" class="hide-for-small socialicon"><img src="/images/flickr.gif"></a>
+<a href="https://www.linkedin.com/company/armscontrol/" target="_blank" class="hide-for-small socialicon"><img src="/images/linkedin.png"></a>
+<a href="https://twitter.com/armscontrolnow" target="_blank" class="hide-for-small socialicon"><img src="/sites/all/themes/armscontrol/img/twitter.png"></a>
+<a href="https://www.facebook.com/armscontrol" target="_blank" class="hide-for-small socialicon"><img src="/sites/all/themes/armscontrol/img/facebook.png"></a>
+</div>
+</div>
+</div>
+<div class="small-12 medium-12 large-12 columns top-search alpha hide-for-medium hide-for-large show-for-small-only">
+<div class="small-2 medium-2 large-2 columns ">
+</div>
+<div class="small-10 medium-10 large-10  columns alpha">
+<div class="region region-header-search-block">
+<div class="region region-header-search-block">
+<div id="block-search-form" class="block block-search">
+<div class="content">
+<form action="/policy-white-papers/2015-05/understanding-north-korean-nuclear-threat" method="post" id="search-block-form" accept-charset="UTF-8"><div><div class="small-9 medium-9 large-9 columns alpha"><div class="form-item form-type-textfield form-item-search-block-form">
+<label class="element-invisible" for="edit-search-block-form--2">Search </label>
+<input title="Enter the terms you wish to search for." type="text" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" class="form-text" />
+</div>
+</div> <div class="form-actions form-wrapper" id="edit-actions"><div class="small-3 medium-3 large-3 columns alpha"> <input type="submit" id="edit-submit" name="op" value="Search" class="form-submit search_button font16 customfont1" /></div> </div><input type="hidden" name="form_build_id" value="form-1SLnkuZ6WysDZ2Y03F1h9uU-wA2fCzkN8SMDxojIKOU" />
+<input type="hidden" name="form_id" value="search_block_form" />
+</div></form> </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+
+<div class="small-12 medium-12 large-12 columns alpha aca_menu">
+<nav>
+<div class="region region-mainmenu">
+<div id="block-nice-menus-1" class="block block-nice-menus">
+<div class="content">
+<ul class="nice-menu nice-menu-down nice-menu-main-menu" id="nice-menu-1"><li class="menu-59 menuparent  menu-path-newarchivesearch first odd "><a href="/content/subject-resources" title="">Resources</a><ul><li class="menu-3855 menu-path-factsheets first odd "><a href="/factsheets" title="">Fact Sheets</a></li>
+<li class="menu-3157 menu-path-issuebriefs  even "><a href="/issuebriefs" title="">Issue Briefs</a></li>
+<li class="menu-3882 menu-path-sarmscontrolorg-policypapers  odd "><a href="https://www.armscontrol.org/policypapers" title="">Policy White Papers</a></li>
+<li class="menu-3160 menu-path-reports-list  even "><a href="/reports" title="">Research &amp; Reports</a></li>
+<li class="menu-3183 menu-path-treaties  odd "><a href="/treaties" title="">Treaties</a></li>
+<li class="menu-3184 menu-path-node-6607  even last"><a href="/countryresources">Country Profiles</a></li>
+</ul></li>
+<li class="menu-756 menuparent  menu-path-aca  even "><a href="/today" title="">Arms Control Today</a><ul><li class="menu-3166 menu-path-civicrm-contribute-transact first odd "><a href="/civicrm/contribute/transact?reset=1&amp;id=6" title="">Subscribe Print/Online</a></li>
+<li class="menu-3161 menu-path-archive  even "><a href="/archive/act" title="">Archived Issues</a></li>
+<li class="menu-3171 menu-path-node-148  odd "><a href="/act/submissions" title="">Submissions &amp; Letters</a></li>
+<li class="menu-3163 menu-path-focus  even "><a href="/act/focus" title="">Focus Editorials</a></li>
+<li class="menu-3164 menu-path-interviews  odd "><a href="/interviews" title="">Interviews</a></li>
+<li class="menu-3162 menu-path-acprint-bookreviews  even "><a href="/act/bookreviews" title="">Book Reviews</a></li>
+<li class="menu-3165 menu-path-acprint-booksofnote  odd "><a href="/act/booksofnote" title="">Books of Note</a></li>
+<li class="menu-3172 menu-path-node-150  even "><a href="/act/advertising" title="">Advertise With Us</a></li>
+<li class="menu-830 menu-path-node-151  odd last"><a href="/act/copyright-reprint" title="Reprint/Copyright Request Rates">Permissions &amp; Re-Print Requests</a></li>
+</ul></li>
+<li class="menu-1089 menuparent  menu-path-sarmscontrolorg-about-aca-blogsdigests  odd "><a href="https://www.armscontrol.org/about-aca/blogsdigests" title="">Blogs</a><ul><li class="menu-3528 menu-path-blogs-armscontrolnow first odd "><a href="/blogs/armscontrolnow" title="">Arms Control NOW</a></li>
+<li class="menu-3884 menu-path-node-8833  even "><a href="/archive/inside-the-arms-control-association">Inside the Arms Control Association</a></li>
+<li class="menu-4687 menu-path-blogs-north-korea-denuclearization-digest  odd "><a href="/blogs/north-korea-denuclearization-digest" title="">North Korea Denuclearization Digest</a></li>
+<li class="menu-4707 menu-path-blogs-p4-plus-iran-nuclear-talks-and-deal-alerts  even "><a href="/blogs/P4-plus-Iran-nuclear-talks-and-deal-alerts" title="">P4+1 and Iran Nuclear Deal Alert</a></li>
+<li class="menu-4699 menu-path-sarmscontrolorg-blogs-us-russian-nuclear-arms-control-watch  odd "><a href="https://www.armscontrol.org/blogs/us-russian-nuclear-arms-control-watch" title="">U.S.-Russian Nuclear Arms Control Watch</a></li>
+<li class="menu-3683 menu-path-blogs-op-eds  even last"><a href="/blogs/op-eds" title="">Published Op-eds</a></li>
+</ul></li>
+<li class="menu-1150 menuparent  menu-path-node-1  even "><a href="/about">About</a><ul><li class="menu-3170 menu-path-contact first odd "><a href="/contact" title="">Contact Us</a></li>
+<li class="menu-4697 menu-path-sarmscontrolorg-aboutstaff  even "><a href="https://www.armscontrol.org/about#staff" title="">Our Staff and Board</a></li>
+<li class="menu-3758 menu-path-node-3780  odd "><a href="/experts">Experts Available</a></li>
+<li class="menu-3169 menu-path-media-citations  even "><a href="/media-citations" title="">ACA In The News</a></li>
+<li class="menu-52 menu-path-pressroom  odd "><a href="/pressroom">Press Room</a></li>
+<li class="menu-69 menu-path-events  even "><a href="/events" title="">Events &amp; Remarks</a></li>
+<li class="menu-3545 menu-path-node-7281  odd "><a href="/about/Arms-Control-Association-45-Years-of-History-and-Accomplishments-Timeline">History and Accomplishments</a></li>
+<li class="menu-164 menu-path-node-10373  even "><a href="/about/specialprojects">Special Projects</a></li>
+<li class="menu-3090 menu-path-node-149  odd "><a href="/employment">Careers</a></li>
+<li class="menu-3474 menu-path-node-37  even last"><a href="/internships">Internships</a></li>
+</ul></li>
+<li class="menu-66 menu-path-civicrm-contribute-transact  odd "><a href="/civicrm/contribute/transact?reset=1&amp;id=5" title="">Join</a></li>
+<li class="menu-56 menu-path-civicrm-contribute-transact  even last"><a href="/civicrm/contribute/transact?reset=1&amp;id=4" title="Interviews with leading diplomats and policymakers.">Donate</a></li>
+</ul>
+</div>
+</div>
+</div>
+</nav> 
+</div>
+
+
+<div class="small-12 medium-12 large-12 columns alpha main_content inpagepad" data-equalizer>
+<div class="small-12 medium-12 large-12 columns alpha">
+<div class="small-12 medium-12 large-12 columns alpha show-for-medium aca_line" data-equalizer> &nbsp;</div>
+<div class="small-12 medium-12 large-12 columns alpha show-for-small aca_line" data-equalizer> &nbsp;</div>
+<div class="small-12 medium-3 large-3 columns alpha pagesidebar hide-for-small hide-for-medium">
+<div class="small-12 medium-12 large-12 columns alpha">
+<div class="region region-sidebar-first">
+<div id="block-menu-menu-resources-leftbar-submenus" class="block block-menu">
+<div class="content">
+<ul class="menu clearfix nav" id="demo2"><li class="first leaf"><a href="/factsheets" title="">Fact Sheets</a></li>
+<li class="leaf"><a href="/issuebriefs" title="">Issue Briefs</a></li>
+<li class="leaf"><a href="/taxonomy/term/1016" title="">Policy White Papers</a></li>
+<li class="leaf"><a href="/reports" title="the new reports list">Research &amp; Reports</a></li>
+<li class="leaf"><a href="/treaties" title="">Treaties</a></li>
+<li class="last leaf"><a href="/countryresources" title="">Country Resources</a></li>
+</ul> </div>
+</div>
+<div id="block-block-2" class="block block-block">
+<h2>Login/Logout</h2>
+<div class="content">
+<form action="/user" method="post" id="user-login">
+<span class="login_text">Username:</span><span class="form-required" title="This field is required.">*</span> <input type="text" maxlength="60" name="name" id="edit-name" size="15" value="" tabindex="1" class="form-text required" /> <br />
+<span class="login_text">Password:</span><span class="form-required" title="This field is required.">*</span> <input type="password" name="pass" id="edit-pass" size="15" tabindex="2" class="form-text required" />
+<input type="hidden" name="form_id" id="edit-user-login" value="user_login" /> <input type="submit" align="middle" name="op" class="form-submit" id="login-submit" tabindex="3" value="Log in" src="/submit.png" alt="Submit" /> &nbsp;
+</form>
+</div>
+</div>
+<div id="block-views-testimonials-block-1" class="block block-views">
+<div class="content">
+<div class="view view-testimonials view-id-testimonials view-display-id-block_1 view-dom-id-da7e76e6686e9ea97e8e9419b3e6427e">
+<div class="view-content">
+<div class="small-12 medium-12 large-12 columns quotebox">
+<div>
+<div> <div><div class="customfont5 quotetxt"><p>"The Arms Control Association’s work is an important resource to legislators and policymakers when contemplating a new policy direction or decision."</p>
+</div></div> </div>
+<div> <span><div class="text-right quotetxt fntstylenormal"><span class="customfont2 font16 boldtxt ">&ndash; General John Shalikashvili</span></div></span> </div>
+<div> <div><div class="text-right quotetxt fntstylenormal">former Chairman of the Joint Chiefs of Staff</div></div> </div>
+<div> <div class="date-hide"><div class="text-right quotetxt fntstylenormal"></div>
+</div> </div> </div>
+</div>
+</div>
+</div> </div>
+</div>
+</div>
+</div>
+</div>
+<div class="small-12 medium-12 large-9 columns alpha inpagecontent">
+
+<div class="small-12 medium-12 large-12 columns ">
+<div id="page_top"></div>
+<div class="small-12 medium-12 large-12 columns alpha  customfont2 bluetext  inpageborder">
+<div class="small-9 medium-9 large-9 columns  aca-tlc-project font24 boldtxt">
+Understanding the North Korean Nuclear Threat </div>
+<div class="small-12 medium-3 large-3 columns alpha text-right ">
+<span id="" class="a2a_kit a2a_target addtoany_list">
+<div id="share_button"><div class="section clearfix">
+<div class="region region-share-button">
+<div id="block-addtoany-addtoany-button" class="block block-addtoany">
+<div class="content">
+<span class="a2a_kit a2a_target addtoany_list" id="da2a_1">
+<a class="a2a_dd addtoany_share_save" href="https://www.addtoany.com/share_save#url=https%3A%2F%2Fwww.armscontrol.org%2Fpolicy-white-papers%2F2015-05%2Funderstanding-north-korean-nuclear-threat&amp;title=Understanding%20the%20North%20Korean%20Nuclear%20Threat"><img src="/sites/default/files/images/socialicons/share2.png" alt="Share this" /></a>
+</span>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+da2a.script_load();
+//--><!]]>
+</script>
+</div>
+</div>
+<div id="block-print-ui-print-links" class="block block-print-ui">
+<div class="content">
+<span class="print_html"><a href="https://www.armscontrol.org/print/6969" title="Display a printer-friendly version of this page." class="print-page" onclick="window.open(this.href); return false"><img class="print-icon" src="https://www.armscontrol.org/sites/all/modules/print/icons/print_icon.png" width="36px" height="36px" alt="Printer-friendly version" title="Printer-friendly version" /></a></span><span class="print_pdf"><a href="https://www.armscontrol.org/printpdf/6969" title="Display a PDF version of this page." class="print-pdf"><img class="print-icon" src="https://www.armscontrol.org/sites/all/modules/print/print_pdf/icons/pdf_icon.png" width="36px" height="36px" alt="PDF version" title="PDF version" /></a></span> </div>
+</div>
+</div>
+</div></div> 
+</span>
+</div>
+</div>
+<div id="highlighted"> <div class="region region-highlighted">
+<div id="block-block-1" class="block block-block">
+<h2>Latest ACA Resources</h2>
+<div class="content">
+<p><a href="/country/9/date">North Korea</a></p>
+<ul>
+<li><a href="/blog/2019-12-11/north-korea-denuclearization-digest">North Korea, United States Issue Threats as Deadline Approaches | North Korea Denuclearization Digest, December 11, 2019</a><br /><span class='resource-info'>(December 11, 2019)</span></li>
+<li><a href="/act/2019-11/features/cyber-battles-nuclear-outcomes-dangerous-new-pathways-escalation">Cyber Battles, Nuclear Outcomes? Dangerous New Pathways to Escalation</a><br /><span class='resource-info'>(November 1, 2019)</span></li>
+</ul>
+<p><a href="/subject/59/date">Nuclear Nonproliferation</a></p>
+<ul>
+<li><a href="/blog/2019-12-11/north-korea-denuclearization-digest">North Korea, United States Issue Threats as Deadline Approaches | North Korea Denuclearization Digest, December 11, 2019</a><br />
+<span class='resource-info'>(December 11, 2019)</span></li>
+<li><a href="/act/2019-12/features/remarks-nuclear-disarmament-possible-necessary">REMARKS: Nuclear Disarmament is Possible and Necessary</a><br />
+<span class='resource-info'>(December 1, 2019)</span></li>
+</ul>
+<p><a href="/subject/1068/date">Missiles and Missile Defense</a></p>
+<ul>
+<li><a href="/blog/2019-12-11/north-korea-denuclearization-digest">North Korea, United States Issue Threats as Deadline Approaches | North Korea Denuclearization Digest, December 11, 2019</a><br />
+<span class='resource-info'>(December 11, 2019)</span></li>
+<li><a href="/act/2019-12/news-briefs/japan-downplays-possibility-hosting-inf-range-missiles">Japan Downplays Possibility of Hosting INF-Range Missiles</a><br />
+<span class='resource-info'>(December 1, 2019)</span></li>
+</ul>
+<p><a href="/subject/1069/date">Treaties and Agreements</a></p>
+<ul>
+<li><a href="/act/2019-12/news/moscow-sends-warning-new-start">Moscow Sends Warning on New START</a><br />
+<span class='resource-info'>(December 1, 2019)</span></li>
+<li><a href="/act/2019-12/news/iran-newly-breaches-nuclear-deal">Iran Newly Breaches Nuclear Deal </a><br />
+<span class='resource-info'>(December 1, 2019)</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="tabs" style="clear:both;">
+</div>
+<div class="small-12 medium-12 large-12 columns">
+<div class="region region-content">
+<div id="block-system-main" class="block block-system">
+<div class="content">
+<div id="node-6969" class="node node-content-resource-page node-full clearfix">
+<div class="content clearfix">
+<h1 class="small-12 medium-12 large-12 assesment_title customfont3 spacezero">
+<div class="field field-name-taxonomy-vocabulary-1 field-type-taxonomy-term-reference field-label-hidden clearfix"><ul class="links"><li class="taxonomy-term-reference-0"><a href="/taxonomy/term/1016">Policy White Papers</a></li></ul></div>
+</h1>
+<div>
+<div class="field field-name-field-body field-type-text-long field-label-hidden"><div class="field-items"><div class="field-item even"><p><strong>By Greg Thielmann<br />
+May 2015</strong></p>
+<table align="right" border="1" cellpadding="1" cellspacing="1" style="width: 300px; padding-left: 50px;"><tbody><tr><td><a href="/sites/default/files/files/TABs/TAB_2015May_Understanding_NorthKorea_Threat.pdf"><img align="right" src="/sites/default/files/images/TABs/TAB_2015May_Understanding_NorthKorea_Threat.png" width="300px" /></a></td>
+</tr><tr><td><a href="/sites/default/files/files/TABs/TAB_2015May_Understanding_NorthKorea_Threat.pdf">Download PDF</a></td>
+</tr></tbody></table><p>As the 2015 Nuclear Nonproliferation Treaty (NPT) Review Conference continues in New York, the international community's failure to halt the spread of nuclear weapons to North Korea looms large. Unlike the four of the world's nine nuclear-weapon states that have shown some progress in reducing their nuclear arsenals, North Korea is working hard to expand its arsenal and make it more credible. Unlike six of the nine, which have either ratified the 1996 Comprehensive Test Ban Treaty or maintained a testing moratorium since the treaty was concluded, North Korea has conducted three underground nuclear tests, the only state to do so during the last 17 years.</p>
+<p>Unlike the three nuclear-weapon states that never became parties to the NPT, North Korea signed the treaty, declared it was withdrawing, later pledged to denuclearize, and then reneged on its commitment.</p>
+<p>The North's nuclear program today is out of control and accelerating, damaging both the NPT and international stability. Addressing this grim reality begins with an objective assessment of North Korea's actual nuclear capabilities and an acknowledgment that the Obama administration's "strategic patience" approach is not working.</p>
+<p>Washington and Beijing must step up their efforts to revive the six-party process with the near-term goal of freezing Pyongyang's nuclear and missile programs, taking care to manage potential spoilers, Russia and the U.S. Congress.</p>
+</div></div></div><span class="submitted-by"></span><div class="field field-name-taxonomy-vocabulary-9 field-type-taxonomy-term-reference field-label-hidden clearfix"><ul class="links"><li class="taxonomy-term-reference-0"><a href="/taxonomy/term/132">Greg Thielmann</a></li></ul></div><div class="field field-name-taxonomy-vocabulary-2 field-type-taxonomy-term-reference field-label-hidden clearfix"><ul class="links"><li class="taxonomy-term-reference-0"><a href="/country-resources/northkorea">North Korea</a></li></ul></div><div class="field field-name-taxonomy-vocabulary-3 field-type-taxonomy-term-reference field-label-hidden clearfix"><ul class="links"><li class="taxonomy-term-reference-0"><a href="/subject-resources/nuclear-nonproliferation">Nuclear Nonproliferation</a></li><li class="taxonomy-term-reference-1"><a href="/subject-resources/missiles-missile-defense">Missiles and Missile Defense</a></li><li class="taxonomy-term-reference-2"><a href="/subject-resources/treaties-agreements">Treaties and Agreements</a></li></ul></div>
+</div>
+</div>
+</div>
+</div>
+<div id="block-views-related-content-block-related" class="block block-views">
+<h2>Also on ArmsControl.org</h2>
+<div class="content">
+<div class="view view-related-content view-id-related_content view-display-id-block_related view-dom-id-8b6110e360bb4faebd2cd8f0b5a0c6ba">
+<div class="view-content">
+<div class="views-row views-row-1 views-row-odd views-row-first">
+<div class="views-field views-field-title"> <h3 class="field-content"><a href="/blog/2019-04-01/we-approaching-end-arms-control-era">Are We Approaching the End of the Arms Control Era?</a></h3> </div>
+<div class="views-field views-field-changed"> <span class="field-content">August 6, 2019</span> </div> </div>
+<div class="views-row views-row-2 views-row-even">
+<div class="views-field views-field-title"> <h3 class="field-content"><a href="/events/2018-11/what-eu-reduce-nuclear-threat">What Can the EU Do to Reduce the Nuclear Threat?</a></h3> </div>
+<div class="views-field views-field-changed"> <span class="field-content">October 11, 2019</span> </div> </div>
+<div class="views-row views-row-3 views-row-odd">
+<div class="views-field views-field-title"> <h3 class="field-content"><a href="/events/2018-11/fighting-against-current-pursuit-nuclear-arms-control-coming-year">Fighting Against the Current: The Pursuit of Nuclear Arms Control in the Coming Year</a></h3> </div>
+<div class="views-field views-field-changed"> <span class="field-content">December 5, 2018</span> </div> </div>
+<div class="views-row views-row-4 views-row-even">
+<div class="views-field views-field-title"> <h3 class="field-content"><a href="/blog/2018-10-25/trump%E2%80%99s-latest-blunder-withdrawal-us-russian-inf-treaty">Trump’s latest blunder: Withdrawal from the US-Russian INF Treaty</a></h3> </div>
+<div class="views-field views-field-changed"> <span class="field-content">August 22, 2019</span> </div> </div>
+<div class="views-row views-row-5 views-row-odd">
+<div class="views-field views-field-title"> <h3 class="field-content"><a href="/blog/2017-06-28/cherry-picking-intelligence-war-middle-east-here-we-again">Cherry Picking Intelligence For War in the Middle East? Here We Go Again</a></h3> </div>
+<div class="views-field views-field-changed"> <span class="field-content">August 6, 2019</span> </div> </div>
+<div class="views-row views-row-6 views-row-even views-row-last">
+<div class="views-field views-field-title"> <h3 class="field-content"><a href="/blog/2017-05-30/take-first-strike-against-north-korea-table">Take First Strike Against North Korea Off the Table</a></h3> </div>
+<div class="views-field views-field-changed"> <span class="field-content">August 22, 2019</span> </div> </div>
+</div>
+</div> </div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<footer>
+<div class="small-12 medium-12 large-12 alpha columns">
+<div class="small-12 medium-12 large-12 columns black-footer">
+<div class="small-12 medium-4 large-4 columns">
+&nbsp;
+</div>
+<form name="" method="post" target="_blank" action="https://eepurl.com/brP58r">
+<div class="small-12 medium-4 large-4 columns">
+<div class="small-12 medium-12 large-12 columns alpha customfont2 font24">
+<ul id="footer-links1">
+<li><a href="/archive/search">Resources</a></li>
+<li><a href="/donate">Donate</a></li>
+<li><a href="/about">About</a></li>
+<li><a href="/contact">Contact Us</a></li>
+</ul>
+</div>
+<div class="small-12 medium-12 large-12 columns alpha">
+<h3 class="foot-email-update customfont2">Email Updates</h3>
+<p class="foot-text customfont3">Register for updates, breaking news and other arms control related information.</p>
+<input type="hidden" value="1101676014090" name="m">
+<input type="hidden" value="oi" name="p">
+<input name="" type="text" name="ea" id="footer-email-register">
+</div>
+<div class="small-12 medium-12 large-12 columns alpha social-footer">
+<a href="https://www.facebook.com/armscontrol" target="_blank" class="hide-for-small foot-social"><img src="/sites/all/themes/armscontrol/img/facebook.png"></a>
+<a href="https://twitter.com/armscontrolnow" target="_blank" class="hide-for-small foot-social"><img src="/sites/all/themes/armscontrol/img/twitter.png"></a>
+<a href="https://www.linkedin.com/company/armscontrol" target="_blank" class="hide-for-small foot-social"><img src="/images/linkedin.png"></a>
+<a href="https://www.flickr.com/photos/armscontrolassociation/" target="_blank" class="hide-for-small foot-social"><img src="/images/flickr.gif"></a>
+
+</div>
+</div>
+<div class="small-12 medium-4 large-4 columns">
+<div class="small-12 medium-12 large-12 columns alpha">
+<div class="small-12 medium-12 large-12 columns alpha hide-for-small ">
+<h3 class="foot-joinaca customfont2"><a href="/civicrm/contribute/transact?reset=1&id=5" class="whitelink customfont2">Join the Arms Control Association</a></h3>
+<p class="foot-text customfont3 foot-join-spc">
+The Arms Control Association depends on the
+generous contributions of individuals who share
+our goal of promoting public understanding of and
+support for effective arms control policies. ACA is
+a nonpartisan, nonprofit membership organization,
+and your financial support makes a difference.
+Your membership comes with a 12-month
+subscription to Arms Control Today.
+</p>
+</div>
+<div class="small-12 medium-12 large-12 columns alpha">
+<p class="foot-text customfont3 ">1200 18th Street NW, Suite 1175<br />
+Washington, DC 20036<br />
+Tel: (202) 463-8270 | Fax: (202) 463-8273
+</p>
+</div>
+</div>
+<div class="small-12 medium-12 large-12 columns alpha ">
+</div>
+</div>
+</div>
+</form>
+<div class="small-12 medium-12 large-12 columns footer-menu customfont4 hide-for-small hide-for-medium">
+<div class="region region-footer-bottom-link">
+<div id="block-block-30" class="block block-block">
+<div class="content">
+<ul id="footmenu"><li><a href="/privacy">PRIVACY</a></li>
+<li><a href="/archive/search">RESOURCES</a></li>
+<li><a href="/aca">ARMS CONTROL TODAY</a></li>
+<li><a href="/blog">BLOG</a></li>
+<li><a href="/about">ABOUT</a></li>
+<li><a href="/civicrm/contribute/transact?reset=1&amp;id=5">JOIN</a></li>
+<li class="bgnone"><a href="/civicrm/contribute/transact?reset=1&amp;id=4">DONATE</a></li>
+</ul> </div>
+</div>
+</div>
+</div>
+</div>
+</footer>
+
+<script type="text/javascript">
+  var _sf_async_config = { uid: 58312, domain: 'armscontrol.org', useCanonical: true };
+  (function() {
+    function loadChartbeat() {
+      window._sf_endpt = (new Date()).getTime();
+      var e = document.createElement('script');
+      e.setAttribute('language', 'javascript');
+      e.setAttribute('type', 'text/javascript');
+      e.setAttribute('src','//static.chartbeat.com/js/chartbeat.js');
+      document.body.appendChild(e);
+    };
+    var oldonload = window.onload;
+    window.onload = (typeof window.onload != 'function') ?
+      loadChartbeat : function() { oldonload(); loadChartbeat(); };
+  })();
+</script>
+</div>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+da2a.targets=[
+{title:'Understanding the North Korean Nuclear Threat',url:'https://www.armscontrol.org/policy-white-papers/2015-05/understanding-north-korean-nuclear-threat'}];
+da2a.html_done=true;if(da2a.script_ready&&!da2a.done)da2a.init();da2a.script_load();
+//--><!]]>
+</script>
+<script type="text/javascript">
+		    $(document).ready(function () {
+				$('nav').meanmenu(); 
+				$(".flexy-menu").flexymenu({speed: 400});
+			});
+	</script>
+<script>
+		  $(document).ready(function() {
+		   $("#demo2").navgoco('toggle', false);
+   		 $("#demo2").navgoco();
+		});
+	</script>
+<script>
+      $(document).foundation();
+    </script>
+<script type="text/javascript">
+        (function(e,a){
+            var t,r=e.getElementsByTagName("head")[0],c=e.location.protocol;
+            t=e.createElement("script");t.type="text/javascript";
+            t.charset="utf-8";t.async=!0;t.defer=!0;
+            t.src=c+"//front.optimonk.com/public/"+a+"/js/preload.js";r.appendChild(t);
+        })(document,"16550");
+    </script>
+</body>
+</html>
