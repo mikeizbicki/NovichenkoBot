@@ -255,6 +255,98 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
+CREATE FUNCTION get_valid_articles2(_hostname TEXT)
+RETURNS TABLE 
+    ( id_articles BIGINT
+    , id_urls_canonical_ BIGINT
+    , pub_time TIMESTAMP
+    , lang VARCHAR(2)
+    , text TEXT
+    , title TEXT
+    ) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT DISTINCT ON (text) * FROM (
+        SELECT DISTINCT ON (title) * FROM (
+            SELECT DISTINCT ON (id_urls_canonical_) 
+                articles.id_articles,
+                CASE WHEN articles.id_urls_canonical = 2425 THEN articles.id_urls ELSE articles.id_urls_canonical END as id_urls_canonical_,
+                articles.pub_time,
+                articles.lang,
+                articles.text,
+                articles.title
+            FROM articles
+            WHERE
+                articles.pub_time is not null AND
+                articles.text is not null AND
+                articles.title is not null AND
+                articles.hostname = _hostname
+            ) AS t1
+        ) AS t2
+    ORDER BY text,id_urls_canonical_; 
+END
+$$ LANGUAGE plpgsql;
+
+CREATE FUNCTION get_articles_performance(_hostname TEXT)
+RETURNS TABLE 
+    ( timeunit TIMESTAMP
+    , responses BIGINT
+    , articles BIGINT
+    , valid_articles BIGINT
+    , valid_articles2 BIGINT
+    , va2_per_r NUMERIC
+    , va2_per_a NUMERIC
+    , va2_per_va NUMERIC
+    , a_per_r NUMERIC
+    ) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        t_va.timeunit,
+        t_r.responses,
+        t_a.articles,
+        t_va.valid_articles,
+        t_va2.valid_articles2,
+        TRUNC(t_va2.valid_articles2/(1.0*t_r.responses),4) as va2_per_r,
+        TRUNC(t_va2.valid_articles2/(1.0*t_a.articles),4) as va2_per_a,
+        TRUNC(t_va2.valid_articles2/(1.0*t_va.valid_articles),4) as va2_per_va,
+        TRUNC(t_a.articles/(1.0*t_r.responses),4) as a_per_r
+    FROM (
+        SELECT date_trunc('day',timestamp_processed) AS timeunit, count(1) AS valid_articles
+        FROM get_valid_articles(_hostname) as t
+        inner join articles on articles.id_articles = t.id_articles
+        inner join responses on responses.id_responses = articles.id_responses
+        group by timeunit
+        ) as t_va
+    INNER JOIN (
+        SELECT date_trunc('day',timestamp_processed) AS timeunit, count(1) AS valid_articles2
+        FROM get_valid_articles2(_hostname) as t
+        inner join articles on articles.id_articles = t.id_articles
+        inner join responses on responses.id_responses = articles.id_responses
+        group by timeunit
+        ) AS t_va2 ON t_va.timeunit=t_va2.timeunit
+    INNER JOIN (
+        SELECT date_trunc('day',timestamp_processed) AS timeunit, count(1) AS articles
+        FROM (
+            SELECT articles.id_articles
+            FROM articles
+            WHERE
+                articles.hostname = _hostname
+        ) AS t
+        INNER JOIN articles on articles.id_articles = t.id_articles
+        INNER JOIN responses on responses.id_responses = articles.id_responses
+        GROUP BY timeunit
+        ) AS t_a ON t_va.timeunit=t_a.timeunit
+    INNER JOIN (
+        select date_trunc('day',timestamp_processed) AS timeunit, count(1) AS responses 
+        FROM responses 
+        WHERE hostname = _hostname
+        GROUP BY timeunit
+        ) AS t_r ON t_a.timeunit = t_r.timeunit
+    ORDER BY timeunit DESC;
+END
+$$ LANGUAGE plpgsql;
+
 CREATE TABLE articles_valid (
     id_articles BIGINT,
     PRIMARY KEY(id_articles),
