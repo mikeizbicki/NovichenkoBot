@@ -16,39 +16,7 @@ cache_dir='tests/__testcache__'
 os.makedirs(cache_dir, exist_ok=True)
 urltests_file=os.path.join(cache_dir,'urltests.json')
 
-#testkeys=['text','title','html','publish_date','lang','authors']
 testkeys=['publish_date','lang','authors']
-
-urls=[
-    #'http://www.granma.cu/cuba/2019-11-05/suspenden-la-decima-liga-nacional-femenina-de-balonmano-05-11-2019-11-11-00',
-    #'https://www.prensa-latina.cu/index.php?o=rn&id=318493&SEO=congreso-de-argentina-retoma-proyecto-de-ley-de-alquileres',
-    #'https://ezln.eluniversal.com.mx/caracoles-escuela-de-las-nuevas-semillas/',
-
-    'https://www.nknews.org/2019/10/why-north-korean-and-russian-state-media-are-joining-forces-to-fight-fake-news/',
-    'https://www.armscontrolwonk.com/archive/1208302/norm-building-and-tear-downs',
-    'http://russianforces.org/blog/2007/07/russia_calls_for_cooperation.shtml',
-
-    'https://thediplomat.com/2019/06/north-korea-the-missing-link-in-northeast-asias-air-pollution-fight/',
-    'https://foreignpolicy.com/2013/05/23/pulp-liberation-army/',
-    'https://thehill.com/policy/defense/overnights/471731-overnight-defense-presented-by-boeing-house-chairmen-demand-answers',
-    'https://www.csis.org/analysis/ending-cycle-crisis-and-complacency-us-global-health-security',
-    'https://www.janes.com/article/91085/north-korea-releases-images-of-10-september-weapon-test',
-    'https://carnegieendowment.org/2019/02/19/benchmarking-second-trump-kim-summit-pub-78407',
-
-    'https://www.washingtonpost.com/news/worldviews/wp/2017/10/02/north-korea-appears-to-have-a-new-internet-connection-thanks-to-the-help-of-a-state-owned-russian-firm/',
-    'https://www.nytimes.com/2005/09/19/world/asia/north-korea-says-it-will-abandon-nuclear-efforts.html',
-    'https://www.usatoday.com/story/news/world/2019/05/31/north-korea-executes-senior-officials-over-failed-trump-summit-report/1296383001/',
-    #'https://www.politico.eu/article/how-us-north-korea-could-stumble-into-world-war-iii/',
-    'https://www.politico.com/latest-news-updates/trump-kim-jong-un-meeting-us-north-korea-summit-2018',
-    'https://www.foxnews.com/politics/trump-kim-jong-uns-vietnam-summit-joins-long-list-of-key-moments-between-world-leaders-a-timeline',
-    'https://www.cnn.com/2019/11/18/asia/north-korea-us-meeting-intl/index.html',
-    'https://www.cnbc.com/2018/09/06/north-korean-hackers-will-be-charged-for-sony-pictures-wannacry-ransomware-attacks.html',
-]
-urls=[
-    'https://angrystaffofficer.com/2018/01/09/world-war-i-stands-as-a-lesson-against-a-bloody-nose-strike-on-north-korea/',
-    'https://www.stripes.com/news/pacific/north-korea-s-kim-attends-military-air-show-lauds-pilots-1.607540',
-    'https://www.stripes.com/news/pacific/north-korean-leader-orders-artillery-drill-near-disputed-sea-border-with-south-korea-1.608565',
-    ]
 
 def download_url(url):
     '''

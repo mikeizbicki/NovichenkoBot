@@ -202,8 +202,15 @@ def html2article(url,html):
         if 'https://angrystaffofficer.com' in url:
             article.authors=soup.find('span',class_='author vcard').find('a').text.split('and')
 
+        if 'https://www.armscontrol.org' in url:
+            article.authors=soup.find('a',href='#bio').text.split('and')
+
         if 'armscontrolwonk.com' in url:
             article.publish_date=parse(soup.find('span',class_='date published time').text)
+
+        if 'https://www.bbc.com' in url:
+            article.authors=['BBC']
+            article.publish_date=parse(soup.find('div',class_='date').text)
 
         if 'www.csis.org' in url:
             article.publish_date=parse(soup.find('article',role='article').find('p').text)
@@ -234,11 +241,22 @@ def html2article(url,html):
             article.publish_date=parse(soup.find('span',itemprop='datePublished').text)
             article.authors=soup.find('div',class_='td-author').find('strong').text.split('and')
 
+        if 'https://time.com' in url:
+            #article.authors=soup.find('a',class_='author-name').text.split('and')
+            article.publish_date=parse(soup.find('div',class_='published-date').text)
+
         if 'https://thehill.com' in url:
             article.authors=soup.find('span',class_='submitted-by').find('a').text.split('and')
 
         if 'usatoday.com' in url:
             article.authors=soup.find('a',class_='gnt_ar_by_a').text.split('and')
+
+        if 'www.usnews.com' in url:
+            # FIXME: can we even download www.usnews.com webpages?
+            # These two are giving permissions errors
+            # https://www.usnews.com/news/world/articles/2019-12-05/north-korea-threatens-to-resume-calling-trump-dotard
+            # https://www.usnews.com/news/world-report/articles/2019-11-06/north-korea-threatens-to-upend-nuclear-talks-due-to-us-reckless-military-frenzy
+            article.authors=soup.find('a',class_='Anchor-s1mkgztv-0').text.split('and')
 
     except AttributeError:
         pass
