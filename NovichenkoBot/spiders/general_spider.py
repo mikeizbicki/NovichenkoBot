@@ -215,6 +215,9 @@ def html2article(url,html):
         if 'www.csis.org' in url:
             article.publish_date=parse(soup.find('article',role='article').find('p').text)
 
+        if 'www.dailynk.com' in url:
+            article.authors=soup.find('div',class_='td-post-author-name').find('a').text.split('and')
+
         if 'foxnews.com' in url:
             article.publish_date=parse(soup.find('div',class_='article-date').find('time').text)
 
