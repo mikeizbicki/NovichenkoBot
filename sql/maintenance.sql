@@ -118,6 +118,27 @@ FROM frontier
 WHERE
     timestamp_processed is not null AND
     hostname_reversed=reverse('.thediplomat.com');
+
+ *
+ * The following version of this insertion is tailored to restart the search process of sinonk.com
+ *
+ 
+BEGIN;
+    UPDATE frontier
+    SET priority = priority-1000000
+    WHERE
+        hostname_reversed=reverse('.sinonk.com')
+    ;
+    INSERT INTO frontier (id_urls, priority, timestamp_received, hostname_reversed)
+    SELECT DISTINCT ON (id_urls)
+        articles.id_urls,
+        0 as priority,
+        current_timestamp,
+        reverse(concat('.',hostname))
+    FROM get_valid_articles2('sinonk.com') as va
+    INNER JOIN articles ON va.id_articles = articles.id_articles
+    ;
+COMMIT;
 */
 
 /* 
@@ -281,3 +302,29 @@ INNER JOIN (
     GROUP BY timeunit
     ) AS t3 ON t1.timeunit = t3.timeunit
 ORDER BY timeunit DESC;
+
+SELECT path,query
+FROM articles
+INNER JOIN responses on responses.id_responses = articles.id_responses
+INNER JOIN urls on urls.id_urls = articles.id_urls
+WHERE
+    articles.hostname='sinonk.com' AND    
+    timestamp_processed >= now() - interval '10 minutes'
+ORDER BY timestamp_processed DESC
+    ;
+
+SELECT priority,path,query
+FROM frontier 
+INNER JOIN urls on urls.id_urls = frontier.id_urls
+WHERE
+    frontier.hostname_reversed=reverse('.sinonk.com') AND    
+    timestamp_processed >= now() - interval '10 minutes'
+ORDER BY timestamp_processed DESC
+    ;
+
+SELECT count(1)
+FROM frontier
+WHERE
+    frontier.hostname_reversed=reverse('.sinonk.com') AND    
+    priority >= 0
+    ;
