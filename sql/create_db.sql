@@ -1,3 +1,5 @@
+CREATE EXTENSION btree_gist;
+
 CREATE TABLE crawlable_hostnames (
     hostname VARCHAR(253) PRIMARY KEY,
     lang VARCHAR(2),
@@ -226,6 +228,8 @@ CREATE TABLE articles (
 
 CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
+--CREATE INDEX articles_title_tsv ON articles USING GIST (id_articles,to_tsvector('english',title));
+--CREATE INDEX articles_text_tsv ON articles USING GIST (id_articles,to_tsvector('english',text));
 
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
@@ -468,7 +472,6 @@ CREATE TABLE sentences (
     FOREIGN KEY (id_articles) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE EXTENSION btree_gist;
 CREATE INDEX sentences_ids_tsv ON sentences USING GIST (id_articles,id_sentence,to_tsvector('english', sentence_resolved));
 
 CREATE TABLE labels (
