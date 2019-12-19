@@ -70,9 +70,6 @@ CREATE INDEX responses_index_timestamp_received ON responses(timestamp_received)
 CREATE INDEX responses_index_timestamp_processed ON responses(timestamp_processed);
 CREATE INDEX responses_index_hostnametwistedhttp ON responses(hostname,twisted_status,http_status);
 
-CREATE VIEW total_byes AS
-    SELECT pg_size_pretty(sum(bytes)) FROM responses;
-
 /* this view lets us evaluate the performance of the crawler on particular domains */
 CREATE VIEW responses_hostname AS
     SELECT hostname,twisted_status,http_status,count(1) as num
