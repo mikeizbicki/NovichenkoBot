@@ -7,6 +7,15 @@ CREATE TABLE crawlable_hostnames (
     priority TEXT
 );
 
+CREATE TABLE hostnames (
+    id_hostnames SERIAL PRIMARY KEY,
+    hostname VARCHAR(253) UNIQUE NOT NULL,
+    lang VARCHAR(2),
+    country VARCHAR(2),
+    type VARCHAR(256),
+    priority TEXT
+);
+
 CREATE TABLE urls (
     id_urls BIGSERIAL PRIMARY KEY,
     scheme VARCHAR(8) NOT NULL,
@@ -47,6 +56,15 @@ CREATE INDEX frontier_index_urls ON frontier(id_urls);
 CREATE INDEX frontier_index_hostname_reversed ON frontier(hostname_reversed);
 CREATE INDEX frontier_index_timestamp_received ON frontier(timestamp_received);
 CREATE INDEX frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
+-- FIXME: need to create this index: create index concurrently frontier_index_nextrequest_alt on frontier(priority,id_frontier,id_urls) where timestamp_processed is null;
+
+/* FIXME:
+CREATE TABLE requests (
+    id_requests BIGSERIAL PRIMARY KEY,
+    id_frontier BIGINT,
+    timestamp TIMESTAMP
+);
+*/
 
 CREATE TABLE responses (
     id_responses BIGSERIAL PRIMARY KEY,
@@ -64,6 +82,16 @@ CREATE TABLE responses (
     FOREIGN KEY (id_frontier) REFERENCES frontier(id_frontier) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (id_urls_redirected) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
+
+-- FIXME: 
+-- somehow there are duplicate rows in responses for the same id_frontier;
+-- we need to find how this happens in the spider code and fix that;
+-- figure out which of the duplicate rows to get rid of and which to keep;
+-- and then fix this unique constraint to apply to all rows.
+-- Now that this constraint is added, we should start getting failures in the 
+-- scrapy logs which will tell us what is causing the duplication.
+create unique index responses_unique_frontier on responses(id_frontier)
+where id_responses > 111562143;
 
 CREATE INDEX responses_index_frontier ON responses(id_frontier);
 CREATE INDEX responses_index_timestamp_received ON responses(timestamp_received);
@@ -209,7 +237,7 @@ CREATE VIEW frontier_ghost AS
 
 CREATE TABLE articles (
     id_articles BIGSERIAL PRIMARY KEY,
-    id_responses BIGINT NOT NULL,
+    id_responses BIGINT NOT NULL, --UNIQUE
     id_urls BIGINT NOT NULL, 
     id_urls_canonical BIGINT NOT NULL, 
     hostname VARCHAR(253) NOT NULL,
@@ -389,6 +417,21 @@ CREATE TABLE refs (
     FOREIGN KEY (source) REFERENCES articles(id_articles) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (target) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
+
+CREATE INDEX refs_index_source ON refs(source);
+
+/* FIXME:
+CREATE TABLE refs2 (
+    source BIGINT NOT NULL,
+    target BIGINT,
+    type VARCHAR(10),
+    text VARCHAR(2048),
+);
+
+CREATE TABLE hostnames (
+    
+);
+*/
 
 /*
  * This function returns the article associated with a url;

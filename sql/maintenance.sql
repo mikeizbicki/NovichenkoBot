@@ -328,3 +328,36 @@ WHERE
     frontier.hostname_reversed=reverse('.sinonk.com') AND    
     priority >= 0
     ;
+
+
+/*
+ * this query finds entries in the frontier that have multiple responses
+ */
+select
+    num,
+    count(1) as total
+from (
+    select
+        frontier.id_frontier,
+        count(1) as num
+    from frontier
+    left join responses on responses.id_frontier=frontier.id_frontier
+    where 
+        frontier.id_frontier > 347000000 and
+        frontier.id_frontier < 348000000
+    group by frontier.id_frontier
+    order by num desc
+) t
+group by num
+order by num desc
+;
+
+select
+    responses.id_responses,
+    count(1) as num
+from articles
+left join responses on responses.id_responses=articles.id_responses
+where 
+group by responses.id_responses
+order by num desc
+;

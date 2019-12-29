@@ -18,6 +18,7 @@ CREATE TABLE rollups (
 CREATE FUNCTION incremental_rollup_window(
     rollup_name text, 
     max_rollup_size bigint default 100000,
+    force_safe boolean default true,
     OUT window_start bigint,
     OUT window_end bigint
 )
@@ -54,11 +55,13 @@ BEGIN
      * By throwing an exception, we release the lock immediately after obtaining it
      * such that writes can resume.
      */
-    BEGIN
-        EXECUTE format('LOCK %s IN EXCLUSIVE MODE', table_to_lock);
-        RAISE 'release table lock';
-    EXCEPTION WHEN OTHERS THEN
-    END;
+    IF force_safe THEN
+        BEGIN
+            EXECUTE format('LOCK %s IN EXCLUSIVE MODE', table_to_lock);
+            RAISE 'release table lock';
+        EXCEPTION WHEN OTHERS THEN
+        END;
+    END IF;
 
     /*
      * Remember the end of the window to continue from there next time.
@@ -70,6 +73,7 @@ $function$;
 CREATE FUNCTION do_rollup(
     name text,
     max_rollup_size bigint default 100000000,
+    force_safe boolean default true,
     OUT start_id bigint, 
     OUT end_id bigint
 )
@@ -81,7 +85,7 @@ DECLARE
 BEGIN
     /* determine which page views we can safely aggregate */
     SELECT window_start, window_end INTO start_id, end_id
-    FROM incremental_rollup_window(name,max_rollup_size);
+    FROM incremental_rollup_window(name,max_rollup_size,force_safe);
 
     /* exit early if there are no new page views to aggregate */
     IF start_id > end_id THEN RETURN; END IF;
@@ -126,14 +130,233 @@ VALUES ('refs_hostname', 'refs', 'refs_id_refs_seq', $$
         count(1) 
     FROM articles
     INNER JOIN refs ON articles.id_articles = refs.source
-    INNER JOIN urls AS urls_source ON urls_source.id_urls = refs.source
+    INNER JOIN urls AS urls_source ON urls_source.id_urls = articles.id_urls
     INNER JOIN urls AS urls_target ON urls_target.id_urls = refs.target
     WHERE
-        refs.id_refs >= $1 AND 
-        refs.id_refs < $2 
+        refs.id_refs < 1000
+        --refs.id_refs >= $1 AND 
+        --refs.id_refs < $2 
     GROUP BY year_source,urls_source.hostname,urls_target.hostname,type
     ON CONFLICT (year,hostname_source,hostname_target,type)
     DO UPDATE SET num = refs_hostname.num+excluded.num
+    ;
+$$);
+
+CREATE TABLE refs_keywords (
+    year SMALLINT,
+    hostname_source TEXT,
+    hostname_target TEXT,
+    type TEXT,
+    num BIGINT,
+    PRIMARY KEY (year,hostname_source,hostname_target,type)
+);
+
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('refs_keywords', 'keywords', 'keywords_id_keywords_seq', $$
+    INSERT INTO refs_keywords
+        (year,hostname_source,hostname_target,type,num)
+    SELECT
+        CASE 
+            WHEN articles.pub_time IS NULL
+            THEN -1
+            ELSE extract(year from articles.pub_time) 
+            END AS year_source,
+        urls_source.hostname AS hostname_source,
+        urls_target.hostname AS hostname_target,
+        type,
+        count(1) 
+    --FROM refs 
+    --INNER JOIN articles ON articles.id_articles = refs.source
+    --INNER JOIN keywords on keywords.id_articles = articles.id_articles
+    FROM keywords
+    INNER JOIN articles ON articles.id_articles = keywords.id_articles
+    INNER JOIN refs on refs.source = articles.id_articles
+    INNER JOIN urls AS urls_source ON urls_source.id_urls = articles.id_urls
+    INNER JOIN urls AS urls_target ON urls_target.id_urls = refs.target
+    WHERE
+        (keywords.num_text > 0 OR keywords.num_title > 0) AND
+        --keywords.id_keywords < 1000
+        keywords.id_keywords >= $1 AND 
+        keywords.id_keywords < $2 
+        --refs.id_refs < 1000
+        --refs.id_refs >= $1 AND 
+        --refs.id_refs < $2 
+    GROUP BY year_source,urls_source.hostname,urls_target.hostname,type
+    ON CONFLICT (year,hostname_source,hostname_target,type)
+    DO UPDATE SET num = refs_keywords.num+excluded.num
+    ;
+$$);
+
+CREATE TABLE refs_summary (
+    year SMALLINT,
+    hostname_source TEXT,
+    hostname_target TEXT,
+    type TEXT,
+    num_all BIGINT,
+    num_keywords BIGINT,
+    distinct_all hll,
+    distinct_keywords hll,
+    PRIMARY KEY (year,hostname_source,hostname_target,type)
+);
+CREATE INDEX refs_summary_index_hostname_source on refs_summary(hostname_source);
+
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('refs_summary', 'keywords', 'keywords_id_keywords_seq', $$
+    INSERT INTO refs_summary
+        (year,hostname_source,hostname_target,type,num_all,num_keywords,distinct_all,distinct_keywords)
+    SELECT
+        CASE 
+            WHEN articles.pub_time IS NULL
+            THEN -1
+            ELSE extract(year from articles.pub_time) 
+            END AS year_source,
+        articles.hostname AS hostname_source,
+        urls_target.hostname AS hostname_target,
+        type,
+        sum(1),
+        sum(CASE
+            WHEN keywords.num_text > 0 OR keywords.num_title > 0
+            THEN 1
+            ELSE 0
+            END),
+        hll_add_agg(hll_hash_bigint(CASE 
+            WHEN articles.id_urls_canonical = 2425 
+            THEN articles.id_urls 
+            ELSE articles.id_urls_canonical 
+            END)) as distinct_all,
+        hll_union_agg(CASE
+            WHEN keywords.num_text > 0 OR keywords.num_title > 0
+            THEN hll_add(hll_empty(),(hll_hash_bigint(CASE 
+                WHEN articles.id_urls_canonical = 2425 
+                THEN articles.id_urls 
+                ELSE articles.id_urls_canonical 
+                END)))
+            ELSE hll_empty()
+            END) as distinct_keywords 
+    FROM keywords
+    INNER JOIN articles ON articles.id_articles = keywords.id_articles
+    INNER JOIN refs ON refs.source = articles.id_articles
+    INNER JOIN urls AS urls_target ON urls_target.id_urls = refs.target
+    WHERE
+        --keywords.id_keywords < 100000
+        keywords.id_keywords >= $1 AND 
+        keywords.id_keywords < $2 
+    GROUP BY 1,2,3,4
+    ON CONFLICT (year,hostname_source,hostname_target,type)
+    DO UPDATE SET 
+        num_all = refs_summary.num_all + excluded.num_all,
+        num_keywords = refs_summary.num_keywords + excluded.num_keywords,
+        distinct_all = refs_summary.distinct_all || excluded.distinct_all,
+        distinct_keywords = refs_summary.distinct_keywords || excluded.distinct_keywords
+    ;
+$$);
+
+SELECT 
+    hostname_source,
+    hostname_target,
+    sum(num_all),
+    sum(num_keywords),
+    sum(#distinct_all) as distinct_all,
+    sum(#distinct_keywords) as distinct_keywords
+FROM refs_summary
+WHERE hostname_source='breitbart.com'
+GROUP BY hostname_source,hostname_target
+ORDER BY distinct_keywords desc,distinct_all desc;
+
+/*
+SELECT 
+    hostname_source,
+    hostname_target,
+    sum(#distinct_all) as distinct_all,
+    sum(#distinct_keywords) as distinct_keywords
+FROM refs_summary
+WHERE hostname_source='www.foxnews.com'
+GROUP BY hostname_source,hostname_target
+ORDER BY distinct_keywords DESC,distinct_all DESC;
+
+select count(1) from (
+SELECT hostname_source,hostname_target,sum(num) as num
+FROM refs_keywords
+WHERE 
+    type='link' and (
+    hostname_source='www.peru21.pe'
+    --hostname_source='www.armscontrolwonk.com' or
+    --hostname_source='www.nknews.org' or
+    --hostname_source='www.northkoreatech.org' or
+    --hostname_source='www.thehill.org' or
+    --hostname_source='www.breitbart.com' or
+    --hostname_source='thediplomat.com' or
+    --hostname_source='foreignpolicy.com'
+    )
+GROUP BY hostname_source,hostname_target
+ORDER BY num DESC
+)t;
+
+SELECT DISTINCT hostname_target as hostname
+FROM refs_keywords
+WHERE 
+    type='link' and (
+    hostname_source='www.armscontrolwonk.com' or
+    hostname_source='www.nknews.org' or
+    hostname_source='www.northkoreatech.org' or
+    hostname_source='www.thehill.org' or
+    hostname_source='www.breitbart.com' or
+    hostname_source='thediplomat.com' or
+    hostname_source='foreignpolicy.com'
+    )
+    and not (
+    hostname_target like '%facebook.%' or
+    hostname_target like '%instagram.%' or
+    hostname_target like '%scribd.%' or
+    hostname_target like '%twitter.%' or
+    hostname_target like '%reddit.%' or
+    hostname_target like '%pinterest.%' or
+    hostname_target like '%youtube.%' or
+    hostname_target like '%youtu.be%' or
+    hostname_target like '%google.%' or
+    hostname_target like '%wikipedia.%' or
+    hostname_target like '%wikimedia.%' or
+    hostname_target like '%linkedin.%' or
+    hostname_target like '%yahoo.%' or
+    hostname_target like '%archive.%' or
+    hostname_target like '%flickr.%' or
+    hostname_target like '%answers.%' or
+    hostname_target like '%imgur.%'
+    )
+;
+*/
+
+/*
+ * Rollup table for urls 
+ */
+
+CREATE TABLE urls_summary (
+    hostname TEXT NOT NULL,
+    distinct_path hll NOT NULL,
+    distinct_path_query hll NOT NULL,
+    num BIGINT NOT NULL,
+    PRIMARY KEY (hostname)
+);
+
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('urls_summary', 'urls', 'urls_id_urls_seq', $$
+    INSERT INTO urls_summary
+        (hostname,distinct_path,distinct_path_query,num)
+    SELECT
+        hostname,
+        hll_add_agg(hll_hash_text(path)),
+        hll_add_agg(hll_hash_text(path || query)),
+        count(1)
+    FROM urls 
+    WHERE 
+        id_urls>=$1 AND
+        id_urls<$2
+    GROUP BY hostname
+    ON CONFLICT (hostname)
+    DO UPDATE SET   
+        distinct_path = urls_summary.distinct_path || excluded.distinct_path,
+        distinct_path_query = urls_summary.distinct_path_query || excluded.distinct_path_query,
+        num = urls_summary.num+excluded.num
     ;
 $$);
 
@@ -213,3 +436,199 @@ $$);
 
 CREATE VIEW total_bytes AS
     SELECT pg_size_pretty(sum(bytes)) FROM responses_summary;
+
+/*
+ * rollup for articles
+ */
+
+CREATE TABLE articles_summary (
+    day TIMESTAMP,
+    hostname TEXT,
+    keyword BOOL,
+    num BIGINT NOT NULL,
+    num_distinct_url hll NOT NULL,
+    num_distinct_title hll NOT NULL,
+    num_distinct_text hll NOT NULL, 
+    PRIMARY KEY (day,hostname,keyword)
+);
+
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('articles_summary', 'keywords', 'keywords_id_keywords_seq', $$
+    INSERT INTO articles_summary
+        ( day
+        , hostname
+        , keyword
+        , num
+        , num_distinct_url
+        , num_distinct_title
+        , num_distinct_text
+        )
+    SELECT
+        CASE WHEN pub_time is NULL THEN '-infinity' ELSE date_trunc('day',pub_time) END as day,
+        hostname,
+        CASE WHEN num_title>0 or num_text>0 THEN true ELSE false END as keyword,
+        count(1) as num,
+        /* this case expression is id_urls_canonical_ from get_valid_articles() */
+        hll_add_agg(hll_hash_bigint(CASE 
+            WHEN articles.id_urls_canonical = 2425 
+            THEN articles.id_urls 
+            ELSE articles.id_urls_canonical 
+            END)) as num_distinct_url,
+        hll_add_agg(hll_hash_text(title)) as num_distinct_title,
+        hll_add_agg(hll_hash_text(text)) as num_distinct_text
+    FROM keywords
+    INNER JOIN articles on articles.id_articles = keywords.id_articles
+    WHERE 
+        id_keywords>=$1 AND
+        id_keywords<$2
+    GROUP BY 1,2,3 
+    ON CONFLICT (day,hostname,keyword)
+    DO UPDATE SET 
+        num = articles_summary.num + excluded.num,
+        num_distinct_url = articles_summary.num_distinct_url || excluded.num_distinct_url,
+        num_distinct_title = articles_summary.num_distinct_title || excluded.num_distinct_title,
+        num_distinct_text = articles_summary.num_distinct_text || excluded.num_distinct_text
+    ;
+$$);
+
+CREATE TABLE articles_summary2 (
+    day TIMESTAMP,
+    hostname TEXT,
+    keyword BOOL,
+    num BIGINT NOT NULL,
+    num_distinct hll NOT NULL,
+    PRIMARY KEY (day,hostname,keyword)
+);
+
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('articles_summary2', 'keywords', 'keywords_id_keywords_seq', $$
+    INSERT INTO articles_summary2
+        ( day
+        , hostname
+        , keyword
+        , num
+        , num_distinct
+        )
+    SELECT
+        CASE WHEN pub_time is NULL THEN '-infinity' ELSE date_trunc('day',pub_time) END as day,
+        hostname,
+        CASE WHEN num_title>0 or num_text>0 THEN true ELSE false END as keyword,
+        count(1) as num,
+        /* this case expression is id_urls_canonical_ from get_valid_articles() */
+        hll_add_agg(hll_hash_bigint(CASE 
+            WHEN articles.id_urls_canonical = 2425 
+            THEN articles.id_urls 
+            ELSE articles.id_urls_canonical 
+            END)) as num_distinct
+    FROM keywords
+    INNER JOIN articles on articles.id_articles = keywords.id_articles
+    WHERE 
+        id_keywords>=$1 AND
+        id_keywords<$2
+    GROUP BY 1,2,3 
+    ON CONFLICT (day,hostname,keyword)
+    DO UPDATE SET 
+        num = articles_summary2.num + excluded.num,
+        num_distinct = articles_summary2.num_distinct || excluded.num_distinct
+    ;
+$$);
+
+/*
+SELECT 
+    hostname,
+    --date_trunc('year',day) as year,
+    #hll_union_agg(num_distinct) as num_distinct
+FROM articles_summary2
+WHERE 
+    keyword=true AND 
+    day!='-infinity'
+GROUP BY hostname --,year
+ORDER BY num_distinct DESC;
+
+SELECT 
+    hostname,
+    extract(year from day) as year,
+    sum(#num_distinct_url) distinct_url,
+    sum(#num_distinct_title) distinct_title,
+    sum(#num_distinct_text) distinct_text
+FROM articles_summary
+WHERE hostname='www.nytimes.com'
+GROUP BY hostname,year
+ORDER BY year DESC;
+*/
+
+CREATE VIEW hostname_productivity AS
+SELECT
+    t1.hostname,
+    num_distinct_keywords,
+    num_distinct_total,
+    num_distinct_keywords/num_distinct_total as keyword_fraction,
+    num_distinct_keywords*(num_distinct_keywords/num_distinct_total) as ranking
+FROM (
+    SELECT 
+        hostname,
+        #hll_union_agg(num_distinct) as num_distinct_keywords
+    FROM articles_summary2
+    WHERE 
+        keyword=true AND 
+        day!='-infinity'
+    GROUP BY hostname 
+) t1
+RIGHT JOIN (
+    SELECT 
+        hostname,
+        #hll_union_agg(num_distinct) as num_distinct_total
+    FROM articles_summary2
+    WHERE 
+        day!='-infinity'
+    GROUP BY hostname 
+) t2
+ON t1.hostname = t2.hostname
+ORDER BY ranking DESC;
+
+SELECT *
+FROM hostname_productivity
+WHERE
+    hostname not in (SELECT hostname FROM crawlable_hostnames) AND
+    right(hostname, length(hostname)-4) not in (SELECT hostname FROM crawlable_hostnames)
+    ;
+
+select hostname_target from (
+SELECT 
+    hostname_target
+    --hostname_target,
+    --sum(#distinct_keywords) as distinct_keywords
+FROM refs_summary
+WHERE 
+    type='link' and (
+        --hostname_source='www.peru21.pe' or
+        --hostname_source='www.armscontrolwonk.com' or
+        --hostname_source='www.nknews.org' or
+        --hostname_source='www.northkoreatech.org' or
+        --hostname_source='www.thehill.org' or
+        --hostname_source='thediplomat.com' or
+        --hostname_source='foreignpolicy.com'
+    --)
+    --and not (
+    --hostname_target like '%facebook.%' or
+    --hostname_target like '%instagram.%' or
+    --hostname_target like '%scribd.%' or
+    --hostname_target like '%twitter.%' or
+    --hostname_target like '%reddit.%' or
+    --hostname_target like '%pinterest.%' or
+    --hostname_target like '%youtube.%' or
+    --hostname_target like '%youtu.be%' or
+    --hostname_target like '%google.%' or
+    --hostname_target like '%wikipedia.%' or
+    --hostname_target like '%wikimedia.%' or
+    --hostname_target like '%linkedin.%' or
+    --hostname_target like '%yahoo.%' or
+    --hostname_target like '%archive.%' or
+    --hostname_target like '%flickr.%' or
+    --hostname_target like '%answers.%' or
+    --hostname_target like '%imgur.%'
+    --)
+GROUP BY hostname_target
+ORDER BY distinct_keywords desc
+)t
+WHERE distinct_keywords>4;
