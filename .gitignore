@@ -6,5 +6,6 @@
 *.pyc
 __pycache__
 
+nohup.*
 log
 outputs
