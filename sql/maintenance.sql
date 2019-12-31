@@ -90,6 +90,19 @@ WHERE NOT blockedl.granted
 AND blockinga.datname = current_database();
 
 /*
+ * This query finds long running queries;
+ * autovacuum often takes a long time and causes the rollup queries to stall
+ *
+ */
+SELECT
+  pid,
+  now() - pg_stat_activity.query_start AS duration,
+  query,
+  state
+FROM pg_stat_activity
+WHERE (now() - pg_stat_activity.query_start) > interval '5 minutes';
+
+/*
  * calculate the diskspace used by a column in 
  * from: https://stackoverflow.com/questions/18316893/how-to-estimate-the-size-of-one-column-in-a-postgres-table
 
