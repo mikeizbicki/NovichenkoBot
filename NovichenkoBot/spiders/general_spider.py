@@ -69,9 +69,9 @@ class GeneralSpider(Spider):
             id_urls_canonical=url_info['id_urls']
             sql=sqlalchemy.sql.text('''
                 INSERT INTO articles 
-                (id_urls,hostname,id_urls_canonical,id_responses,title,text,lang,pub_time) 
+                (id_urls,hostname,id_urls_canonical,id_responses,title,text,html,lang,pub_time) 
                 values 
-                (:id_urls,:hostname,:id_urls_canonical,:id_responses,:title,:text,:lang,:pub_time)
+                (:id_urls,:hostname,:id_urls_canonical,:id_responses,:title,:text,:html,:lang,:pub_time)
                 returning id_articles
             ''')
             res=self.connection.execute(sql,{
@@ -218,18 +218,36 @@ def html2article(url,html):
         if 'www.dailynk.com' in url:
             article.authors=soup.find('div',class_='td-post-author-name').find('a').text.split('and')
 
+        if 'elperuano.pe' in url:
+            article.publish_date=parse(soup.find('article',class_='notatexto').find('b').text)
+            article.authors=soup.find('article',class_='notatexto').find(['strong','em']).text.split('and')
+
+        # FIXME: parser can't handle spanish dates
+        #if 'elnacional.com.do' in url:
+            #article.publish_date=parse(soup.find('div',class_='post-meta-data').find_all('p',class_='meta-item-details')[0].text)
+            #article.authors=soup.find('div',class_='post-meta-data').find_all('p',class_='meta-item-details')[1].text.split('and')
+
         if 'foxnews.com' in url:
             article.publish_date=parse(soup.find('div',class_='article-date').find('time').text)
+
+        if 'www.infowars.com' in url:
+            article.authors=soup.find('span',class_='author').text.split('and')
 
         if 'janes.com' in url:
             article.publish_date=parse(soup.find('div',class_='date').text)
             article.authors=soup.find('div',class_='byline').find('b').text.split(',')[0].split('and')
+
+        if 'www.newsweek.com' in url:
+            article.authors=soup.find('span',class_='author').text.split('and')
 
         if 'www.northkoreatech.org' in url:
             article.authors=soup.find('span',class_='entry-meta-author vcard author').text.split(':')[-1].split('and')
 
         if 'www.nkleadershipwatch.org' in url or 'nkleadershipwatch.wordpress.com' in url:
             article.authors=['__NOAUTHOR__']
+
+        if 'peru21.pe' in url:
+            article.authors=['peru21']
 
         if 'politico.eu' in url:
             article.publish_date=parse(soup.find('p',class_='timestamp').find('time')['datetime'])
