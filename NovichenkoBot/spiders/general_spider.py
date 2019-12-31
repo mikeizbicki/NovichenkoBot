@@ -146,7 +146,7 @@ class GeneralSpider(Spider):
                         'source':id_articles,
                         'target':target,
                         'type':url_type,
-                        'text':text,
+                        'text':text[:2048],
                         })
 
         # yield all links
