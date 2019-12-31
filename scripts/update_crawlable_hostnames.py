@@ -29,8 +29,8 @@ with open(args.csv) as f:
         # extract hostname from row
         url_info = get_url_info(connection,row['URL'])
         hostname = url_info['hostname']
-        if hostname[:4]=='www.':
-            hostname=hostname[4:]
+        #if hostname[:4]=='www.':
+            #hostname=hostname[4:]
         print(f'adding {hostname}')
 
         # add seed URLS into the frontier
