@@ -57,7 +57,14 @@ BEGIN
      */
     IF force_safe THEN
         BEGIN
-            EXECUTE format('LOCK %s IN EXCLUSIVE MODE', table_to_lock);
+            -- NOTE: The line below is modified from the original to acquire
+            -- a ROW EXCLUSIVE lock rather than an exclusive lock; this lock still
+            -- prevents update/insert/delete operations on the table, but it does
+            -- not block on autovacuum (SHARE UPDATE EXCLUSIVE lock) or
+            -- create index (SHARE lock).  I believe everything is therefore still
+            -- correct, but this is magic beyond my domain expertise, so I'm
+            -- not 100% certain.
+            EXECUTE format('LOCK %s IN ROW EXCLUSIVE MODE', table_to_lock);
             RAISE 'release table lock';
         EXCEPTION WHEN OTHERS THEN
         END;
@@ -291,6 +298,17 @@ WHERE
 GROUP BY hostname_source,hostname_target
 ORDER BY num DESC
 )t;
+
+select hostname_target,sum(num) as num
+from refs_keywords
+where 
+    type='link' and 
+    hostname_source in (select hostname from hostname_productivity limit 100) and
+    hostname_target not in (select hostname from crawlable_hostnames) and
+    right(hostname_target, length(hostname_target)-4) not in (SELECT hostname FROM crawlable_hostnames) and
+    hostname_target not in (select hostname from responses_timestamp_hostname)
+group by hostname_target
+order by num desc;
 
 SELECT DISTINCT hostname_target as hostname
 FROM refs_keywords
@@ -546,6 +564,32 @@ GROUP BY hostname --,year
 ORDER BY num_distinct DESC;
 
 SELECT 
+    t1.hostname,
+    t1.year,
+    num_distinct,
+    CASE WHEN num_distinct_keyword IS NULL THEN 0 ELSE num_distinct_keyword END,
+    CASE WHEN num_distinct_keyword IS NULL THEN 0 ELSE num_distinct_keyword END / num_distinct as keyword_fraction
+FROM (
+    SELECT 
+        hostname,
+        extract(year from day) as year,
+        sum(#num_distinct) num_distinct
+    FROM articles_summary2
+    WHERE hostname='www.nytimes.com'
+    GROUP BY hostname,year
+) AS t1
+LEFT JOIN (
+    SELECT 
+        hostname,
+        extract(year from day) as year,
+        sum(#num_distinct) num_distinct_keyword
+    FROM articles_summary2
+    WHERE hostname='www.nytimes.com' AND keyword=true
+    GROUP BY hostname,year
+) AS t2 on t1.hostname = t2.hostname and t1.year = t2.year
+ORDER BY year DESC;
+
+SELECT 
     hostname,
     extract(year from day) as year,
     sum(#num_distinct_url) distinct_url,
@@ -586,11 +630,12 @@ RIGHT JOIN (
 ON t1.hostname = t2.hostname
 ORDER BY ranking DESC;
 
-SELECT *
+SELECT hostname,num_distinct_keywords,num_distinct_total,keyword_fraction
 FROM hostname_productivity
 WHERE
     hostname not in (SELECT hostname FROM crawlable_hostnames) AND
     right(hostname, length(hostname)-4) not in (SELECT hostname FROM crawlable_hostnames)
+    --AND hostname like '%.gov'
     ;
 
 select hostname_target from (
