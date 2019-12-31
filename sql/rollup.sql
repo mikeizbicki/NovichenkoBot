@@ -112,6 +112,7 @@ $function$;
  * Rollup table for refs
  */
 
+-- FIXME: delete table
 CREATE TABLE refs_hostname (
     year SMALLINT,
     hostname_source TEXT,
@@ -149,6 +150,7 @@ VALUES ('refs_hostname', 'refs', 'refs_id_refs_seq', $$
     ;
 $$);
 
+-- FIXME: delete table
 CREATE TABLE refs_keywords (
     year SMALLINT,
     hostname_source TEXT,
@@ -459,6 +461,8 @@ CREATE VIEW total_bytes AS
  * rollup for articles
  */
 
+-- FIXME: table much slower than articles_summary2 due to having to access the text,
+-- which is many bytes; probably should delete it
 CREATE TABLE articles_summary (
     day TIMESTAMP,
     hostname TEXT,
@@ -506,6 +510,39 @@ VALUES ('articles_summary', 'keywords', 'keywords_id_keywords_seq', $$
         num_distinct_url = articles_summary.num_distinct_url || excluded.num_distinct_url,
         num_distinct_title = articles_summary.num_distinct_title || excluded.num_distinct_title,
         num_distinct_text = articles_summary.num_distinct_text || excluded.num_distinct_text
+    ;
+$$);
+
+CREATE TABLE articles_lang (
+    hostname TEXT,
+    lang VARCHAR(2),
+    num_distinct hll NOT NULL,
+    PRIMARY KEY(hostname,lang)
+);
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('articles_lang', 'articles', 'articles_id_articles_seq', $$
+    INSERT INTO articles_lang
+        ( hostname
+        , lang
+        , num_distinct
+        )
+    SELECT
+        hostname,
+        lang,
+        /* this case expression is id_urls_canonical_ from get_valid_articles() */
+        hll_add_agg(hll_hash_bigint(CASE 
+            WHEN articles.id_urls_canonical = 2425 
+            THEN articles.id_urls 
+            ELSE articles.id_urls_canonical 
+            END)) as num_distinct
+    FROM articles
+    WHERE 
+        id_articles>=$1 AND
+        id_articles<$2
+    GROUP BY 1,2 
+    ON CONFLICT (hostname,lang)
+    DO UPDATE SET 
+        num_distinct = articles_lang.num_distinct || excluded.num_distinct
     ;
 $$);
 
