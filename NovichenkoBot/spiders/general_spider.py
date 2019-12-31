@@ -262,6 +262,9 @@ def html2article(url,html):
             article.publish_date=parse(soup.find('span',itemprop='datePublished').text)
             article.authors=soup.find('div',class_='td-author').find('strong').text.split('and')
 
+        if 'theintercept.com' in url:
+            article.authors=soup.find('div',class_='PostByline-names').text.split(',')
+
         if 'https://time.com' in url:
             #article.authors=soup.find('a',class_='author-name').text.split('and')
             article.publish_date=parse(soup.find('div',class_='published-date').text)
