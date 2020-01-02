@@ -237,6 +237,9 @@ def html2article(url,html):
             article.publish_date=parse(soup.find('div',class_='date').text)
             article.authors=soup.find('div',class_='byline').find('b').text.split(',')[0].split('and')
 
+        if 'monde-diplomatique.fr' in url:
+            article.authors=soup.find('span',class_='auteurs').text.split('and')
+
         if 'www.newsweek.com' in url:
             article.authors=soup.find('span',class_='author').text.split('and')
 
@@ -252,6 +255,9 @@ def html2article(url,html):
         if 'politico.eu' in url:
             article.publish_date=parse(soup.find('p',class_='timestamp').find('time')['datetime'])
             article.authors=soup.find('span',class_='byline').text.split('and')
+
+        if 'spiegel.de' in url:
+            article.publish_date=parse(soup.find('span',class_='article-function-date').find('b').text)
 
         if 'www.stripes.com' in url:
             credits=soup.find('div',class_='article_credits')
