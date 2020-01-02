@@ -1,4 +1,5 @@
 CREATE EXTENSION btree_gist;
+CREATE EXTENSION tablefunc;
 
 CREATE TABLE crawlable_hostnames (
     hostname VARCHAR(253) PRIMARY KEY,
@@ -56,7 +57,7 @@ CREATE INDEX frontier_index_urls ON frontier(id_urls);
 CREATE INDEX frontier_index_hostname_reversed ON frontier(hostname_reversed);
 CREATE INDEX frontier_index_timestamp_received ON frontier(timestamp_received);
 CREATE INDEX frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
--- FIXME: need to create this index: create index concurrently frontier_index_nextrequest_alt on frontier(priority,id_frontier,id_urls) where timestamp_processed is null;
+CREATE INDEX frontier_index_nextrequest_alt ON frontier(priority) WHERE timestamp_processed IS NULL;
 
 /* FIXME:
 CREATE TABLE requests (
@@ -253,8 +254,9 @@ CREATE TABLE articles (
 
 CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
---CREATE INDEX articles_title_tsv ON articles USING GIST (id_articles,to_tsvector('english',title));
---CREATE INDEX articles_text_tsv ON articles USING GIST (id_articles,to_tsvector('english',text));
+-- FIXME: 
+-- CREATE INDEX concurrently articles_title_tsv ON articles USING GIST (to_tsvector('english',title));
+--CREATE INDEX concurrently articles_text_tsv ON articles USING GIST (to_tsvector('english',text));
 
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
