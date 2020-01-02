@@ -39,6 +39,18 @@ for hostname in $hostnames_high; do
 done
 
 ########################################
+# launch the generic crawler
+########################################
+
+for i in $(seq 0 0); do
+    echo "generic crawl: offset index = $i"
+    nohup nice -n -19 scrapy crawl general -s OFFSET_INDEX=$i -s ROBOTSTXT_OBEY=False -s MEMQUEUE_LIMIT=50000 -s DNS_TIMEOUT=15 -s DOWNLOAD_TIMEOUT=15 -s CONCURRENT_REQUESTS=128 -s REACTOR_THREADPOOL_MAXSIZE=64 -s AUTOTHROTTLE_ENABLED=False -a db=$db_rfc > $log/allhosts-$(printf "%04d" $i) 2>&1 &
+    echo $! >> $log/pids
+done
+
+exit
+
+########################################
 # launch the low priority crawls
 ########################################
 
@@ -47,25 +59,24 @@ select hostname
 from crawlable_hostnames 
 where 
     priority='' and 
-    (lang='en' or lang='')
+    (lang='de' or lang='fr')
 order by hostname;
 ")
-res=$(psql $db -c "
-select hostname_target from (
-select hostname_target,sum(num) as num
-from refs_keywords
-where
-    type='link' and
-    hostname_source in (select hostname from hostname_productivity limit 500) and
-    hostname_target not in (select hostname from crawlable_hostnames) and
-    right(hostname_target, length(hostname_target)-4) not in (SELECT hostname FROM crawlable_hostnames) and
-    hostname_target not in (select hostname from responses_timestamp_hostname)
-group by hostname_target
-order by num desc
-) as t1
--- offset $(( 25 * $num_jobs ))
-limit $(( 5 * $num_jobs ));
-")
+#res=$(psql $db -c "
+#select hostname_target from (
+#select hostname_target,sum(num) as num
+#from refs_keywords
+#where
+    #type='link' and
+    #hostname_source in (select hostname from hostname_productivity limit 5000) and
+    #hostname_target not in (select hostname from crawlable_hostnames) and
+    #right(hostname_target, length(hostname_target)-4) not in (SELECT hostname FROM crawlable_hostnames) and
+    #hostname_target not in (select distinct hostname from responses_timestamp_hostname)
+#group by hostname_target
+#order by num desc
+#) as t1
+#limit $(( 5 * $num_jobs ));
+#")
 
 hostnames_low=$(echo "$res" | tail -n +4 | head -n -3)
 

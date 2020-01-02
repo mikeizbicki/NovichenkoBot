@@ -34,13 +34,17 @@ class Scheduler(object):
         settings=crawler.settings
         self.ENABLE_PROXY = settings.getbool('ENABLE_PROXY',False)
         self.INFINITY_CRAWLER = settings.getbool('INFINITY_CRAWLER',False)
-        self.HOSTNAME_RESTRICTIONS = settings.getlist('HOSTNAME_RESTRICTIONS')
+        self.OFFSET_INDEX = settings.getint('OFFSET_INDEX',0)
+        self.HOSTNAME_RESTRICTIONS = settings.getlist('HOSTNAME_RESTRICTIONS',[])
+        if self.HOSTNAME_RESTRICTIONS==['']:
+            logger.error('cannot pass empty string into HOSTNAME_RESTRICTIONS parameter')
+            raise ValueError()
         self.HOSTNAME_RESTRICTIONS_loop = [
                 reverse_hostname(hostname)
                 for hostname in self.HOSTNAME_RESTRICTIONS+['www.'+hostname for hostname in self.HOSTNAME_RESTRICTIONS]
                 ]
         self.MEMQUEUE_LIMIT = settings.getint('MEMQUEUE_LIMIT',default=1000)
-        self.MEMQUEUE_MIN_URLS = settings.getint('MEMQUEUE_MIN_URLS',default=100)
+        self.MEMQUEUE_MIN_URLS = settings.getint('MEMQUEUE_MIN_URLS',default=1)
         self.MEMQUEUE_MAX_URLS = settings.getint('MEMQUEUE_MAX_URLS',default=self.MEMQUEUE_LIMIT*2)
         self.MEMQUEUE_TIMEDELTA = settings.getint('MEMQUEUE_TIMEDELTA',default=120)
         self.time_of_last_memqueue_fill = datetime.datetime.now()- datetime.timedelta(0,1000*self.MEMQUEUE_TIMEDELTA)
@@ -301,7 +305,7 @@ class Scheduler(object):
 
             # performing a normal crawl restricted to certain domains
             else:
-                for hostname_reversed in self.HOSTNAME_RESTRICTIONS_loop:
+                if self.HOSTNAME_RESTRICTIONS == []:
                     sql=text(f'''
                     select scheme,hostname,port,path,params,query,fragment,fmod.id_frontier,urls.id_urls,depth
                     from urls 
@@ -309,23 +313,54 @@ class Scheduler(object):
                         select id_frontier,id_urls
                         from frontier 
                         where
-                            timestamp_processed is null and
-                            hostname_reversed=:hostname_reversed
+                            timestamp_processed is null
+                            and substring(reverse(hostname_reversed) from 2) not in (
+                                select hostname 
+                                from crawlable_hostnames
+                                where priority='ban'
+                            )
                             order by priority desc
+                            offset {self.OFFSET_INDEX * 10 * self.MEMQUEUE_LIMIT}
                             limit {self.MEMQUEUE_LIMIT}
                         ) as fmod on urls.id_urls=fmod.id_urls
                         ;
                     ''')
 
                     # execute the SQL query and update memqueue with the results
-                    res=self.connection.execute(sql,{
-                        'hostname_reversed':hostname_reversed
-                        })
+                    res=self.connection.execute(sql)
+                    hostnames=set()
                     for row in [dict(row.items()) for row in res]:
                         hostname=row['hostname']
+                        hostnames|={hostname}
                         self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
                         self.next_hostname=hostname
+                    logger.info(f'expanded memqueue; total hostnames={len(hostnames)}')
 
+                else:
+                    for hostname_reversed in self.HOSTNAME_RESTRICTIONS_loop:
+                        sql=text(f'''
+                        select scheme,hostname,port,path,params,query,fragment,fmod.id_frontier,urls.id_urls,depth
+                        from urls 
+                        inner join (
+                            select id_frontier,id_urls
+                            from frontier 
+                            where
+                                timestamp_processed is null and
+                                hostname_reversed=:hostname_reversed
+                                order by priority desc
+                                limit {self.MEMQUEUE_LIMIT}
+                            ) as fmod on urls.id_urls=fmod.id_urls
+                            ;
+                        ''')
+
+                        # execute the SQL query and update memqueue with the results
+                        res=self.connection.execute(sql,{
+                            'hostname_reversed':hostname_reversed
+                            })
+                        for row in [dict(row.items()) for row in res]:
+                            hostname=row['hostname']
+                            self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
+                            self.next_hostname=hostname
 
             memqueue_values=sum(map(len,self.memqueue.values()))
             logger.info(f'expanded memqueue; keys = {self.memqueue.keys()} ; values = {memqueue_values}')
