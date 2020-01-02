@@ -20,6 +20,7 @@ ALTER INDEX frontier_index_urls SET TABLESPACE fastdata;
 ALTER INDEX frontier_index_hostname_reversed SET TABLESPACE fastdata;
 ALTER INDEX frontier_index_timestamp_received SET TABLESPACE fastdata;
 ALTER INDEX frontier_index_nextrequest SET TABLESPACE fastdata;
+-- FIXME: run this command ALTER INDEX frontier_index_nextrequest_alt SET TABLESPACE fastdata;
 ALTER INDEX responses_index_timestamp_received SET TABLESPACE fastdata;
 ALTER INDEX responses_index_hostnametwistedhttp SET TABLESPACE fastdata;
 ALTER INDEX responses_index_frontier SET TABLESPACE fastdata;
