@@ -130,7 +130,7 @@ SELECT DISTINCT ON (id_urls)
 FROM frontier
 WHERE
     timestamp_processed is not null AND
-    hostname_reversed=reverse('.thediplomat.com');
+    hostname_reversed like reverse('%.de') or hostname_reversed=reverse('%.fr');
 
  *
  * The following version of this insertion is tailored to restart the search process of sinonk.com
@@ -374,3 +374,32 @@ where
 group by responses.id_responses
 order by num desc
 ;
+
+/*
+ *
+ */
+select substring(reverse(hostname_reversed) from 2) as hostname,count(1) 
+from frontier 
+where 
+    timestamp_processed is null 
+    and priority='inf' 
+    and substring(reverse(hostname_reversed) from 2) not in (
+        select hostname 
+        from crawlable_hostnames
+        where priority='ban'
+    )
+group by hostname 
+order by count desc;
+
+select substring(reverse(hostname_reversed) from 2) as hostname,priority
+from frontier 
+where 
+    timestamp_processed is null 
+    and priority<'inf' 
+    and substring(reverse(hostname_reversed) from 2) not in (
+        select hostname 
+        from crawlable_hostnames
+        where priority='ban'
+    )
+order by priority desc
+limit 10000;
