@@ -57,6 +57,7 @@ class Scheduler(object):
             engine = sqlalchemy.create_engine(db, connect_args={'timeout': 120})
             self.connection = engine.connect()
         self.memqueue = {}
+        self.memqueue_recent = []
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -208,23 +209,29 @@ class Scheduler(object):
             request.depth=frontier_row['depth']
             
             # update the row to indicate it has been retrieved 
+            """
             sql=text(f'''
             update frontier 
                 set timestamp_processed=:timestamp_processed 
                 where id_frontier=:id_frontier
             ''')
+            """
+            sql=text(f'''
+            insert into requests (id_frontier,timestamp) values (:id_frontier,:timestamp);
+            ''')
             self.connection.execute(sql,{
-                'timestamp_processed':datetime.datetime.now(),
+                'timestamp':datetime.datetime.now(),
                 'id_frontier':frontier_row['id_frontier']
                 })
             self.stats.inc_value('scheduler/dequeued', spider=self.spider)
 
             # add proxy information to request
-            if self.ENABLE_PROXY:
+            if self.ENABLE_PROXY: 
                 # FIXME: add proxies to list
-                proxies=[]
+                proxies=['216.169.73.65:40344']
                 request.meta['proxy']=random.choice(proxies)
 
+            self._update_memqueue_recent(request.id_urls)
             return request
 
 
@@ -246,6 +253,12 @@ class Scheduler(object):
                 return False
             else:
                 return True
+
+
+    def _update_memqueue_recent(self,id_urls):
+        if len(self.memqueue_recent) > 10000:
+            del self.memqueue_recent[0]
+        self.memqueue_recent.append(id_urls)
 
 
     def _update_memqueue(self):
@@ -300,7 +313,8 @@ class Scheduler(object):
                 res=self.connection.execute(sql,values_dict)
                 for row in [dict(row.items()) for row in res]:
                     hostname=row['hostname']
-                    self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
+                    if row['id_urls'] not in self.memqueue_recent:
+                        self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
                     self.next_hostname=hostname
 
             # performing a normal crawl restricted to certain domains
@@ -332,7 +346,8 @@ class Scheduler(object):
                     for row in [dict(row.items()) for row in res]:
                         hostname=row['hostname']
                         hostnames|={hostname}
-                        self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
+                        if row['id_urls'] not in self.memqueue_recent:
+                            self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
                         self.next_hostname=hostname
                     logger.info(f'expanded memqueue; total hostnames={len(hostnames)}')
 
@@ -359,10 +374,14 @@ class Scheduler(object):
                             })
                         for row in [dict(row.items()) for row in res]:
                             hostname=row['hostname']
-                            self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
+                            if row['id_urls'] not in self.memqueue_recent:
+                                self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
                             self.next_hostname=hostname
 
-            memqueue_values=sum(map(len,self.memqueue.values()))
-            logger.info(f'expanded memqueue; keys = {self.memqueue.keys()} ; values = {memqueue_values}')
-
-
+            memqueue_values=[]
+            for v in self.memqueue.values():
+                for i in v:
+                    memqueue_values.append(i['id_urls'])
+            num_values = len(memqueue_values)
+            num_values_unique = len(set(memqueue_values))
+            logger.info(f'expanded memqueue; keys = {self.memqueue.keys()} ; num_values = {num_values} ; num_values_unique = {num_values_unique}')
