@@ -59,13 +59,46 @@ CREATE INDEX frontier_index_timestamp_received ON frontier(timestamp_received);
 CREATE INDEX frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
 CREATE INDEX frontier_index_nextrequest_alt ON frontier(priority) WHERE timestamp_processed IS NULL;
 
-/* FIXME:
 CREATE TABLE requests (
     id_requests BIGSERIAL PRIMARY KEY,
-    id_frontier BIGINT,
-    timestamp TIMESTAMP
+    id_frontier BIGINT UNIQUE NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
+    FOREIGN KEY (id_frontier) REFERENCES frontier(id_frontier)
 );
+
+/*
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('requests', 'frontier', 'frontier_id_frontier_seq', $$
+    INSERT INTO requests
+        (id_frontier,timestamp)
+    SELECT
+        id_frontier,timestamp_processed
+    FROM frontier
+    WHERE
+        timestamp_processed is not null AND
+        frontier.id_frontier >= $1 AND 
+        frontier.id_frontier < $2 
+    ON CONFLICT (id_frontier)
+    DO NOTHING
+    ;
+$$);
 */
+
+CREATE FUNCTION requests_trigger_insert_f()
+RETURNS trigger AS
+$$
+BEGIN
+    UPDATE frontier
+    SET timestamp_processed=NEW.timestamp
+    WHERE
+        id_frontier=NEW.id_frontier;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER requests_trigger_insert
+AFTER INSERT on requests
+FOR EACH ROW EXECUTE PROCEDURE requests_trigger_insert_f();
 
 CREATE TABLE responses (
     id_responses BIGSERIAL PRIMARY KEY,
@@ -174,6 +207,7 @@ CREATE VIEW responses_recent_performance2 AS
 /* If a response indicates that the URL failed to download for a "transient"
  * reason, we can recycle the response back into the frontier to try downloading again.
  */
+/* FIXME: these need to be updated for the new requests table
 CREATE FUNCTION responses_recycle()
 RETURNS void AS $$
 BEGIN
@@ -204,6 +238,7 @@ CREATE VIEW responses_recyclable AS
         twisted_status != 'DNSLookupError' and
         timestamp_processed is null and
         timestamp_received < now()-interval '10 minutes';
+*/
 
 /*
  * A URL in the frontier is a ghost if its timestamp_processed is not null
@@ -214,6 +249,7 @@ CREATE VIEW responses_recyclable AS
  * This function sets the timestamp_processed to null for each of these 
  * ghosted frontier urls so that they can be recrawled correctly.
  */
+/* FIXME: these need to be updated for the new request table
 CREATE FUNCTION frontier_deghost()
 RETURNS void AS $$
 BEGIN
@@ -231,6 +267,7 @@ CREATE VIEW frontier_ghost AS
         responses.id_frontier is null and
         frontier.timestamp_processed is not null and
         frontier.timestamp_received < now()-interval '10 minutes';
+*/
 
 /*
  * These tables store the actual scraped articles.
@@ -254,9 +291,11 @@ CREATE TABLE articles (
 
 CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
+CREATE INDEX articles_title_tsv ON articles USING GIST (to_tsvector('english',title));
+CREATE INDEX articles_text_tsv ON articles USING GIST (to_tsvector('english',text));
 -- FIXME: 
--- CREATE INDEX concurrently articles_title_tsv ON articles USING GIST (to_tsvector('english',title));
---CREATE INDEX concurrently articles_text_tsv ON articles USING GIST (to_tsvector('english',text));
+-- CREATE INDEX concurrently articles_index_hostnamelang ON articles(hostname,lang);
+-- CREATE INDEX concurrently articles_index_hostname_tsvtitle_en ON articles USING GIST (hostname,to_tsvector('english',title));
 
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
