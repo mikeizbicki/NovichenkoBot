@@ -109,6 +109,54 @@ END;
 $function$;
 
 /*
+ * Rollup table for frontier
+ */
+
+CREATE TABLE frontier_hostname (
+    hostname TEXT PRIMARY KEY,
+    num INTEGER NOT NULL,
+    num_0 INTEGER NOT NULL,
+    num_10 INTEGER NOT NULL,
+    num_100 INTEGER NOT NULL,
+    num_1000 INTEGER NOT NULL,
+    num_10000 INTEGER NOT NULL,
+    num_100000 INTEGER NOT NULL,
+    num_1000000 INTEGER NOT NULL
+);
+
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('frontier_hostname', 'frontier', 'frontier_id_frontier_seq', $$
+    INSERT INTO frontier_hostname 
+        (hostname,num,num_0,num_10,num_100,num_1000,num_10000,num_100000,num_1000000)
+    SELECT
+        substring(reverse(hostname_reversed) from 2) as hostname,
+        count(1),
+        sum(CASE WHEN priority>0 THEN 1 ELSE 0 END),
+        sum(CASE WHEN priority>10 THEN 1 ELSE 0 END),
+        sum(CASE WHEN priority>100 THEN 1 ELSE 0 END),
+        sum(CASE WHEN priority>1000 THEN 1 ELSE 0 END),
+        sum(CASE WHEN priority>10000 THEN 1 ELSE 0 END),
+        sum(CASE WHEN priority>100000 THEN 1 ELSE 0 END),
+        sum(CASE WHEN priority>1000000 THEN 1 ELSE 0 END)
+    FROM frontier
+    WHERE
+        frontier.id_frontier >= $1 AND 
+        frontier.id_frontier < $2 
+    GROUP BY hostname
+    ON CONFLICT (hostname)
+    DO UPDATE SET 
+        num = frontier_hostname.num+excluded.num,
+        num_0 = frontier_hostname.num_0+excluded.num_0,
+        num_10 = frontier_hostname.num_10+excluded.num_10,
+        num_100 = frontier_hostname.num_100+excluded.num_100,
+        num_1000 = frontier_hostname.num_1000+excluded.num_1000,
+        num_10000 = frontier_hostname.num_10000+excluded.num_10000,
+        num_100000 = frontier_hostname.num_100000+excluded.num_100000,
+        num_1000000 = frontier_hostname.num_1000000+excluded.num_1000000
+    ;
+$$);
+
+/*
  * Rollup table for refs
  */
 
@@ -546,6 +594,19 @@ VALUES ('articles_lang', 'articles', 'articles_id_articles_seq', $$
     ;
 $$);
 
+SELECT 
+    lang,
+    num_distinct,
+    num_distinct/sum(num_distinct) over () as fraction
+FROM (
+    SELECT 
+        lang,
+        sum(#num_distinct) as num_distinct
+    FROM articles_lang
+    GROUP BY lang
+) t1
+ORDER BY num_distinct DESC;
+
 CREATE TABLE articles_summary2 (
     day TIMESTAMP,
     hostname TEXT,
@@ -638,79 +699,3 @@ GROUP BY hostname,year
 ORDER BY year DESC;
 */
 
-CREATE VIEW hostname_productivity AS
-SELECT
-    t1.hostname,
-    num_distinct_keywords,
-    num_distinct_total,
-    num_distinct_keywords/num_distinct_total as keyword_fraction,
-    num_distinct_keywords*(num_distinct_keywords/num_distinct_total) as ranking
-FROM (
-    SELECT 
-        hostname,
-        #hll_union_agg(num_distinct) as num_distinct_keywords
-    FROM articles_summary2
-    WHERE 
-        keyword=true AND 
-        day!='-infinity'
-    GROUP BY hostname 
-) t1
-RIGHT JOIN (
-    SELECT 
-        hostname,
-        #hll_union_agg(num_distinct) as num_distinct_total
-    FROM articles_summary2
-    WHERE 
-        day!='-infinity'
-    GROUP BY hostname 
-) t2
-ON t1.hostname = t2.hostname
-ORDER BY ranking DESC;
-
-SELECT hostname,num_distinct_keywords,num_distinct_total,keyword_fraction
-FROM hostname_productivity
-WHERE
-    hostname not in (SELECT hostname FROM crawlable_hostnames) AND
-    right(hostname, length(hostname)-4) not in (SELECT hostname FROM crawlable_hostnames)
-    --AND hostname like '%.gov'
-    ;
-
-select hostname_target from (
-SELECT 
-    hostname_target
-    --hostname_target,
-    --sum(#distinct_keywords) as distinct_keywords
-FROM refs_summary
-WHERE 
-    type='link' and (
-        --hostname_source='www.peru21.pe' or
-        --hostname_source='www.armscontrolwonk.com' or
-        --hostname_source='www.nknews.org' or
-        --hostname_source='www.northkoreatech.org' or
-        --hostname_source='www.thehill.org' or
-        --hostname_source='thediplomat.com' or
-        --hostname_source='foreignpolicy.com'
-    --)
-    --and not (
-    --hostname_target like '%facebook.%' or
-    --hostname_target like '%instagram.%' or
-    --hostname_target like '%scribd.%' or
-    --hostname_target like '%twitter.%' or
-    --hostname_target like '%reddit.%' or
-    --hostname_target like '%pinterest.%' or
-    --hostname_target like '%youtube.%' or
-    --hostname_target like '%youtu.be%' or
-    --hostname_target like '%google.%' or
-    --hostname_target like '%wikipedia.%' or
-    --hostname_target like '%wikimedia.%' or
-    --hostname_target like '%linkedin.%' or
-    --hostname_target like '%yahoo.%' or
-    --hostname_target like '%archive.%' or
-    --hostname_target like '%flickr.%' or
-    --hostname_target like '%answers.%' or
-    --hostname_target like '%imgur.%'
-    --)
-GROUP BY hostname_target
-ORDER BY distinct_keywords desc
-)t
-WHERE distinct_keywords>4;
