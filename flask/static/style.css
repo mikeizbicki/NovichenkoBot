@@ -1,0 +1,15 @@
+table {
+    /*border: 1px solid gray;*/
+    border-spacing: 11px;
+    border-collapse: separate;
+}
+
+td { 
+    /*border: 1px solid gray;*/
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+td.numeric {
+    text-align: right;
+}

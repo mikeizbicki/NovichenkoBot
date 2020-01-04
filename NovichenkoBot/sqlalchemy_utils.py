@@ -44,6 +44,7 @@ def parse_url(url):
         'other':'',
         }
 
+
 def urlinfo2url(urlinfo):
     if urlinfo['port']==-1:
         netloc=urlinfo['hostname']
@@ -131,6 +132,24 @@ def get_url_info(connection,url,depth=0,flexible_url=False):
     url_info['id_urls']=id_urls
     url_info['depth']=depth
     return url_info
+
+
+def get_url_info_from_id_urls(connection,id_urls):
+    sql=sqlalchemy.sql.text('''
+    select 
+        scheme,
+        hostname,
+        port,
+        path,
+        params,
+        query,
+        fragment
+    from urls
+    where
+        id_urls=:id_urls
+    ''')
+    row = connection.execute(sql,{'id_urls':id_urls}).first()
+    return dict(row)
 
 
 def insert_request(connection,url,priority=0,allow_dupes=False,depth=0,flexible_url=False):
