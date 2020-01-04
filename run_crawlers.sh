@@ -48,8 +48,6 @@ for i in $(seq 0 0); do
     echo $! >> $log/pids
 done
 
-exit
-
 ########################################
 # launch the low priority crawls
 ########################################
@@ -62,6 +60,17 @@ where
     (lang='de' or lang='fr')
 order by hostname;
 ")
+res=$(psql $db -c "
+SELECT hostname
+FROM hostname_productivity
+ORDER BY priority desc
+limit 500;
+")
+#res=$(psql $db -c "
+#SELECT DISTINCT hostname
+#FROM articles_lang
+#WHERE substring(hostname from '\.[^\.]+$') = '.fr' or substring(hostname from '\.[^\.]+$') = '.gov';
+#")
 #res=$(psql $db -c "
 #select hostname_target from (
 #select hostname_target,sum(num) as num
