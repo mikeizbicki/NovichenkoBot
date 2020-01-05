@@ -87,6 +87,19 @@ class GeneralSpider(Spider):
                 })
             id_articles=res.first()[0]
 
+            # update fullhtml table
+            sql=sqlalchemy.sql.text('''
+            INSERT INTO fullhtml 
+                (id_articles,hostname,html)
+                VALUES
+                (:id_articles,:hostname,:html)
+            ''')
+            self.connection.execute(sql,{
+                'id_articles':id_articles,
+                'hostname':response.request.hostname,
+                'html':response.text
+                })
+
             # update keywords table
             keywords_lang=self.keywords.get(article.lang,[])
             alltext_lower=article.alltext.lower()

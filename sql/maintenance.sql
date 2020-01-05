@@ -70,6 +70,22 @@ FROM (
 ) AS pretty_sizes;
 
 /*
+ * Calculate the disk usage of each index
+ */
+
+SELECT
+    indexname,
+    pg_size_pretty(rel_size) as size
+FROM (
+    SELECT 
+        indexname,
+        pg_relation_size(indexname::text) as rel_size 
+    FROM pg_indexes
+    WHERE schemaname = 'public'
+    ORDER BY rel_size DESC
+)t;
+
+/*
  * list all the queries that are blocked and the reasons they are blocked
  */
 SELECT

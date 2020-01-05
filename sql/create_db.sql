@@ -293,9 +293,10 @@ CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
 CREATE INDEX articles_title_tsv ON articles USING GIST (to_tsvector('english',title));
 CREATE INDEX articles_text_tsv ON articles USING GIST (to_tsvector('english',text));
+CREATE INDEX articles_index_hostname_tsvtitle_en ON articles USING GIST (hostname,to_tsvector('english',title));
 -- FIXME: 
 -- CREATE INDEX concurrently articles_index_hostnamelang ON articles(hostname,lang);
--- CREATE INDEX concurrently articles_index_hostname_tsvtitle_en ON articles USING GIST (hostname,to_tsvector('english',title));
+-- CREATE INDEX concurrently articles_index_hostname_tsvtext_en ON articles USING GIST (hostname,to_tsvector('english',text));
 
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
@@ -417,20 +418,22 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
+CREATE TABLE fullhtml (
+    id_articles BIGINT,
+    hostname TEXT NOT NULL,
+    html TEXT NOT NULL,
+    PRIMARY KEY (id_articles)
+    --FIXME: add foreign key constraint
+    --FOREIGN KEY (id_articles) REFERENCES articles(id_articles)
+);
+CREATE INDEX fullhtml_index_hostname ON fullhtml(hostname);
+
+-- FIXME: what is this table for?
 CREATE TABLE articles_valid (
     id_articles BIGINT,
     PRIMARY KEY(id_articles),
     FOREIGN KEY(id_articles) REFERENCES articles(id_articles)
 );
-
-CREATE VIEW articles_per_year AS 
-    SELECT 
-        hostname,
-        extract(YEAR FROM pub_time) as year,
-        count(1) as num
-    FROM articles
-    GROUP BY hostname,year
-    ORDER BY hostname,year;
 
 CREATE TABLE keywords (
     id_keywords BIGSERIAL PRIMARY KEY,
