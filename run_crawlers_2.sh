@@ -7,7 +7,7 @@ while true; do
     cat log/newest/pids | xargs kill
     cat log/newest/pids | xargs kill
     sh run_crawlers.sh
-    sleep 30m
+    sleep 90m
     sh run_rollups.sh
     sh run_views.sh
     sleep 30m

@@ -67,12 +67,28 @@ done
 #limit 500;
 #")
 res=$(psql $db -c "
-SELECT hostname 
-FROM frontier_hostname 
-WHERE num_0>0 AND hostname NOT IN (SELECT * FROM hostnames_responses) 
-ORDER BY num_1000000,num_100000,num_10000,num_1000,num_100,num_10,num_0
-LIMIT 500;
+SELECT DISTINCT hostname
+FROM (
+    SELECT substring(reverse(hostname_reversed) from 2) as hostname,priority
+    FROM frontier
+    WHERE 
+        timestamp_processed is null
+        and substring(reverse(hostname_reversed) from 2) not in (
+            SELECT hostname FROM crawlable_hostnames WHERE priority='ban'
+        )
+    ORDER BY priority DESC
+    LIMIT 100000
+)t
+LIMIT 500
+;
 ")
+#res=$(psql $db -c "
+#SELECT hostname 
+#FROM frontier_hostname 
+#WHERE num_0>0 AND hostname NOT IN (SELECT * FROM hostnames_responses) 
+#ORDER BY num_1000000,num_100000,num_10000,num_1000,num_100,num_10,num_0
+#LIMIT 500;
+#")
 #res=$(psql $db -c "
 #SELECT DISTINCT hostname
 #FROM articles_lang
