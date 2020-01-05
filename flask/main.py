@@ -384,6 +384,11 @@ def hostname(hostname):
     ) AS t2 on t1.hostname = t2.hostname and t1.year = t2.year
     ORDER BY year DESC;
     ''')
+    sql=text(f'''
+    SELECT * 
+    FROM articles_per_year
+    WHERE hostname=:hostname;
+    ''')
     res=g.connection.execute(sql,{'hostname':hostname})
     def callback(k,v):
         if k=='year':

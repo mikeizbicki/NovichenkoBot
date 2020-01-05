@@ -7,6 +7,7 @@ hostnames_articles
 lang_stats
 hostnames_responses
 hostname_productivity
+articles_per_year
 "
 
 for view in $views; do

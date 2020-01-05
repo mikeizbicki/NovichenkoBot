@@ -15,10 +15,10 @@ CREATE MATERIALIZED VIEW hostname_productivity AS
 SELECT
     t2.hostname,
     COALESCE(t1v.num_distinct_keywords::int,0) AS valid_keywords,
-    COALESCE(t1.num_distinct_keywords::int,0) AS all_keywords,
     COALESCE(t2v.num_distinct_total::int,0) as valid_total,
-    COALESCE(t2.num_distinct_total::int,0) as all_total,
     COALESCE(ROUND((t1v.num_distinct_keywords/t2v.num_distinct_total)::numeric,4),0) as valid_keyword_fraction,
+    COALESCE(t1.num_distinct_keywords::int,0) AS all_keywords,
+    COALESCE(t2.num_distinct_total::int,0) as all_total,
     COALESCE(ROUND((t1.num_distinct_keywords/t2.num_distinct_total)::numeric,4),0) as all_keyword_fraction,
     COALESCE(ROUND((t2v.num_distinct_total/t2.num_distinct_total)::numeric,4),0) as valid_fraction,
     COALESCE(ROUND((t1v.num_distinct_keywords*(t1v.num_distinct_keywords/t2v.num_distinct_total))::numeric,4),0) as score,
@@ -59,6 +59,45 @@ RIGHT JOIN (
     GROUP BY hostname 
 ) t2 ON t1v.hostname = t2.hostname
 ORDER BY priority DESC;
+
+
+/*
+CREATE VIEW articles_per_year AS 
+    SELECT 
+        hostname,
+        extract(YEAR FROM pub_time) as year,
+        count(1) as num
+    FROM articles
+    GROUP BY hostname,year
+    ORDER BY hostname,year;
+*/
+
+CREATE MATERIALIZED VIEW articles_per_year AS
+SELECT
+    t1.hostname,
+    CASE WHEN t1.year = '-inf' THEN 'undefined' ELSE to_char(t1.year,'0000') END as year,
+    num :: int,
+    num_distinct :: int,
+    COALESCE(num_distinct_keyword,0)::int as num_distinct_keyword,
+    round((COALESCE(num_distinct_keyword,0) / num_distinct) :: numeric,4) as keyword_fraction
+FROM (
+    SELECT
+        hostname,
+        extract(year from day) as year,
+        sum(num) as num,
+        sum(#num_distinct) num_distinct
+    FROM articles_summary2
+    GROUP BY hostname,year
+) AS t1
+LEFT JOIN (
+    SELECT
+        hostname,
+        extract(year from day) as year,
+        sum(#num_distinct) num_distinct_keyword
+    FROM articles_summary2
+    GROUP BY hostname,year
+) AS t2 on t1.hostname = t2.hostname and t1.year = t2.year
+ORDER BY t1.hostname DESC,year DESC;
 
 /*
 SELECT hostname,num_distinct_keywords,num_distinct_total,keyword_fraction
