@@ -52,19 +52,26 @@ done
 # launch the low priority crawls
 ########################################
 
+#res=$(psql $db -c "
+#select hostname 
+#from crawlable_hostnames 
+#where 
+    #priority='' and 
+    #(lang='de' or lang='fr')
+#order by hostname;
+#")
+#res=$(psql $db -c "
+#SELECT hostname
+#FROM hostname_productivity
+#ORDER BY priority desc
+#limit 500;
+#")
 res=$(psql $db -c "
-select hostname 
-from crawlable_hostnames 
-where 
-    priority='' and 
-    (lang='de' or lang='fr')
-order by hostname;
-")
-res=$(psql $db -c "
-SELECT hostname
-FROM hostname_productivity
-ORDER BY priority desc
-limit 500;
+SELECT hostname 
+FROM frontier_hostname 
+WHERE num_0>0 AND hostname NOT IN (SELECT * FROM hostnames_responses) 
+ORDER BY num_1000000,num_100000,num_10000,num_1000,num_100,num_10,num_0
+LIMIT 500;
 ")
 #res=$(psql $db -c "
 #SELECT DISTINCT hostname
