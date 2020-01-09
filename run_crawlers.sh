@@ -42,11 +42,11 @@ done
 # launch the generic crawler
 ########################################
 
-for i in $(seq 0 0); do
-    echo "generic crawl: offset index = $i"
-    nohup nice -n -19 scrapy crawl general -s OFFSET_INDEX=$i -s ROBOTSTXT_OBEY=False -s MEMQUEUE_LIMIT=50000 -s DNS_TIMEOUT=15 -s DOWNLOAD_TIMEOUT=15 -s CONCURRENT_REQUESTS=128 -s REACTOR_THREADPOOL_MAXSIZE=64 -s AUTOTHROTTLE_ENABLED=False -a db=$db_rfc > $log/allhosts-$(printf "%04d" $i) 2>&1 &
-    echo $! >> $log/pids
-done
+#for i in $(seq 0 0); do
+    #echo "generic crawl: offset index = $i"
+    #nohup nice -n -19 scrapy crawl general -s OFFSET_INDEX=$i -s ROBOTSTXT_OBEY=False -s MEMQUEUE_LIMIT=50000 -s DNS_TIMEOUT=15 -s DOWNLOAD_TIMEOUT=15 -s CONCURRENT_REQUESTS=128 -s REACTOR_THREADPOOL_MAXSIZE=64 -s AUTOTHROTTLE_ENABLED=False -a db=$db_rfc > $log/allhosts-$(printf "%04d" $i) 2>&1 &
+    #echo $! >> $log/pids
+#done
 
 ########################################
 # launch the low priority crawls
@@ -79,7 +79,7 @@ FROM (
     ORDER BY priority DESC
     LIMIT 100000
 )t
-LIMIT 500
+LIMIT 300
 ;
 ")
 #res=$(psql $db -c "
