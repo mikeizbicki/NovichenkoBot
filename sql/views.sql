@@ -11,6 +11,53 @@ GROUP BY lang;
 CREATE MATERIALIZED VIEW hostnames_responses AS
 SELECT DISTINCT hostname FROM responses_timestamp_hostname;
 
+CREATE MATERIALIZED VIEW refs_summary_simple AS
+SELECT
+    hostname_source,
+    hostname_target,
+    sum(num_all) as num_all,
+    sum(num_keywords) as num_keywords,
+    #hll_union_agg(distinct_all) as distinct_all,
+    #hll_union_agg(distinct_keywords) as distinct_keywords
+FROM refs_summary
+WHERE
+    type='link'
+GROUP BY hostname_source,hostname_target
+ORDER BY hostname_source,hostname_target;
+
+CREATE MATERIALIZED VIEW hostname_progress AS
+SELECT
+    frontier_hostname.hostname,
+    COALESCE(frontier_hostname.num,0) as num_frontier,
+    COALESCE(requests_hostname.num,0) as num_requests,
+    COALESCE(ROUND(requests_hostname.num/frontier_hostname.num::numeric,4),0) as fraction_requested,
+    COALESCE(responses_hostname.num,0) as num_responses,
+    COALESCE(ROUND(responses_hostname.num/requests_hostname.num::numeric,4),0) as fraction_responded,
+    COALESCE(articles_hostname.num,0) as num_articles,
+    COALESCE(ROUND(articles_hostname.num/responses_hostname.num::numeric,4),0) as fraction_articles,
+    COALESCE(articles_hostname_keyword.num,0) as num_articles_keyword,
+    COALESCE(ROUND(articles_hostname_keyword.num/articles_hostname.num::numeric,4),0) as fraction_keyword
+FROM frontier_hostname
+LEFT OUTER JOIN requests_hostname ON requests_hostname.hostname=frontier_hostname.hostname
+LEFT OUTER JOIN (
+    SELECT hostname,sum(num) as num
+    FROM responses_hostname
+    GROUP BY hostname
+) responses_hostname ON frontier_hostname.hostname=responses_hostname.hostname
+LEFT OUTER JOIN (
+    SELECT hostname,sum(num) as num
+    FROM articles_summary2 
+    WHERE keyword=FALSE 
+    GROUP BY hostname
+) articles_hostname ON frontier_hostname.hostname=articles_hostname.hostname
+LEFT OUTER JOIN (
+    SELECT hostname,sum(num) as num
+    FROM articles_summary2 
+    WHERE keyword=TRUE 
+    GROUP BY hostname
+) articles_hostname_keyword ON frontier_hostname.hostname=articles_hostname_keyword.hostname
+;
+
 CREATE MATERIALIZED VIEW hostname_productivity AS
 SELECT
     t2.hostname,
