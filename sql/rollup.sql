@@ -157,6 +157,34 @@ VALUES ('frontier_hostname', 'frontier', 'frontier_id_frontier_seq', $$
 $$);
 
 /*
+ * Rollup table for requests
+ */
+
+CREATE TABLE requests_hostname (
+    hostname TEXT PRIMARY KEY,
+    num INTEGER NOT NULL
+);
+
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('requests_hostname', 'requests', 'requests_id_requests_seq', $$
+    INSERT INTO requests_hostname 
+        (hostname,num)
+    SELECT
+        substring(reverse(hostname_reversed) from 2) as hostname,
+        count(1)
+    FROM requests 
+    INNER JOIN frontier ON frontier.id_frontier=requests.id_frontier
+    WHERE
+        requests.id_requests >= $1 AND 
+        requests.id_requests < $2 
+    GROUP BY hostname
+    ON CONFLICT (hostname)
+    DO UPDATE SET 
+        num = requests_hostname.num+excluded.num
+    ;
+$$);
+
+/*
  * Rollup table for refs
  */
 
