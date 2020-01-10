@@ -27,4 +27,7 @@ ALTER INDEX responses_index_frontier SET TABLESPACE fastdata;
 ALTER INDEX responses_index_timestamp_processed SET TABLESPACE fastdata;
 ALTER INDEX articles_index_hostname_time SET TABLESPACE fastdata;
 ALTER INDEX articles_index_urls SET TABLESPACE fastdata;
+ALTER INDEX articles_index_hostname_tsvtitle_en SET TABLESPACE fastdata;
+-- FIXME: ALTER INDEX articles_title_tsv SET TABLESPACE fastdata;
+-- FIXME: ALTER INDEX articles_text_tsv SET TABLESPACE fastdata;
 ALTER INDEX sentences_ids_tsv SET TABLESPACE fastdata;

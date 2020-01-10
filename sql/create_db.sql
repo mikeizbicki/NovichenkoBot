@@ -1,4 +1,5 @@
 CREATE EXTENSION btree_gist;
+CREATE EXTENSION btree_gin;
 CREATE EXTENSION tablefunc;
 
 CREATE TABLE crawlable_hostnames (
@@ -67,9 +68,16 @@ CREATE TABLE requests (
 );
 
 /*
+ * HISTORICAL NOTE:
+ * When the requests table was added, the table was created as a rollup.
+ * Then the command do_rollup('requests') was run to bring the table up to date.
+ * The table is no longer a rollup.  
+ * When requests is updated by the scheduler,
+ * triggers ensure that the timestamp_processed column in frontier gets updated.
+ *
 INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
-VALUES ('requests', 'frontier', 'frontier_id_frontier_seq', $$
-    INSERT INTO requests
+VALUES ('requests2', 'frontier', 'frontier_id_frontier_seq', $$
+    INSERT INTO requests2
         (id_frontier,timestamp)
     SELECT
         id_frontier,timestamp_processed
@@ -294,9 +302,12 @@ CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
 CREATE INDEX articles_title_tsv ON articles USING GIST (to_tsvector('english',title));
 CREATE INDEX articles_text_tsv ON articles USING GIST (to_tsvector('english',text));
 CREATE INDEX articles_index_hostname_tsvtitle_en ON articles USING GIST (hostname,to_tsvector('english',title));
+CREATE INDEX articles_index_hostname_tsvtitle_en2 ON articles USING GIN (hostname,to_tsvector('english',title)) WHERE lang='en';
+--CREATE INDEX articles_index_hostname_tsvtext_en ON articles USING GIST (hostname,to_tsvector('english',text)) tablespace fastdata WHERE lang='en';
+--CREATE INDEX articles_index_hostname_tsvtitle_en3 ON articles USING GIST (hostname,to_tsvector('english',title),pub_time) WHERE lang='en';
 -- FIXME: 
 -- CREATE INDEX concurrently articles_index_hostnamelang ON articles(hostname,lang);
--- CREATE INDEX concurrently articles_index_hostname_tsvtext_en ON articles USING GIST (hostname,to_tsvector('english',text));
+-- CREATE INDEX concurrently articles_index_hostname_tsvtext_en ON articles USING GIN (hostname,to_tsvector('english',text));
 
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
