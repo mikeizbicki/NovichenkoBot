@@ -2,19 +2,22 @@
 
 set -e
 
+cd /home/mizbicki/NovichenkoBot
+logdir=log/rollup
+mkdir -p $logdir
+
 views="
-lang_stats
-articles_lang
-articles_per_year
-hostnames_articles
-hostnames_responses
-hostname_productivity
-hostname_progress
+articles_lang_hostnames
+articles_lang_stats
+responses_timestamp_hostname_hostnames
 refs_summary_simple
+hostname_progress
+hostname_productivity
+hostname_peryear
 "
 
 for view in $views; do
     echo "$(date '+%Y-%m-%d %H:%M:%S') view=$view"
-    psql novichenkobot -c "refresh materialized view $view;" &
+    psql novichenkobot -c "refresh materialized view concurrently $view;" >> $logdir/nohup.view.$view < /dev/null 2>&1 &
 done
 

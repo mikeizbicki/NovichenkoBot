@@ -107,7 +107,7 @@ def tld():
     html+='<h2>general purpose TLDs</h2>'
     sql=text(f'''
     select substring(hostname from '\.[^\.]+$') as tld, count(1) as num
-    from hostnames_articles
+    from articles_lang_hostnames
     where substring(hostname from '\.[^\.]+$') in {tlds}
     group by tld
     --having count(1)>100
@@ -123,7 +123,7 @@ def tld():
     html+='<h2>country code TLDs</h2>'
     sql=text(f'''
     select substring(hostname from '\.[^\.]+$') as tld, count(1) as num
-    from hostnames_articles
+    from articles_lang_hostnames
     where 
         substring(hostname from '\.[^\.]+$') not in {tlds} 
         and length(substring(hostname from '\.[^\.]+$'))=3
@@ -136,7 +136,7 @@ def tld():
     html+='<h2>Other TLDs</h2>'
     sql=text(f'''
     select substring(hostname from '\.[^\.]+$') as tld, count(1) as num
-    from hostnames_articles
+    from articles_lang_hostnames
     where 
         substring(hostname from '\.[^\.]+$') not in {tlds} 
         and length(substring(hostname from '\.[^\.]+$'))!=3
@@ -161,7 +161,7 @@ def lang_lang(lang):
     # FIXME: this is very insecure
     order_by=request.args.get('order_by')
     if order_by is None:
-        order_by='score'
+        order_by='fraction_lang'
     order_by=order_by[:20]
 
     order_dir='desc'
@@ -170,13 +170,19 @@ def lang_lang(lang):
 
     # issue db request
     sql=text(f'''
+    /*
     SELECT
         t1.hostname,
         round((num_distinct/sum(num_distinct) over ())::numeric,4) as fraction_lang,
-        num_distinct_keywords::int,
-        num_distinct_total::int,
-        round(keyword_fraction::numeric,4) as keyword_fraction,
+        valid_keywords::int,
+        valid_total::int,
+        valid_keyword_fraction,
+        --round(valid_keyword_fraction::numeric,4) as keyword_fraction,
+        --all_keywords::int,
+        --all_total::int,
         round(score::numeric,4) as score
+    */
+    SELECT round((num_distinct/sum(num_distinct) over ())::numeric,4) as fraction_lang,hostname_productivity.*
     FROM (
         SELECT
             hostname,
@@ -210,7 +216,7 @@ def lang():
         lang,
         round((num_distinct/sum(num_distinct) over ())::numeric,4) as fraction,
         num_distinct::int
-    FROM lang_stats
+    FROM articles_lang_stats
     ORDER BY num_distinct DESC;
     ''')
     res=g.connection.execute(sql)
@@ -368,7 +374,7 @@ def hostname(hostname):
             hostname,
             extract(year from day) as year,
             sum(num) as num,
-            sum(#num_distinct) num_distinct
+            sum(#num_distinct) as num_distinct
         FROM articles_summary2
         WHERE hostname=:hostname
         GROUP BY hostname,year
@@ -377,7 +383,7 @@ def hostname(hostname):
         SELECT
             hostname,
             extract(year from day) as year,
-            sum(#num_distinct) num_distinct_keyword
+            sum(#num_distinct) as num_distinct_keyword
         FROM articles_summary2
         WHERE hostname=:hostname AND keyword=true
         GROUP BY hostname,year
@@ -386,7 +392,7 @@ def hostname(hostname):
     ''')
     sql=text(f'''
     SELECT * 
-    FROM articles_per_year
+    FROM hostname_peryear
     WHERE hostname=:hostname;
     ''')
     res=g.connection.execute(sql,{'hostname':hostname})
