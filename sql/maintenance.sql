@@ -189,6 +189,45 @@ BEGIN;
     INNER JOIN articles ON va.id_articles = articles.id_articles
     ;
 COMMIT;
+
+ *
+ * The following query reinserts languages into the frontier,
+ * which we must do due to the modifications of keywords.csv
+ *
+
+INSERT INTO frontier (id_urls,priority,timestamp_received,hostname_reversed)
+SELECT DISTINCT ON (id_urls)
+    CASE WHEN articles.id_urls_canonical = 2425 
+         THEN articles.id_urls 
+         ELSE articles.id_urls_canonical 
+    END AS id_urls,
+    frontier.priority,
+    now(),
+    frontier.hostname_reversed
+FROM articles
+INNER JOIN responses ON responses.id_responses=articles.id_responses
+INNER JOIN frontier ON frontier.id_frontier=responses.id_frontier
+WHERE
+    lang='ru' or 
+    lang='zh' or 
+    lang='ja' or 
+    lang='kr' or 
+    lang='tl' or 
+    lang='vi' or 
+    lang='pt' or
+    lang='it' or
+    lang='ar' or
+    lang='la' or
+    lang='id' or
+    lang='sw' or
+    lang='ku' or
+    lang='gl' or
+    lang='fa' or
+    lang='he' or
+    lang='yi' or
+    lang='tr' or
+    ((lang='de' or lang='fr') and pub_time <= '2020-01-01') 
+;
 */
 
 /* 

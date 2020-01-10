@@ -17,6 +17,10 @@ ja:         北朝鮮                      ,  朝鮮民主主義人民共和国
 tl:         hilagang korea              , demokratikong republikang bayan ng korea
 vi:         Cộng hòa Dân chủ Nhân dân Triều Tiên , Triều Tiên, Bắc Triều Tiên, Bắc Hàn
 ar:         كوريا الشمالية              , جمهورية كوريا الديمقراطية الشعبية
+fa:         کُره شمالی                   , جمهوری دموکراتیک خلق کره
+yi:         צפון קארעע                  , דעמאקראטישע מענטשנ'ס רעפובליק פון קארעע
+he:         קוריאה הצפונית              , הרפובליקה הדמוקרטית העממית של קוריאה 
+tr:         Kuzey Kore                  , Kore Demokratik Halk Cumhuriyeti , Kore DHC
 la:         corea septentrionalis       , Res publica popularis democratica Coreana
 id:         Korea Utara                 , Republik Rakyat Demokratik Korea
 sw:         Korea ya Kaskazini , Korea Kaskazini, Jamhuri ya Kidemokrasia ya Watu wa Korea
