@@ -108,7 +108,7 @@ FROM (
         AND day!='-infinity'
     GROUP BY hostname 
 ) t1v
-RIGHT JOIN (
+FULL OUTER JOIN (
     SELECT 
         hostname,
         sum(#num_distinct) as num_distinct_total
@@ -117,7 +117,7 @@ RIGHT JOIN (
         day!='-infinity'
     GROUP BY hostname 
 ) t2v ON t1v.hostname = t2v.hostname
-RIGHT JOIN (
+FULL OUTER JOIN (
     SELECT 
         hostname,
         sum(#num_distinct) as num_distinct_keywords
@@ -126,7 +126,7 @@ RIGHT JOIN (
         keyword=true 
     GROUP BY hostname 
 ) t1 ON t1v.hostname = t1.hostname
-RIGHT JOIN (
+FULL OUTER JOIN (
     SELECT 
         hostname,
         sum(#num_distinct) as num_distinct_total
