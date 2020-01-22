@@ -12,6 +12,7 @@ articles_lang_stats
 total_bytes
 responses_timestamp_hostname_hostnames
 responses_timestamp_hostname_recent
+responses_timestamp_hostname_recent_1hr
 refs_summary_simple
 hostname_progress
 hostname_productivity

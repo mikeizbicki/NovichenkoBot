@@ -29,6 +29,14 @@ CREATE MATERIALIZED VIEW responses_timestamp_hostname_hostnames AS
 SELECT DISTINCT hostname FROM responses_timestamp_hostname;
 CREATE UNIQUE INDEX responses_timestamp_hostname_hostnames_index ON responses_timestamp_hostname_hostnames(hostname);
 
+CREATE MATERIALIZED VIEW responses_timestamp_hostname_recent_1hr AS
+SELECT hostname,sum(num) AS num 
+FROM responses_timestamp_hostname 
+WHERE timestamp > now() - interval '1 hour' 
+GROUP BY hostname 
+ORDER BY num DESC;
+CREATE UNIQUE INDEX responses_timestamp_hostname_recent_index_1hr ON responses_timestamp_hostname_recent_1hr(hostname);
+
 CREATE MATERIALIZED VIEW responses_timestamp_hostname_recent AS
 SELECT hostname,sum(num) AS num 
 FROM responses_timestamp_hostname 

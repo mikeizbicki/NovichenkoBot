@@ -314,12 +314,33 @@ def responses_summary():
         )
 
 
+@app.route('/responses_recent_1hr')
+def recent_1hr():
+    html=''
+
+    sql=text(f'''
+    select * from responses_timestamp_hostname_recent_1hr order by num desc;
+    ''')
+    res=g.connection.execute(sql)
+    def callback(k,v):
+        if k=='hostname':
+            return f'<a href=/hostname/{v}>{v}</a>'
+    html += res2html(res,callback)
+
+    return render_template(
+            'base.html',
+            page_name='prev 24hr stats',
+            page_html=html
+            )
+
+
+
 @app.route('/responses_recent')
 def recent():
     html=''
 
     sql=text(f'''
-    select * from responses_timestamp_hostname_recent;
+    select * from responses_timestamp_hostname_recent order by num desc;
     ''')
     res=g.connection.execute(sql)
     def callback(k,v):
