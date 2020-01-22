@@ -96,7 +96,7 @@ CREATE INDEX hostname_progress_index2 ON hostname_progress(fraction_requested);
 
 CREATE MATERIALIZED VIEW hostname_productivity AS
 SELECT
-    t2.hostname,
+    COALESCE(t1v.hostname,t2v.hostname,t1.hostname,t2.hostname),
     COALESCE(t1v.num_distinct_keywords::int,0) AS valid_keywords,
     COALESCE(t2v.num_distinct_total::int,0) as valid_total,
     COALESCE(ROUND((t1v.num_distinct_keywords/t2v.num_distinct_total)::numeric,4),0) as valid_keyword_fraction,
