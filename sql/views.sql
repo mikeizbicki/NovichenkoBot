@@ -14,6 +14,14 @@ GROUP BY lang;
 CREATE UNIQUE INDEX articles_lang_stats_index ON articles_lang_stats(lang);
 
 /*
+ * Views on responses_summary
+ */
+
+CREATE MATERIALIZED VIEW total_bytes AS
+SELECT pg_size_pretty(sum(bytes)) as total_bytes FROM responses_summary;
+CREATE UNIQUE INDEX total_bytes_index on total_bytes(total_bytes);
+
+/*
  * Views on responses_timestamp_hostname
  */
 

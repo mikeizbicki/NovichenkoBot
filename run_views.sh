@@ -9,6 +9,7 @@ mkdir -p $logdir
 views="
 articles_lang_hostnames
 articles_lang_stats
+total_bytes
 responses_timestamp_hostname_hostnames
 responses_timestamp_hostname_recent
 refs_summary_simple

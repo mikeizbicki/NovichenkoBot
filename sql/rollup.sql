@@ -531,9 +531,6 @@ VALUES ('responses_summary', 'responses', 'responses_id_responses_seq', $$
     ;
 $$);
 
-CREATE VIEW total_bytes AS
-    SELECT pg_size_pretty(sum(bytes)) FROM responses_summary;
-
 /*
  * rollup for articles
  */
