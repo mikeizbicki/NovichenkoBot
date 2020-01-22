@@ -33,7 +33,7 @@ class GeneralSpider(Spider):
         with open(keywords) as f:
             for line in f:
                 lang,wordstr=line.split(':')
-                words=[word.strip() for word in wordstr.split(',')]
+                words=[word.strip().lower() for word in wordstr.split(',')]
                 self.keywords[lang]=words
 
         # langid lazily loads models for language identification,
