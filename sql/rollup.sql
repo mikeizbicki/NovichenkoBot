@@ -675,6 +675,51 @@ VALUES ('articles_summary2', 'keywords', 'keywords_id_keywords_seq', $$
     ;
 $$);
 
+CREATE TABLE articles_summary3 (
+    day TIMESTAMP,
+    hostname TEXT,
+    lang VARCHAR(2),
+    keyword BOOL,
+    num BIGINT NOT NULL,
+    num_distinct hll NOT NULL,
+    PRIMARY KEY (day,hostname,lang,keyword)
+);
+
+INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
+VALUES ('articles_summary3', 'keywords', 'keywords_id_keywords_seq', $$
+    INSERT INTO articles_summary3
+        ( day
+        , hostname
+        , lang
+        , keyword
+        , num
+        , num_distinct
+        )
+    SELECT
+        CASE WHEN pub_time is NULL THEN '-infinity' ELSE date_trunc('day',pub_time) END as day,
+        hostname,
+        lang,
+        CASE WHEN num_title>0 or num_text>0 THEN true ELSE false END as keyword,
+        count(1) as num,
+        /* this case expression is id_urls_canonical_ from get_valid_articles() */
+        hll_add_agg(hll_hash_bigint(CASE 
+            WHEN articles.id_urls_canonical = 2425 
+            THEN articles.id_urls 
+            ELSE articles.id_urls_canonical 
+            END)) as num_distinct
+    FROM keywords
+    INNER JOIN articles on articles.id_articles = keywords.id_articles
+    WHERE 
+        id_keywords>=$1 AND
+        id_keywords<$2
+    GROUP BY 1,2,3,4
+    ON CONFLICT (day,hostname,lang,keyword)
+    DO UPDATE SET 
+        num = articles_summary3.num + excluded.num,
+        num_distinct = articles_summary3.num_distinct || excluded.num_distinct
+    ;
+$$);
+
 /*
 SELECT 
     hostname,
