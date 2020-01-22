@@ -466,6 +466,7 @@ CREATE TABLE responses_timestamp_hostname (
     num BIGINT NOT NULL,
     PRIMARY KEY (timestamp,hostname)
 );
+CREATE INDEX responses_timestamp_hostname_index ON responses_timestamp_hostname(hostname);
 
 INSERT INTO rollups (name, event_table_name, event_id_sequence_name, sql)
 VALUES ('responses_timestamp_hostname', 'responses', 'responses_id_responses_seq', $$

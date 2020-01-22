@@ -1,5 +1,3 @@
-#!/bin/bash
-
 set -e
 
 ########################################
@@ -52,72 +50,135 @@ done
 # launch the low priority crawls
 ########################################
 
-#res=$(psql $db -c "
-#select hostname 
-#from crawlable_hostnames 
-#where 
-    #priority='' and 
-    #(lang='de' or lang='fr')
-#order by hostname;
-#")
-#res=$(psql $db -c "
-#SELECT hostname
-#FROM hostname_productivity
-#ORDER BY priority desc
-#limit 500;
-#")
-res=$(psql $db -c "
-SELECT DISTINCT hostname
-FROM (
-    SELECT substring(reverse(hostname_reversed) from 2) as hostname,priority
-    FROM frontier
+# NOTE: started focusing on new languages when max(id_frontier)=618645536
+
+method='frontier_priority2'
+
+if [ $method = tld ]; then
+    #res=$(psql $db -c "
+    #select hostname_target
+    #from refs_summary_simple 
+    #left join hostname_productivity on hostname_productivity.hostname = refs_summary_simple.hostname_target
+    #where hostname_target like '%.kr' and hostname is null
+    #group by hostname_target
+    #order by sum(distinct_keywords) desc
+    #limit 500
+    #")
+    res=$(psql $db -c "
+    SELECT hostname
+    --SELECT hostname,num_1000000,num_100000,num_10000,num_1000,num_100,num_10,num_0
+    FROM frontier_hostname
     WHERE 
-        timestamp_processed is null
-        and substring(reverse(hostname_reversed) from 2) not in (
-            SELECT hostname FROM crawlable_hostnames WHERE priority='ban'
-        )
-    ORDER BY priority DESC
-    LIMIT 100000
-)t
-LIMIT 300
-;
-")
-#res=$(psql $db -c "
-#SELECT hostname 
-#FROM frontier_hostname 
-#WHERE num_0>0 AND hostname NOT IN (SELECT * FROM hostnames_responses) 
-#ORDER BY num_1000000,num_100000,num_10000,num_1000,num_100,num_10,num_0
-#LIMIT 500;
-#")
-#res=$(psql $db -c "
-#SELECT DISTINCT hostname
-#FROM articles_lang
-#WHERE substring(hostname from '\.[^\.]+$') = '.fr' or substring(hostname from '\.[^\.]+$') = '.gov';
-#")
-#res=$(psql $db -c "
-#select hostname_target from (
-#select hostname_target,sum(num) as num
-#from refs_keywords
-#where
-    #type='link' and
-    #hostname_source in (select hostname from hostname_productivity limit 5000) and
-    #hostname_target not in (select hostname from crawlable_hostnames) and
-    #right(hostname_target, length(hostname_target)-4) not in (SELECT hostname FROM crawlable_hostnames) and
-    #hostname_target not in (select distinct hostname from responses_timestamp_hostname)
-#group by hostname_target
-#order by num desc
-#) as t1
-#limit $(( 5 * $num_jobs ));
-#")
+        --hostname NOT IN (SELECT hostname FROM responses_timestamp_hostname_hostnames) 
+        hostname NOT IN (SELECT hostname FROM requests_hostname) 
+        --and (hostname like '%.kr' or hostname like '%.jp' or hostname like '%.cn' or hostname like '%.ru')
+        --and (right(hostname,3) in ('.kr','.jp','.cn','.ru'))
+        --and (right(hostname,3) in ('.ag','.ar','.bb','.bo','.br','.bs','.bz','.ci','.cl','.co','.cr','.do','.ec','.es','.fk','.fj','.gd','.gf','.gp','.gq','.gt','.gy','.hn','.ht','.jm','.kn','.mq','.nc','.ni','.pa','.pr','.pt','.py','.sr','.st','.sv','.tt','.uy','.vc','.ve'))
+    ORDER BY num_1000000 desc,num_100000 desc,num_10000 desc,num_1000 desc,num_100 desc,num_10 desc,num_0 desc
+    limit 500;
+    ")
+elif [ $method = tld2 ]; then
+    res=$(psql $db -c "
+    select hostname from hostname_productivity where hostname like '%.kr' or hostname like '%.jp';
+    ")
+elif [ $method = tld3 ]; then
+    res=$(psql $db -c "
+    SELECT DISTINCT hostname
+    FROM articles_lang
+    WHERE substring(hostname from '\.[^\.]+$') = '.fr' or substring(hostname from '\.[^\.]+$') = '.gov';
+    ")
+elif [ $method = lang ]; then
+    res=$(psql $db -c "
+    select hostname 
+    from crawlable_hostnames 
+    where 
+        priority='' and 
+        (lang='zh' or lang='ko' or lang='ja')
+    order by hostname;
+    ")
+elif [ $method = hostname_productivity ]; then
+    res=$(psql $db -c "
+    SELECT hostname
+    FROM hostname_productivity
+    ORDER BY priority desc
+    limit 500;
+    ")
+elif [ $method = frontier_priority ]; then
+    res=$(psql $db -c "
+    SELECT DISTINCT hostname
+    FROM (
+        SELECT substring(reverse(hostname_reversed) from 2) as hostname,priority
+        FROM frontier
+        WHERE 
+            timestamp_processed is null
+            and substring(reverse(hostname_reversed) from 2) not in (
+                SELECT hostname FROM crawlable_hostnames WHERE priority in ('ban','high')
+            )
+        ORDER BY priority DESC
+        LIMIT 100000
+    )t
+    LIMIT 500
+    ;
+    ")
+elif [ $method = frontier_priority2 ]; then
+    res=$(psql $db -c "
+    SELECT DISTINCT hostname
+    FROM (
+        SELECT substring(reverse(hostname_reversed) from 2) as hostname,frontier.priority
+        FROM frontier
+        INNER JOIN hostname_productivity on hostname_productivity.hostname =  substring(reverse(frontier.hostname_reversed) from 2)
+        WHERE 
+            hostname_productivity.valid_fraction > 0.2 AND
+            timestamp_processed is null
+            and substring(reverse(hostname_reversed) from 2) not in (
+                SELECT hostname FROM crawlable_hostnames WHERE priority in ('ban','high')
+            )
+            and (right(hostname,3) in ('mil','gov','org','edu','.iq','.ir','.kr','.jp','.cn','.ru','.ag','.ar','.bb','.bo','.br','.bs','.bz','.ci','.cl','.co','.cr','.do','.ec','.es','.fk','.fj','.gd','.gf','.gp','.gq','.gt','.gy','.hn','.ht','.jm','.kn','.mq','.nc','.ni','.pa','.pr','.pt','.py','.sr','.st','.sv','.tt','.uy','.vc','.ve'))
+        ORDER BY frontier.priority DESC
+        LIMIT 100000
+    )t
+    LIMIT 500
+    ;
+    ")
+elif [ $method = frontier_hostname ]; then
+    res=$(psql $db -c "
+    SELECT hostname 
+    FROM frontier_hostname 
+    WHERE num_0>0 AND hostname NOT IN (SELECT hostname FROM responses_timestamp_hostname_hostnames) 
+    ORDER BY num_1000000,num_100000,num_10000,num_1000,num_100,num_10,num_0
+    LIMIT 500;
+    ")
+elif [ $method = crawlable_hostnames ]; then
+    res=$(psql $db -c "
+    select hostname_target from (
+    select hostname_target,sum(num) as num
+    from refs_keywords
+    where
+        type='link' and
+        hostname_source in (select hostname from hostname_productivity limit 5000) and
+        hostname_target not in (select hostname from crawlable_hostnames) and
+        right(hostname_target, length(hostname_target)-4) not in (SELECT hostname FROM crawlable_hostnames) and
+        hostname_target not in (select distinct hostname from responses_timestamp_hostname)
+    group by hostname_target
+    order by num desc
+    ) as t1
+    limit $(( 5 * $num_jobs ));
+    ")
+else
+    echo 'no method for low priority crawls specified'
+    exit
+fi
 
 hostnames_low=$(echo "$res" | tail -n +4 | head -n -3)
 
+# log the hostnames 
 i=0
 for hostname in $hostnames_low; do
     echo ${hostname} >> $log/hostnames.$(printf "%04d" $(( i % $num_jobs )) )
     i=$(( $i + 1 ))
 done
 
+# launch low priority crawlers
 i=0
 for file in $log/hostnames.*; do
     restrictions=$(cat $log/hostnames.$(printf "%04d" $i) | xargs echo | tr ' ' ',')

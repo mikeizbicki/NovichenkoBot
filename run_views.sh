@@ -10,6 +10,7 @@ views="
 articles_lang_hostnames
 articles_lang_stats
 responses_timestamp_hostname_hostnames
+responses_timestamp_hostname_recent
 refs_summary_simple
 hostname_progress
 hostname_productivity

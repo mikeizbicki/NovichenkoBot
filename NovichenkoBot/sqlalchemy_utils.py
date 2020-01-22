@@ -61,6 +61,25 @@ def urlinfo2url(urlinfo):
     return url
 
 
+def get_id_hostnames(connection,hostname):
+    '''
+    This function looks up hostname in the hostnames table 
+    and returns the corresponding id_hostnames value.
+    If hostname doesn't exist, it inserts the new hostname before returning.
+    '''
+
+    if hostname is None:
+        return None
+
+    sql=sqlalchemy.sql.text('''
+    INSERT INTO hostnames (hostname,priority)
+    VALUES (:hostname,'')
+    ON CONFLICT(hostname) DO UPDATE SET hostname=excluded.hostname
+    RETURNING id_hostnames
+    ''')
+    return connection.execute(sql,{'hostname':hostname}).first()[0]
+
+
 def get_url_info(connection,url,depth=0,flexible_url=False):
     '''
     This function returns a dictionary containing the information of the urls table in the database.

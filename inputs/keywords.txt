@@ -10,9 +10,9 @@ nb:         nord-korea                  ,  demokratiske folkerepublikken korea
 da:         nordkorea                   ,  demokratiske folkerepublik korea
 de:         nordkorea                   ,  demokratische volksrepublik korea
 se:         nordkorea , nord-korea      ,  demokratische volksrepublik korea , demokratiske folkerepublik korea , demokratiske folkerepublikken korea, demokratiska folkrepubliken korea
-ko:         북한                        ,  조선민주주의인민공화국
+ko:         북한                        ,  조선민주주의인민공화국 , 조선
 zh:         稱朝鮮                      ,  朝鮮民主主義人民共和國
-ru:         Се́верная Коре́я              ,  Коре́йская Наро́дно-Демократи́ческая Респу́блика , КНДР
+ru:         Се́верная Коре́я , Северная Корея ,  Коре́йская Наро́дно-Демократи́ческая Респу́блика , КНДР
 ja:         北朝鮮                      ,  朝鮮民主主義人民共和国
 tl:         hilagang korea              , demokratikong republikang bayan ng korea
 vi:         Cộng hòa Dân chủ Nhân dân Triều Tiên , Triều Tiên, Bắc Triều Tiên, Bắc Hàn

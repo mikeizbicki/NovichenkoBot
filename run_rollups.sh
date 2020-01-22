@@ -13,8 +13,8 @@ articles_lang
 articles_summary2 
 frontier_hostname
 requests_hostname
-refs_summary
 "
+#refs_summary
 
 for rollup in $rollups; do
     echo "$(date '+%Y-%m-%d %H:%M:%S') rollup=$rollup"

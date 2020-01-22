@@ -1,6 +1,7 @@
 CREATE EXTENSION btree_gist;
 CREATE EXTENSION btree_gin;
 CREATE EXTENSION tablefunc;
+CREATE EXTENSION pgstattuple;
 
 CREATE TABLE crawlable_hostnames (
     hostname VARCHAR(253) PRIMARY KEY,
@@ -300,6 +301,8 @@ CREATE TABLE articles (
 CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
 CREATE INDEX articles_title_tsv ON articles USING GIST (to_tsvector('english',title));
+--CREATE INDEX CONCURRENTLY articles_title_tsv2 ON articles USING GIN (to_tsvector('english',title)) TABLESPACE fastdata WHERE lang='en';
+--CREATE INDEX CONCURRENTLY articles_text_tsv2 ON articles USING GIN (to_tsvector('english',text)) TABLESPACE fastdata WHERE lang='en';
 CREATE INDEX articles_text_tsv ON articles USING GIST (to_tsvector('english',text));
 CREATE INDEX articles_index_hostname_tsvtitle_en ON articles USING GIST (hostname,to_tsvector('english',title));
 CREATE INDEX articles_index_hostname_tsvtitle_en2 ON articles USING GIN (hostname,to_tsvector('english',title)) WHERE lang='en';
@@ -579,3 +582,44 @@ CREATE TABLE labels (
     FOREIGN KEY (id_articles) REFERENCES articles(id_articles) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED 
 );
 
+CREATE TABLE pagerank (
+    id_hostnames INTEGER,
+    name TEXT,
+    score REAL,
+    PRIMARY KEY (id_hostnames,name)
+);
+CREATE INDEX pagerank_index ON pagerank(name,score);
+CREATE INDEX pagerank_index2 ON pagerank(id_hostnames);
+
+/*
+ * these tables store bias info from different sources
+ * TODO: 
+ * https://twitter-app.mpi-sws.org/media-bias-monitor/app.php?query=6003205343472&name=The%20American%20Conservative
+ * https://www.allsides.com/media-bias/media-bias-ratings?field_featured_bias_rating_value=All&field_news_source_type_tid%5B2%5D=2&field_news_source_type_tid%5B3%5D=3&field_news_source_type_tid%5B4%5D=4&field_news_bias_nid_1%5B1%5D=1&field_news_bias_nid_1%5B2%5D=2&field_news_bias_nid_1%5B3%5D=3&field_news_bias_nid_1%5B4%5D=4&title=
+ */
+
+CREATE TABLE mediabiasfactcheck (
+    id_mediabiasfactcheck SERIAL PRIMARY KEY,
+    id_hostnames INTEGER NOT NULL,
+    name TEXT,
+    category TEXT,
+    label_time TIMESTAMP
+    -- FIXME: 
+    -- mediabiasfactcheck.com also contains information for the following two fields,
+    -- but this information is a bit difficult to parse/scrape
+    -- factual_reporting TEXT,
+    -- country TEXT,
+);
+
+CREATE TABLE politicians (
+    id_politicians SERIAL PRIMARY KEY,
+    id_hostnames INTEGER,
+    name_given TEXT NOT NULL,
+    name_family TEXT NOT NULL,
+    role TEXT NOT NULL,
+    loc_country VARCHAR(2) NOT NULL,
+    loc_state VARCHAR(2),
+    party TEXT,
+    UNIQUE (role,name_family,name_given),
+    UNIQUE (id_hostnames)
+);

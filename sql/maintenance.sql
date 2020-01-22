@@ -479,3 +479,13 @@ where
     )
 order by priority desc
 limit 10000;
+
+
+SELECT DISTINCT id_articles,title 
+FROM articles 
+WHERE 
+    to_tsvector('english',title) @@ to_tsquery('north & korea & (rabbit | bunny)') 
+    --and hostname='www.nytimes.com' 
+    and lang='en'
+LIMIT 20;
+
