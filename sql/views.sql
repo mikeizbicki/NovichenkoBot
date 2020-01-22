@@ -96,7 +96,7 @@ CREATE INDEX hostname_progress_index2 ON hostname_progress(fraction_requested);
 
 CREATE MATERIALIZED VIEW hostname_productivity AS
 SELECT
-    COALESCE(t1v.hostname,t2v.hostname,t1.hostname,t2.hostname),
+    COALESCE(t1v.hostname,t2v.hostname,t1.hostname,t2.hostname) as hostname,
     COALESCE(t1v.num_distinct_keywords::int,0) AS valid_keywords,
     COALESCE(t2v.num_distinct_total::int,0) as valid_total,
     COALESCE(ROUND((t1v.num_distinct_keywords/t2v.num_distinct_total)::numeric,4),0) as valid_keyword_fraction,
@@ -109,13 +109,19 @@ SELECT
 FROM (
     SELECT 
         hostname,
+        sum(#num_distinct) as num_distinct_total
+    FROM articles_summary2
+    GROUP BY hostname 
+) t2 
+FULL OUTER JOIN (
+    SELECT 
+        hostname,
         sum(#num_distinct) as num_distinct_keywords
     FROM articles_summary2
     WHERE 
         keyword=true 
-        AND day!='-infinity'
     GROUP BY hostname 
-) t1v
+) t1 ON t2.hostname = t1.hostname
 FULL OUTER JOIN (
     SELECT 
         hostname,
@@ -124,7 +130,7 @@ FULL OUTER JOIN (
     WHERE 
         day!='-infinity'
     GROUP BY hostname 
-) t2v ON t1v.hostname = t2v.hostname
+) t2v ON t2v.hostname = t2.hostname
 FULL OUTER JOIN (
     SELECT 
         hostname,
@@ -132,15 +138,9 @@ FULL OUTER JOIN (
     FROM articles_summary2
     WHERE 
         keyword=true 
+        AND day!='-infinity'
     GROUP BY hostname 
-) t1 ON t1v.hostname = t1.hostname
-FULL OUTER JOIN (
-    SELECT 
-        hostname,
-        sum(#num_distinct) as num_distinct_total
-    FROM articles_summary2
-    GROUP BY hostname 
-) t2 ON t1v.hostname = t2.hostname
+) t1v ON t1v.hostname = t2.hostname
 ORDER BY priority DESC;
 CREATE UNIQUE INDEX hostname_productivity_index ON hostname_productivity(hostname);
 
