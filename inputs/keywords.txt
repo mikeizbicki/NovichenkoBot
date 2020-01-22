@@ -1,6 +1,6 @@
 en:         north korea                 ,  democratic people's republic of corea  , dprk , dpr korea
 es:         corea del norte , norcorea  ,  república popular democrática de corea , rpdc
-fr:         corée du nord               ,  république populaire démocratique de corée
+fr:         corée du nord , coree du nord ,  république populaire démocratique de corée
 it:         corea del nord , nord corea ,  repubblica popolare democratica di corea
 pt:         Coreia do Norte             ,  República Popular Democrática da Coreia
 sv:         nordkorea                   ,  demokratiska folkrepubliken korea
@@ -11,7 +11,7 @@ da:         nordkorea                   ,  demokratiske folkerepublik korea
 de:         nordkorea                   ,  demokratische volksrepublik korea
 se:         nordkorea , nord-korea      ,  demokratische volksrepublik korea , demokratiske folkerepublik korea , demokratiske folkerepublikken korea, demokratiska folkrepubliken korea
 ko:         북한                        ,  조선민주주의인민공화국 , 조선
-zh:         稱朝鮮                      ,  朝鮮民主主義人民共和國
+zh:         稱朝鮮 , 北韓的 , 北朝鲜 , 北韩      ,  朝鮮民主主義人民共和國
 ru:         Се́верная Коре́я , Северная Корея ,  Коре́йская Наро́дно-Демократи́ческая Респу́блика , КНДР
 ja:         北朝鮮                      ,  朝鮮民主主義人民共和国
 tl:         hilagang korea              , demokratikong republikang bayan ng korea
