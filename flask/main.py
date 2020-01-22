@@ -34,6 +34,19 @@ def teardown_request(exception):
         g.connection.close()
 
 
+def escape_alphanum(x):
+    import re
+    return re.sub('[^a-zA-Z0-9_]+', '', x)
+
+
+def get_alphanum(x,default=None):
+    val = request.args.get(x,default)
+    if type(val) == str:
+        return escape_alphanum(val)
+    else:
+        return val
+
+
 def res2html(res,col_formatter=None,transpose=False,click_headers=False):
     rows=[list(res.keys())]+list(res)
     if transpose:
@@ -43,16 +56,17 @@ def res2html(res,col_formatter=None,transpose=False,click_headers=False):
         html+='<tr>'
         if i==0 and not transpose:
             td='th'
-            html+='<th></th>'
+            html+=f'<{td}></{td}>'
         else:
             td='td'
             html+=f'<td>{i}</td>'
         for j,col in enumerate(row):
             val = None
-            if i>0 and col_formatter is not None:
-                val = col_formatter(res.keys()[j],col)
-            elif i==0 and click_headers:
-                val = f'<a href="?order_by={col}">{col}</a>'
+            try:
+                val = col_formatter(res.keys()[j],col,i==0)
+            except:
+                if i>0 and col_formatter is not None:
+                    val = col_formatter(res.keys()[j],col)
             if val is None:
                 val = col
             if type(col) == int or type(col) == float:
@@ -202,10 +216,13 @@ def lang_lang(lang):
 
     # get query string parameters
     # FIXME: this is very insecure
-    order_by=request.args.get('order_by')
-    if order_by is None:
-        order_by='fraction_lang'
-    order_by=order_by[:20]
+    #order_by=request.args.get('order_by')
+    #if order_by is None:
+        #order_by='fraction_lang'
+    #order_by=order_by[:20]
+
+    order_by = request.args.get('order_by', default='fraction_lang')
+    limit = request.args.get('limit', default=100)
 
     order_dir='desc'
     if request.args.get('order_dir') == 'asc':
@@ -236,9 +253,15 @@ def lang_lang(lang):
         GROUP BY hostname 
     ) t1
     INNER JOIN hostname_productivity ON t1.hostname = hostname_productivity.hostname
-    ORDER BY {order_by} {order_dir};
+    ORDER BY {order_by} {order_dir}
+    LIMIT :limit;
     ''')
-    res=g.connection.execute(sql,{'lang':lang,'order_by':order_by,'order_dir':order_dir})
+    res=g.connection.execute(sql, {
+            'lang':lang,
+            #'order_by':order_by,
+            #'order_dir':order_dir,
+            'limit':limit,
+            })
     def callback(k,v):
         if k=='hostname':
             return f'<a href=/hostname/{v}>{v}</a>'
@@ -343,6 +366,9 @@ def hostname_productivity():
     tld=''
     if request.args.get('tld') is not None:
         tld = "and substring(hostname from '\.[^\.]+$') = :tld"
+
+    limit = get_alphanum('limit', default=100)
+    order_by = get_alphanum('order_by', default='valid_keyword_fraction')
     
     sql=text(f'''
     select *
@@ -350,13 +376,25 @@ def hostname_productivity():
     where 
         hostname is not null
         {tld}
-    order by valid_keyword_fraction desc
+    order by {order_by} desc
+    limit :limit
     ;
     ''')
-    res=g.connection.execute(sql,{'tld':request.args.get('tld')})
-    def callback(k,v):
-        if k=='hostname':
-            return f'<a href=/hostname/{v}>{v}</a>'
+    res=g.connection.execute(sql, {
+        'tld':request.args.get('tld'),
+        'order_by':order_by,
+        'limit':limit,
+        })
+    def callback(k,v,is_header):
+        if is_header:
+            style = ''
+            if order_by==v:
+                style = f'style="font-style: italic;"'
+            html=f'<a href=?order_by={v} {style}>{v}</a>'
+            return html
+        else:
+            if k=='hostname':
+                return f'<a href=/hostname/{v}>{v}</a>'
     html = res2html(res,callback)
 
     return render_template(
