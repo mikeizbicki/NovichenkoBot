@@ -97,6 +97,49 @@ def style(path):
     return send_from_directory('flask/static',path)
 
 
+@app.route('/pagerank')
+def pagerank():
+    html=''
+    name=request.args.get('name')
+    
+    html+='<h2>pagerank options</h2>'
+    sql=text(f'''
+    SELECT name
+    FROM pagerank
+    WHERE id_hostnames=0
+    ''')
+    res=g.connection.execute(sql)
+    def callback(k,v):
+        if k=='name':
+            link=f'<a href=/pagerank?name={v}>{v}</a>'
+            if v==name:
+                link=f'<strong>{link}</strong>'
+            return link
+    html+=res2html(res,callback)
+
+    html+='<h2>pagerank scores</h2>'
+    sql=text(f'''
+    SELECT hostname,score
+    FROM pagerank
+    INNER JOIN hostnames ON hostnames.id_hostnames = pagerank.id_hostnames
+    WHERE
+        name=:name
+    ORDER BY score DESC
+    LIMIT 1000
+    ''')
+    res=g.connection.execute(sql,{'name':name})
+    def callback(k,v):
+        if k=='hostname':
+            return f'<a href=/hostname/{v}>{v}</a>'
+    html+=res2html(res,callback,click_headers=True)
+
+    return render_template(
+            'base.html',
+            page_name=f'Pagerank',
+            page_html=html
+            )
+
+
 @app.route('/tld')
 def tld():
     html=''
@@ -248,6 +291,53 @@ def responses_summary():
         )
 
 
+@app.route('/responses_recent')
+def recent():
+    html=''
+
+    sql=text(f'''
+    select * from responses_timestamp_hostname_recent;
+    ''')
+    res=g.connection.execute(sql)
+    def callback(k,v):
+        if k=='hostname':
+            return f'<a href=/hostname/{v}>{v}</a>'
+    html += res2html(res,callback)
+
+    return render_template(
+            'base.html',
+            page_name='prev 24hr stats',
+            page_html=html
+            )
+
+
+@app.route('/hostname_progress')
+def hostname_progress():
+    tld=''
+    if request.args.get('tld') is not None:
+        tld = "and substring(hostname from '\.[^\.]+$') = :tld"
+    
+    sql=text(f'''
+    select *
+    from hostname_progress 
+    where 
+        hostname is not null
+        {tld}
+    order by fraction_requested desc,num_frontier desc limit 10000
+    ''')
+    res=g.connection.execute(sql,{'tld':request.args.get('tld')})
+    def callback(k,v):
+        if k=='hostname':
+            return f'<a href=/hostname/{v}>{v}</a>'
+    html = res2html(res,callback)
+
+    return render_template(
+            'base.html',
+            page_name='hostname progress',
+            page_html=html
+            )
+
+
 @app.route('/hostname_productivity')
 def hostname_productivity():
     tld=''
@@ -260,6 +350,7 @@ def hostname_productivity():
     where 
         hostname is not null
         {tld}
+    order by valid_keyword_fraction desc
     ;
     ''')
     res=g.connection.execute(sql,{'tld':request.args.get('tld')})
@@ -280,25 +371,34 @@ def articles_hostname_year(hostname,year):
     html=''
 
     if year=='undefined':
-        extract_clause='extract (year from pub_time) is :year'
+        extract_clause='and extract (year from pub_time) is :year'
         year=None
     else:
-        extract_clause='extract (year from pub_time) = :year'
+        extract_clause='and extract (year from pub_time) = :year'
+
+    if request.args.get('keywords') is None:
+        keywords_where=''
+    else:
+        keywords_where='and (num_title>0 or num_text>0)'
+
     sql=text(f'''
     select 
         pub_time,
         lang,
-        id_articles,
+        articles.id_articles,
         id_urls = (CASE 
             WHEN articles.id_urls_canonical = 2425 
             THEN articles.id_urls 
             ELSE articles.id_urls_canonical 
             END) as canonical,
+        (num_title>0 or num_text>0) as keyword,
         title
     from articles
+    inner join keywords on keywords.id_articles = articles.id_articles
     where 
-        hostname = :hostname and
+        hostname = :hostname 
         {extract_clause}
+        {keywords_where}
     order by pub_time desc
     limit 100;
     ''')
@@ -363,42 +463,15 @@ def hostname(hostname):
 
     html+='<h2>Articles per Year</h2>'
     sql=text(f'''
-    SELECT
-        CASE WHEN t1.year = '-inf' THEN 'undefined' ELSE to_char(t1.year,'0000') END as year,
-        num :: int,
-        num_distinct :: int,
-        CASE WHEN num_distinct_keyword IS NULL THEN 0 ELSE num_distinct_keyword END :: int,
-        round((CASE WHEN num_distinct_keyword IS NULL THEN 0 ELSE num_distinct_keyword END / num_distinct) :: numeric,4) as keyword_fraction
-    FROM (
-        SELECT
-            hostname,
-            extract(year from day) as year,
-            sum(num) as num,
-            sum(#num_distinct) as num_distinct
-        FROM articles_summary2
-        WHERE hostname=:hostname
-        GROUP BY hostname,year
-    ) AS t1
-    LEFT JOIN (
-        SELECT
-            hostname,
-            extract(year from day) as year,
-            sum(#num_distinct) as num_distinct_keyword
-        FROM articles_summary2
-        WHERE hostname=:hostname AND keyword=true
-        GROUP BY hostname,year
-    ) AS t2 on t1.hostname = t2.hostname and t1.year = t2.year
-    ORDER BY year DESC;
-    ''')
-    sql=text(f'''
     SELECT * 
     FROM hostname_peryear
-    WHERE hostname=:hostname;
+    WHERE hostname=:hostname
+    ORDER BY year desc;
     ''')
     res=g.connection.execute(sql,{'hostname':hostname})
     def callback(k,v):
         if k=='year':
-            return f'<a href=/hostname_articles/{hostname}/{v.strip()}>{v}</a>'
+            return f'<a href=/hostname_articles/{hostname}/{v.strip()}?keywords=true>{v}</a>'
     html+=res2html(res,callback)
 
     return render_template(

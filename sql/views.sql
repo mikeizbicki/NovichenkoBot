@@ -21,6 +21,14 @@ CREATE MATERIALIZED VIEW responses_timestamp_hostname_hostnames AS
 SELECT DISTINCT hostname FROM responses_timestamp_hostname;
 CREATE UNIQUE INDEX responses_timestamp_hostname_hostnames_index ON responses_timestamp_hostname_hostnames(hostname);
 
+CREATE MATERIALIZED VIEW responses_timestamp_hostname_recent AS
+SELECT hostname,sum(num) AS num 
+FROM responses_timestamp_hostname 
+WHERE timestamp > now() - interval '1 day' 
+GROUP BY hostname 
+ORDER BY num DESC;
+CREATE UNIQUE INDEX responses_timestamp_hostname_recent_index ON responses_timestamp_hostname_recent(hostname);
+
 /*
  * Views on refs_summary
  */
@@ -29,10 +37,10 @@ CREATE MATERIALIZED VIEW refs_summary_simple AS
 SELECT
     hostname_source,
     hostname_target,
-    sum(num_all) as num_all,
-    sum(num_keywords) as num_keywords,
-    #hll_union_agg(distinct_all) as distinct_all,
-    #hll_union_agg(distinct_keywords) as distinct_keywords
+    sum(num_all) :: int as num_all,
+    sum(num_keywords) :: int as num_keywords,
+    (#hll_union_agg(distinct_all)) :: int as distinct_all,
+    (#hll_union_agg(distinct_keywords)) :: int as distinct_keywords
 FROM refs_summary
 WHERE
     type='link'
@@ -76,6 +84,7 @@ LEFT OUTER JOIN (
 ) articles_hostname_keyword ON frontier_hostname.hostname=articles_hostname_keyword.hostname
 ;
 CREATE UNIQUE INDEX hostname_progress_index ON hostname_progress(hostname);
+CREATE INDEX hostname_progress_index2 ON hostname_progress(fraction_requested);
 
 CREATE MATERIALIZED VIEW hostname_productivity AS
 SELECT
@@ -150,6 +159,7 @@ LEFT JOIN (
         extract(year from day) as year,
         sum(#num_distinct) num_distinct_keyword
     FROM articles_summary2
+    WHERE keyword
     GROUP BY hostname,year
 ) AS t2 on t1.hostname = t2.hostname and t1.year = t2.year
 ORDER BY t1.hostname DESC,year DESC;
