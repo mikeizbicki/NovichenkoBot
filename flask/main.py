@@ -173,7 +173,7 @@ def tld():
     res=g.connection.execute(sql)
     def callback(k,v):
         if k=='tld':
-            return f'<a href=/hostname_productivity?tld={v}>{v}</a>'
+            return f'<a href=/hostname_productivity/{v}>{v}</a>'
         return
     html+=res2html(res,callback)
 
@@ -382,11 +382,16 @@ def hostname_progress():
             )
 
 
+@app.route('/hostname_productivity/<tld>')
+def hostname_productivity_tld(tld):
+    return hostname_productivity(tld)
+
+
 @app.route('/hostname_productivity')
-def hostname_productivity():
-    tld=''
-    if request.args.get('tld') is not None:
-        tld = "and substring(hostname from '\.[^\.]+$') = :tld"
+def hostname_productivity(tld=None):
+    where_tld=''
+    if tld is not None:
+        where_tld = "and substring(hostname from '\.[^\.]+$') = :tld"
 
     limit = get_alphanum('limit', default=100)
     order_by = get_alphanum('order_by', default='valid_keyword_fraction')
@@ -396,13 +401,13 @@ def hostname_productivity():
     from hostname_productivity 
     where 
         hostname is not null
-        {tld}
+        {where_tld}
     order by {order_by} desc
     limit :limit
     ;
     ''')
     res=g.connection.execute(sql, {
-        'tld':request.args.get('tld'),
+        'tld':tld,
         'order_by':order_by,
         'limit':limit,
         })
