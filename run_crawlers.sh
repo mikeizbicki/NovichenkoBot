@@ -52,7 +52,7 @@ done
 
 # NOTE: started focusing on new languages when max(id_frontier)=618645536
 
-method='frontier_priority2'
+method='tld3'
 
 if [ $method = tld ]; then
     #res=$(psql $db -c "
@@ -73,7 +73,7 @@ if [ $method = tld ]; then
         hostname NOT IN (SELECT hostname FROM requests_hostname) 
         --and (hostname like '%.kr' or hostname like '%.jp' or hostname like '%.cn' or hostname like '%.ru')
         --and (right(hostname,3) in ('.kr','.jp','.cn','.ru'))
-        --and (right(hostname,3) in ('.ag','.ar','.bb','.bo','.br','.bs','.bz','.ci','.cl','.co','.cr','.do','.ec','.es','.fk','.fj','.gd','.gf','.gp','.gq','.gt','.gy','.hn','.ht','.jm','.kn','.mq','.nc','.ni','.pa','.pr','.pt','.py','.sr','.st','.sv','.tt','.uy','.vc','.ve'))
+        and (right(hostname,3) in ('.kr','.jp','.cn','.ru','.ag','.ar','.bb','.bo','.br','.bs','.bz','.ci','.cl','.co','.cr','.do','.ec','.es','.fk','.fj','.gd','.gf','.gp','.gq','.gt','.gy','.hn','.ht','.jm','.kn','.mq','.nc','.ni','.pa','.pr','.pt','.py','.sr','.st','.sv','.tt','.uy','.vc','.ve'))
     ORDER BY num_1000000 desc,num_100000 desc,num_10000 desc,num_1000 desc,num_100 desc,num_10 desc,num_0 desc
     limit 500;
     ")
@@ -84,8 +84,15 @@ elif [ $method = tld2 ]; then
 elif [ $method = tld3 ]; then
     res=$(psql $db -c "
     SELECT DISTINCT hostname
-    FROM articles_lang
-    WHERE substring(hostname from '\.[^\.]+$') = '.fr' or substring(hostname from '\.[^\.]+$') = '.gov';
+    FROM (
+        SELECT hostname,valid_fraction
+        FROM hostname_productivity
+        WHERE 
+            -- valid_fraction > 0.5 and
+            right(hostname,3) in ('.ru','.br','.pt')
+        order by valid_fraction desc
+        limit 500
+        )t;
     ")
 elif [ $method = lang ]; then
     res=$(psql $db -c "
@@ -128,12 +135,12 @@ elif [ $method = frontier_priority2 ]; then
         FROM frontier
         INNER JOIN hostname_productivity on hostname_productivity.hostname =  substring(reverse(frontier.hostname_reversed) from 2)
         WHERE 
-            hostname_productivity.valid_fraction > 0.2 AND
+            hostname_productivity.valid_fraction > 0.5 AND
             timestamp_processed is null
             and substring(reverse(hostname_reversed) from 2) not in (
                 SELECT hostname FROM crawlable_hostnames WHERE priority in ('ban','high')
             )
-            and (right(hostname,3) in ('mil','gov','org','edu','.iq','.ir','.kr','.jp','.cn','.ru','.ag','.ar','.bb','.bo','.br','.bs','.bz','.ci','.cl','.co','.cr','.do','.ec','.es','.fk','.fj','.gd','.gf','.gp','.gq','.gt','.gy','.hn','.ht','.jm','.kn','.mq','.nc','.ni','.pa','.pr','.pt','.py','.sr','.st','.sv','.tt','.uy','.vc','.ve'))
+            --and (right(hostname,3) in ('mil','gov','org','edu','.iq','.ir','.kr','.jp','.cn','.ru','.ag','.ar','.bb','.bo','.br','.bs','.bz','.ci','.cl','.co','.cr','.do','.ec','.es','.fk','.fj','.gd','.gf','.gp','.gq','.gt','.gy','.hn','.ht','.jm','.kn','.mq','.nc','.ni','.pa','.pr','.pt','.py','.sr','.st','.sv','.tt','.uy','.vc','.ve'))
         ORDER BY frontier.priority DESC
         LIMIT 100000
     )t
