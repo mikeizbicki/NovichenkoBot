@@ -85,12 +85,17 @@ elif [ $method = tld3 ]; then
     res=$(psql $db -c "
     SELECT DISTINCT hostname
     FROM (
-        SELECT hostname,valid_fraction
+        SELECT hostname_productivity.hostname,valid_fraction
         FROM hostname_productivity
+        INNER JOIN hostname_progress ON hostname_progress.hostname = hostname_productivity.hostname
         WHERE 
+            fraction_requested < 0.5
+            and hostname_productivity.hostname not in 
+                ( SELECT hostname FROM crawlable_hostnames WHERE priority in ('ban','high'))
             -- valid_fraction > 0.5 and
-            right(hostname,3) in ('.ru','.br','.pt')
-        order by valid_fraction desc
+            -- right(hostname,3) in ('.ru','.br','.pt')
+            -- (right(hostname,3) in ('.kr','.jp','.cn','.ru','.ag','.ar','.bb','.bo','.br','.bs','.bz','.ci','.cl','.co','.cr','.do','.ec','.es','.fk','.fj','.gd','.gf','.gp','.gq','.gt','.gy','.hn','.ht','.jm','.kn','.mq','.nc','.ni','.pa','.pr','.pt','.py','.sr','.st','.sv','.tt','.uy','.vc','.ve'))
+        order by score*valid_fraction desc
         limit 500
         )t;
     ")
