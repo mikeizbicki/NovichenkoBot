@@ -2,6 +2,9 @@ from flask import Flask, g, url_for, render_template, request
 import sqlalchemy
 from sqlalchemy.sql import text
 import time
+import urllib
+import re
+from bs4 import BeautifulSoup
 
 # the sys import is needed so that we can import from the current project
 import sys
@@ -110,6 +113,45 @@ def index():
 def style(path):
     return send_from_directory('flask/static',path)
 
+
+@app.route('/search')
+def search():
+    html=''
+
+    query = request.args.get('query')
+    query_value = '' if query is None else f'value="{query}"'
+
+    html+=f'''
+    <form>
+    <input type=text {query_value} name=query>
+    <input type=submit value=search>
+    </form>
+    '''
+
+    if query is not None:
+        sql=text(f'''
+        SELECT distinct on (title) id_articles,hostname,pub_time,title 
+        FROM articles 
+        WHERE 
+            to_tsquery('english',:query) @@ to_tsvector('english',text) 
+            and lang='en' 
+        limit 100;
+        ''')
+        res=g.connection.execute(sql,{
+            'query':query
+            })
+        def callback(k,v):
+            if k=='hostname':
+                return f'<a href=/hostname/{v}>{v}</a>'
+            if k=='id_articles':
+                return f'<a href="/article/{v}?query={urllib.parse.quote(query)}">{v}</a>'
+        html+=res2html(res,callback,click_headers=True)
+
+    return render_template(
+            'base.html',
+            page_name=f'Search',
+            page_html=html
+            )
 
 @app.route('/pagerank')
 def pagerank():
@@ -479,6 +521,33 @@ def articles_hostname_year(hostname,year):
         )
 
 
+@app.route('/recent_urls')
+def recent_urls():
+    html=''
+
+    sql=text('''
+    select id_urls 
+    from articles
+    order by id_articles desc
+    limit 10000;
+    ''')
+    res=g.connection.execute(sql)
+    for row in res:
+        url = urlinfo2url(get_url_info_from_id_urls(g.connection,row['id_urls']))
+        html+=f'<p><a href={url}>{url}</a></p>'
+    #def callback(k,v):
+        #if k=='id_urls':
+            #url = urlinfo2url(get_url_info_from_id_urls(g.connection,v))
+            #return f'<a href={url}>{url}</a>'
+    #html+=res2html(res,callback)
+
+    return render_template(
+        'base.html',
+        page_name=f'recent_urls',
+        page_html=html
+        )
+
+
 @app.route('/hostname/<hostname>')
 def hostname(hostname):
     html=''
@@ -501,6 +570,7 @@ def hostname(hostname):
     limit 10;
     ''')
     res=g.connection.execute(sql,{'hostname':hostname})
+    html+=f'<p><a href=/recent_urls/{hostname}>view recent urls</a></p>'
     html+=res2html(res)
 
     html+='<h2>Language Usage</h2>'
@@ -576,12 +646,41 @@ def article(id_articles):
     html+=f'<strong>link:</strong> <a href={url}>{url}</a><br>'
 
     html+='<div style="width:800px;">'
+
+
     if row['html'] is None:
-        html+='<pre style="overflow-x: auto; word-wrap: break-word; white-space: pre-wrap;">'
-        html+=row['text']
-        html+='</pre>'
+        article_orig=''
+        article_orig+='<pre style="overflow-x: auto; word-wrap: break-word; white-space: pre-wrap;">'
+        article_orig+=row['text']
+        article_orig+='</pre>'
     else:
-        html+=row['html']
+        article_orig = row['html']
+
+    query = request.args.get('query')
+    if query is not None:
+
+        COLOR = ['red', 'blue', 'orange', 'violet', 'green']
+
+        query_words = query.replace('&',' ').replace('|',' ').replace('(',' ').replace(')',' ').split()
+        #regex = re.compile('|'.join([r'(\b'+word+r'\b)' for word in query_words]), re.I)
+        regex = re.compile('|'.join([r'('+word+r')' for word in query_words]), re.I)
+
+        # FIXME: use bs4
+        i = 0; 
+        article_mod=''
+        for m in regex.finditer(article_orig):
+            article_mod += "".join([
+                article_orig[i:m.start()],
+                "<strong><span style='color:%s'>" % COLOR[m.lastindex-1],
+                article_orig[m.start():m.end()],
+                "</span></strong>"
+                ])
+            i = m.end()
+        article_mod += article_orig[m.end():]
+        html += article_mod
+    else:
+        html += article_orig
+
     html+='</div>'
 
     return render_template(
