@@ -300,17 +300,25 @@ CREATE TABLE articles (
 
 CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
+
+--CREATE INDEX articles_text_tsv2 ON articles USING GIN (to_tsvector('english',text)) WHERE lang='en';
+CREATE INDEX articles_index_hostname_tsvtitle_en2 ON articles USING GIN (hostname,to_tsvector('english',title)) WHERE lang='en';
+CREATE INDEX articles_index_text_en ON articles USING GIN (to_tsvector('english',text)) WHERE lang='en';
+--CREATE INDEX CONCURRENTLY articles_index_text_de ON articles USING GIN (to_tsvector('german',text)) tablespace fastdata WHERE lang='de';
+--CREATE INDEX articles_index_title_en  ON articles USING GIN (hostname,to_tsvector('english',title)) WHERE lang='en';
+
+update pg_index set indisvalid = false where indexrelid = 'articles_index_hostname_tsvtext_en'::regclass;
+update pg_index set indisvalid = false where indexrelid = 'articles_title_tsv'::regclass;
+update pg_index set indisvalid = false where indexrelid = 'articles_index_hostname_tsvtitle_en'::regclass;
+
+
 CREATE INDEX articles_title_tsv ON articles USING GIST (to_tsvector('english',title));
 --CREATE INDEX CONCURRENTLY articles_title_tsv2 ON articles USING GIN (to_tsvector('english',title)) TABLESPACE fastdata WHERE lang='en';
---CREATE INDEX CONCURRENTLY articles_text_tsv2 ON articles USING GIN (to_tsvector('english',text)) TABLESPACE fastdata WHERE lang='en';
 CREATE INDEX articles_text_tsv ON articles USING GIST (to_tsvector('english',text));
 CREATE INDEX articles_index_hostname_tsvtitle_en ON articles USING GIST (hostname,to_tsvector('english',title));
-CREATE INDEX articles_index_hostname_tsvtitle_en2 ON articles USING GIN (hostname,to_tsvector('english',title)) WHERE lang='en';
---CREATE INDEX articles_index_hostname_tsvtext_en ON articles USING GIST (hostname,to_tsvector('english',text)) tablespace fastdata WHERE lang='en';
 --CREATE INDEX articles_index_hostname_tsvtitle_en3 ON articles USING GIST (hostname,to_tsvector('english',title),pub_time) WHERE lang='en';
 -- FIXME: 
 -- CREATE INDEX concurrently articles_index_hostnamelang ON articles(hostname,lang);
--- CREATE INDEX concurrently articles_index_hostname_tsvtext_en ON articles USING GIN (hostname,to_tsvector('english',text));
 
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
