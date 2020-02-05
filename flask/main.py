@@ -120,27 +120,52 @@ def search():
 
     query = request.args.get('query')
     query_value = '' if query is None else f'value="{query}"'
+    limit = request.args.get('limit', default=100)
+    method = request.args.get('method',default='hostname')
 
     html+=f'''
     <form>
-    <input type=text {query_value} name=query>
+    <input type=text {query_value} name=query style='width:600px'>
     <input type=submit value=search>
     </form>
     '''
 
     if query is not None:
-        sql=text(f'''
-        SELECT distinct on (title) id_articles,hostname,pub_time,title 
-        FROM articles 
-        WHERE 
-            to_tsquery('english',:query) @@ to_tsvector('english',text) 
-            and lang='en' 
-        limit 100;
-        ''')
+        if method=='url':
+            sql=text(f'''
+            SELECT * FROM (
+                SELECT distinct on (title) id_articles,articles.hostname,urls.scheme||'://'||articles.hostname||'/'||path as url,pub_time,title
+                FROM articles
+                INNER JOIN urls ON urls.id_urls = articles.id_urls
+                WHERE
+                    to_tsquery('english',:query) @@ to_tsvector('english',text)
+                    and lang='en'
+                    and pub_time is not null
+                order by title,pub_time asc
+                limit {limit}
+                )t
+            order by pub_time asc
+            ''')
+        else:
+            sql=text(f'''
+            SELECT * FROM (
+                SELECT distinct on (title) id_articles,hostname,pub_time,title
+                FROM articles
+                WHERE
+                    to_tsquery('english',:query) @@ to_tsvector('english',text)
+                    and lang='en'
+                    and pub_time is not null
+                order by title,pub_time asc
+                limit {limit}
+                )t
+            order by pub_time asc
+            ''')
         res=g.connection.execute(sql,{
             'query':query
             })
         def callback(k,v):
+            if k=='url':
+                return f'<a href={v}>{v}</a>'
             if k=='hostname':
                 return f'<a href=/hostname/{v}>{v}</a>'
             if k=='id_articles':
@@ -157,7 +182,7 @@ def search():
 def pagerank():
     html=''
     name=request.args.get('name')
-    
+
     html+='<h2>pagerank options</h2>'
     sql=text(f'''
     SELECT name
@@ -223,8 +248,8 @@ def tld():
     sql=text(f'''
     select substring(hostname from '\.[^\.]+$') as tld, count(1) as num
     from articles_lang_hostnames
-    where 
-        substring(hostname from '\.[^\.]+$') not in {tlds} 
+    where
+        substring(hostname from '\.[^\.]+$') not in {tlds}
         and length(substring(hostname from '\.[^\.]+$'))=3
     group by tld
     order by num desc;
@@ -236,8 +261,8 @@ def tld():
     sql=text(f'''
     select substring(hostname from '\.[^\.]+$') as tld, count(1) as num
     from articles_lang_hostnames
-    where 
-        substring(hostname from '\.[^\.]+$') not in {tlds} 
+    where
+        substring(hostname from '\.[^\.]+$') not in {tlds}
         and length(substring(hostname from '\.[^\.]+$'))!=3
     group by tld
     order by num desc;
@@ -290,9 +315,9 @@ def lang_lang(lang):
             hostname,
             sum(#num_distinct) as num_distinct
         FROM articles_lang
-        WHERE 
+        WHERE
             lang=:lang
-        GROUP BY hostname 
+        GROUP BY hostname
     ) t1
     INNER JOIN hostname_productivity ON t1.hostname = hostname_productivity.hostname
     ORDER BY {order_by} {order_dir}
@@ -402,11 +427,11 @@ def hostname_progress():
     tld=''
     if request.args.get('tld') is not None:
         tld = "and substring(hostname from '\.[^\.]+$') = :tld"
-    
+
     sql=text(f'''
     select *
-    from hostname_progress 
-    where 
+    from hostname_progress
+    where
         hostname is not null
         {tld}
     order by fraction_requested desc,num_frontier desc limit 10000
@@ -437,11 +462,11 @@ def hostname_productivity(tld=None):
 
     limit = get_alphanum('limit', default=100)
     order_by = get_alphanum('order_by', default='valid_keyword_fraction')
-    
+
     sql=text(f'''
     select *
-    from hostname_productivity 
-    where 
+    from hostname_productivity
+    where
         hostname is not null
         {where_tld}
     order by {order_by} desc
@@ -488,21 +513,21 @@ def articles_hostname_year(hostname,year):
         keywords_where='and (num_title>0 or num_text>0)'
 
     sql=text(f'''
-    select 
+    select
         pub_time,
         lang,
         articles.id_articles,
-        id_urls = (CASE 
-            WHEN articles.id_urls_canonical = 2425 
-            THEN articles.id_urls 
-            ELSE articles.id_urls_canonical 
+        id_urls = (CASE
+            WHEN articles.id_urls_canonical = 2425
+            THEN articles.id_urls
+            ELSE articles.id_urls_canonical
             END) as canonical,
         (num_title>0 or num_text>0) as keyword,
         title
     from articles
     inner join keywords on keywords.id_articles = articles.id_articles
-    where 
-        hostname = :hostname 
+    where
+        hostname = :hostname
         {extract_clause}
         {keywords_where}
     order by pub_time desc
@@ -526,7 +551,7 @@ def recent_urls():
     html=''
 
     sql=text('''
-    select id_urls 
+    select id_urls
     from articles
     order by id_articles desc
     limit 10000;
@@ -555,7 +580,7 @@ def hostname(hostname):
     html+='<h2>Productivity Statistics</h2>'
     sql=text(f'''
     select *
-    from hostname_productivity 
+    from hostname_productivity
     where hostname=:hostname
     ''')
     res=g.connection.execute(sql,{'hostname':hostname})
@@ -564,9 +589,9 @@ def hostname(hostname):
     html+='<h2>Recent Responses</h2>'
     sql=text(f'''
     select timestamp, num
-    from responses_timestamp_hostname 
+    from responses_timestamp_hostname
     where hostname=:hostname
-    order by timestamp desc 
+    order by timestamp desc
     limit 10;
     ''')
     res=g.connection.execute(sql,{'hostname':hostname})
@@ -575,13 +600,13 @@ def hostname(hostname):
 
     html+='<h2>Language Usage</h2>'
     sql=text(f'''
-    select 
+    select
         lang,
         round(((#num_distinct)/(1.0*total))::numeric,4) as fraction,
         (#num_distinct)::int as num_distinct
-    from articles_lang 
+    from articles_lang
     inner join (
-        select 
+        select
             hostname,
             sum(#num_distinct) as total
         from articles_lang
@@ -597,7 +622,7 @@ def hostname(hostname):
 
     html+='<h2>Articles per Year</h2>'
     sql=text(f'''
-    SELECT * 
+    SELECT *
     FROM hostname_peryear
     WHERE hostname=:hostname
     ORDER BY year desc;
@@ -633,7 +658,7 @@ def article(id_articles):
 
     sql=text(f'''
     select title,lang,pub_time,text,html,id_urls
-    from articles 
+    from articles
     where id_articles=:id_articles
         ;
     ''')
@@ -659,14 +684,14 @@ def article(id_articles):
     query = request.args.get('query')
     if query is not None:
 
-        COLOR = ['red', 'blue', 'orange', 'violet', 'green']
+        COLOR = ['red', 'blue', 'orange', 'violet', 'green','lightred','lightblue','purple','lightgreen']
 
         query_words = query.replace('&',' ').replace('|',' ').replace('(',' ').replace(')',' ').split()
         #regex = re.compile('|'.join([r'(\b'+word+r'\b)' for word in query_words]), re.I)
         regex = re.compile('|'.join([r'('+word+r')' for word in query_words]), re.I)
 
         # FIXME: use bs4
-        i = 0; 
+        i = 0;
         article_mod=''
         for m in regex.finditer(article_orig):
             article_mod += "".join([
