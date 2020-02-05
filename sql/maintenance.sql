@@ -489,3 +489,14 @@ WHERE
     and lang='en'
 LIMIT 20;
 
+
+select 
+    scheme || '://' || urls.hostname || path as url,
+    pub_time
+from urls 
+inner join articles on articles.id_urls=urls.id_urls
+where 
+    --pub_time > now()
+    pub_time < '1960-01-01'
+    and articles.hostname='www.nytimes.com'
+limit 10
