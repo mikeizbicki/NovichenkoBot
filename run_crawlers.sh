@@ -96,7 +96,7 @@ elif [ $method = tld3 ]; then
             -- right(hostname,3) in ('.ru','.br','.pt')
             -- (right(hostname,3) in ('.kr','.jp','.cn','.ru','.ag','.ar','.bb','.bo','.br','.bs','.bz','.ci','.cl','.co','.cr','.do','.ec','.es','.fk','.fj','.gd','.gf','.gp','.gq','.gt','.gy','.hn','.ht','.jm','.kn','.mq','.nc','.ni','.pa','.pr','.pt','.py','.sr','.st','.sv','.tt','.uy','.vc','.ve'))
         order by score*valid_fraction desc
-        limit 500
+        limit $(($num_jobs * 3))
         )t;
     ")
 elif [ $method = lang ]; then
