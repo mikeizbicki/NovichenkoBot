@@ -9,7 +9,7 @@ import pytest
 # the sys import is needed so that we can import from the current project
 import sys
 sys.path.append('.')
-from NovichenkoBot.spiders.general_spider import html2article
+from Novichenko.Bot.spiders.general_spider import html2article
 
 # create global variables that control which test cases get generated
 cache_dir='tests/__testcache__'

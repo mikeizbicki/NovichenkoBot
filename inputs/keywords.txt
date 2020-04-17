@@ -1,28 +1,30 @@
-en:         north korea                 ,  democratic people's republic of corea  , dprk , dpr korea
-es:         corea del norte , norcorea  ,  república popular democrática de corea , rpdc
-fr:         corée du nord , coree du nord ,  république populaire démocratique de corée
-it:         corea del nord , nord corea ,  repubblica popolare democratica di corea
-pt:         Coreia do Norte             ,  República Popular Democrática da Coreia
-sv:         nordkorea                   ,  demokratiska folkrepubliken korea
-no:         nord-korea                  ,  demokratiske folkerepublikken korea
-nn:         nord-korea                  ,  demokratiske folkerepublikken korea
-nb:         nord-korea                  ,  demokratiske folkerepublikken korea
-da:         nordkorea                   ,  demokratiske folkerepublik korea
-de:         nordkorea                   ,  demokratische volksrepublik korea
-se:         nordkorea , nord-korea      ,  demokratische volksrepublik korea , demokratiske folkerepublik korea , demokratiske folkerepublikken korea, demokratiska folkrepubliken korea
-ko:         북한                        ,  조선민주주의인민공화국 , 조선
-zh:         稱朝鮮 , 北韓的 , 北朝鲜 , 北韩      ,  朝鮮民主主義人民共和國
-ru:         Се́верная Коре́я , Северная Корея ,  Коре́йская Наро́дно-Демократи́ческая Респу́блика , КНДР
-ja:         北朝鮮                      ,  朝鮮民主主義人民共和国
-tl:         hilagang korea              , demokratikong republikang bayan ng korea
-vi:         Cộng hòa Dân chủ Nhân dân Triều Tiên , Triều Tiên, Bắc Triều Tiên, Bắc Hàn
-ar:         كوريا الشمالية              , جمهورية كوريا الديمقراطية الشعبية
-fa:         کُره شمالی                   , جمهوری دموکراتیک خلق کره
-yi:         צפון קארעע                  , דעמאקראטישע מענטשנ'ס רעפובליק פון קארעע
-he:         קוריאה הצפונית              , הרפובליקה הדמוקרטית העממית של קוריאה 
-tr:         Kuzey Kore                  , Kore Demokratik Halk Cumhuriyeti , Kore DHC
-la:         corea septentrionalis       , Res publica popularis democratica Coreana
-id:         Korea Utara                 , Republik Rakyat Demokratik Korea
-sw:         Korea ya Kaskazini , Korea Kaskazini, Jamhuri ya Kidemokrasia ya Watu wa Korea
-ku:         Korêya Bakur                , Komara Demokratîk a Gel a Korêyê
-gl:         Corea do Norte              , República Popular e Democrática de Corea
+en:         coronavirus, covid, sars-cov-2, 2019-ncov,                      north korea                 ,  democratic people's republic of corea  , dprk , dpr korea , virus, wuhan, ncov, hubei, flu, influenza, epidemic, pandemic
+es:         coronavirus, covid, sars-cov-2, 2019-ncov,                      corea del norte , norcorea  ,  república popular democrática de corea , rpdc
+fr:         coronavirus, covid, sars-cov-2, 2019-ncov,                      corée du nord , coree du nord ,  république populaire démocratique de corée
+it:         coronavirus, covid, sars-cov-2, 2019-ncov,                      corea del nord , nord corea ,  repubblica popolare democratica di corea
+pt:         coronavirus, covid, sars-cov-2, 2019-ncov, coronavírus,         Coreia do Norte             ,  República Popular Democrática da Coreia
+sv:         coronavirus, covid, sars-cov-2, 2019-ncov,                      nordkorea                   ,  demokratiska folkrepubliken korea
+no:         coronavirus, covid, sars-cov-2, 2019-ncov,                      nord-korea                  ,  demokratiske folkerepublikken korea
+nn:         coronavirus, covid, sars-cov-2, 2019-ncov,                      nord-korea                  ,  demokratiske folkerepublikken korea
+nb:         coronavirus, covid, sars-cov-2, 2019-ncov,                      nord-korea                  ,  demokratiske folkerepublikken korea
+da:         coronavirus, covid, sars-cov-2, 2019-ncov,                      nordkorea                   ,  demokratiske folkerepublik korea
+de:         coronavirus, covid, sars-cov-2, 2019-ncov,                      nordkorea                   ,  demokratische volksrepublik korea
+se:         coronavirus, covid, sars-cov-2, 2019-ncov,                      nordkorea , nord-korea      ,  demokratische volksrepublik korea , demokratiske folkerepublik korea , demokratiske folkerepublikken korea, demokratiska folkrepubliken korea
+ko:         coronavirus, covid, sars-cov-2, 2019-ncov, 코로나바이러스,      북한                        ,  조선민주주의인민공화국 , 조선
+zh:         coronavirus, covid, sars-cov-2, 2019-ncov, 冠状病毒,            稱朝鮮 , 北韓的 , 北朝鲜 , 北韩      ,  朝鮮民主主義人民共和國
+ru:         coronavirus, covid, sars-cov-2, 2019-ncov, Коронавирусная,      Се́верная Коре́я , Северная Корея ,  Коре́йская Наро́дно-Демократи́ческая Респу́блика , КНДР
+uk:         coronavirus, covid, sars-cov-2, 2019-ncov, КНДР, Народно-Демократична Республіка Корея
+ur:         coronavirus, covid, sars-cov-2, 2019-ncov, شمالی کوریا, عوامی جمہوریہ کوریا
+ja:         coronavirus, covid, sars-cov-2, 2019-ncov, コロナウイルスによ,  北朝鮮                      ,  朝鮮民主主義人民共和国
+tl:         coronavirus, covid, sars-cov-2, 2019-ncov,                      hilagang korea              , demokratikong republikang bayan ng korea
+vi:         coronavirus, covid, sars-cov-2, 2019-ncov, virus corona,        Cộng hòa Dân chủ Nhân dân Triều Tiên , Triều Tiên, Bắc Triều Tiên, Bắc Hàn
+ar:         coronavirus, covid, sars-cov-2, 2019-ncov, فيروس كورونا,        كوريا الشمالية              , جمهورية كوريا الديمقراطية الشعبية
+fa:         coronavirus, covid, sars-cov-2, 2019-ncov, کرونا ویروس,         کُره شمالی                   , جمهوری دموکراتیک خلق کره
+yi:         coronavirus, covid, sars-cov-2, 2019-ncov,                      צפון קארעע                  , דעמאקראטישע מענטשנ'ס רעפובליק פון קארעע
+he:         coronavirus, covid, sars-cov-2, 2019-ncov, נגיף קורונה,         קוריאה הצפונית              , הרפובליקה הדמוקרטית העממית של קוריאה 
+tr:         coronavirus, covid, sars-cov-2, 2019-ncov,                      Kuzey Kore                  , Kore Demokratik Halk Cumhuriyeti , Kore DHC
+la:         coronavirus, covid, sars-cov-2, 2019-ncov,                      corea septentrionalis       , Res publica popularis democratica Coreana
+id:         coronavirus, covid, sars-cov-2, 2019-ncov,                      Korea Utara                 , Republik Rakyat Demokratik Korea
+sw:         coronavirus, covid, sars-cov-2, 2019-ncov,                      Korea ya Kaskazini , Korea Kaskazini, Jamhuri ya Kidemokrasia ya Watu wa Korea
+ku:         coronavirus, covid, sars-cov-2, 2019-ncov,                      Korêya Bakur                , Komara Demokratîk a Gel a Korêyê
+gl:         coronavirus, covid, sars-cov-2, 2019-ncov,                      Corea do Norte              , República Popular e Democrática de Corea

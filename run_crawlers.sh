@@ -1,3 +1,5 @@
+#!/bin/sh
+
 set -e
 
 ########################################
@@ -6,7 +8,7 @@ set -e
 
 db=novichenkobot
 db_rfc=postgres:///$db
-num_jobs=100
+num_jobs=80
 
 ########################################
 # create log directories
@@ -32,7 +34,7 @@ hostnames_high=$(echo "$res" | tail -n +4 | head -n -3)
 
 for hostname in $hostnames_high; do
     echo "high priority crawl: $hostname"
-    nice -n -10 scrapy crawl general -s HOSTNAME_RESTRICTIONS=$hostname -a db=$db_rfc > $log/general-$hostname 2>&1 &
+    nohup nice -n -10 scrapy crawl general -s HOSTNAME_RESTRICTIONS=$hostname -s MEMQUEUE_LIMIT=200 -a db=$db_rfc > $log/general-$hostname 2>&1 &
     echo $! >> $log/pids
 done
 
@@ -52,7 +54,8 @@ done
 
 # NOTE: started focusing on new languages when max(id_frontier)=618645536
 
-method='tld3'
+#method='coronavirus'
+method='frontier_priority'
 
 if [ $method = tld ]; then
     #res=$(psql $db -c "
@@ -108,6 +111,38 @@ elif [ $method = lang ]; then
         (lang='zh' or lang='ko' or lang='ja')
     order by hostname;
     ")
+elif [ $method = lang2 ]; then
+    res=$(psql $db -c "
+    select hostname 
+    from crawlable_hostnames 
+    where 
+        priority='' and 
+        not (lang='zh' or lang='ko' or lang='ja')
+    order by hostname;
+    ")
+elif [ $method = coronavirus ]; then
+    res=$(psql $db -c "
+    select hostname 
+    from crawlable_hostnames 
+    where 
+        priority='coronavirus9'
+    order by hostname
+    limit 300
+    offset $1
+    ;
+    ")
+elif [ $method = crawlable_hostnames ]; then
+    res=$(psql $db -c "
+    select hostname 
+    from crawlable_hostnames 
+    where 
+        priority=''
+        and hostname not like 'www.%'
+        --and (right(hostname,3) in ('com'))
+        --and (right(hostname,3) in ('org','net','mil','gov','.uk','.de','.fr','.dk','.fi','.ax','.se'))
+        and not (right(hostname,3) in ('com','org','net','mil','gov','.uk','.de','.fr','.dk','.fi','.ax','.se'))
+    order by reverse(hostname);
+    ")
 elif [ $method = hostname_productivity ]; then
     res=$(psql $db -c "
     SELECT hostname
@@ -117,7 +152,7 @@ elif [ $method = hostname_productivity ]; then
     ")
 elif [ $method = frontier_priority ]; then
     res=$(psql $db -c "
-    SELECT DISTINCT hostname
+    SELECT DISTINCT hostname,priority
     FROM (
         SELECT substring(reverse(hostname_reversed) from 2) as hostname,priority
         FROM frontier
@@ -126,10 +161,28 @@ elif [ $method = frontier_priority ]; then
             and substring(reverse(hostname_reversed) from 2) not in (
                 SELECT hostname FROM crawlable_hostnames WHERE priority in ('ban','high')
             )
+            and not reverse(hostname_reversed) like any (array[
+                '.m.%',
+                '.mobile.%',
+                '.amp.%',
+                '.www.m.%',
+                '.www.mobile.%',
+                '.www.amp.%',
+                '%.pinterest.%',
+                '%.wikipedia.%'
+                ])
+--          and hostname_reversed not like '%.m.' 
+--          and hostname_reversed not like '%.elibom.' 
+--          and hostname_reversed not like '%.pma.'
+--          and hostname_reversed not like '%.m.www.' 
+--          and hostname_reversed not like '%.elibom.www.' 
+--          and hostname_reversed not like '%.pma.www.'
+--          and hostname_reversed not like reverse('%.pinterest.%')
+--          and hostname_reversed not like reverse('%.wikipedia.%')
         ORDER BY priority DESC
-        LIMIT 100000
+        LIMIT 10000
     )t
-    LIMIT 500
+    limit $(($num_jobs * 3))
     ;
     ")
 elif [ $method = frontier_priority2 ]; then
@@ -160,22 +213,6 @@ elif [ $method = frontier_hostname ]; then
     ORDER BY num_1000000,num_100000,num_10000,num_1000,num_100,num_10,num_0
     LIMIT 500;
     ")
-elif [ $method = crawlable_hostnames ]; then
-    res=$(psql $db -c "
-    select hostname_target from (
-    select hostname_target,sum(num) as num
-    from refs_keywords
-    where
-        type='link' and
-        hostname_source in (select hostname from hostname_productivity limit 5000) and
-        hostname_target not in (select hostname from crawlable_hostnames) and
-        right(hostname_target, length(hostname_target)-4) not in (SELECT hostname FROM crawlable_hostnames) and
-        hostname_target not in (select distinct hostname from responses_timestamp_hostname)
-    group by hostname_target
-    order by num desc
-    ) as t1
-    limit $(( 5 * $num_jobs ));
-    ")
 else
     echo 'no method for low priority crawls specified'
     exit
@@ -195,7 +232,7 @@ i=0
 for file in $log/hostnames.*; do
     restrictions=$(cat $log/hostnames.$(printf "%04d" $i) | xargs echo | tr ' ' ',')
     echo $i : $restrictions
-    nohup nice -n 19 scrapy crawl general -s HOSTNAME_RESTRICTIONS=$restrictions -a db=$db_rfc > $log/general.$(printf "%04d" $i) 2>&1 &
+    nohup nice -n 19 scrapy crawl general -s CONCURRENT_REQUESTS=32 -s CONCURRENT_REQUESTS_PER_DOMAIN=16 -s HOSTNAME_RESTRICTIONS=$restrictions -a db=$db_rfc > $log/general.$(printf "%04d" $i) 2>&1 &
     echo $! >> $log/pids
     i=$(( i + 1 ))
 done

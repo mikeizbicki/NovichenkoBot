@@ -14,7 +14,10 @@ articles_summary2
 frontier_hostname
 requests_hostname
 "
-#refs_summary
+# these are temporarily paused
+
+# don't do this one for real: 
+# refs_summary
 
 for rollup in $rollups; do
     echo "$(date '+%Y-%m-%d %H:%M:%S') rollup=$rollup"

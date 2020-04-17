@@ -14,9 +14,11 @@ SELECT s.schemaname,
        s.relname AS tablename,
        s.indexrelname AS indexname,
        pg_size_pretty(pg_relation_size(s.indexrelid)) AS index_size,
-       s.idx_scan
+       s.idx_scan,
+       j.tablespace
 FROM pg_catalog.pg_stat_user_indexes s
-   JOIN pg_catalog.pg_index i ON s.indexrelid = i.indexrelid
+JOIN pg_catalog.pg_indexes j ON s.indexrelname = j.indexname
+JOIN pg_catalog.pg_index i ON s.indexrelid = i.indexrelid
 --WHERE 0 <>ALL (i.indkey)  -- no index column is an expression
   --AND NOT i.indisunique   -- is not a UNIQUE index
   --AND NOT EXISTS          -- does not enforce a constraint
@@ -32,7 +34,7 @@ SELECT
     query, 
     make_interval(secs => total_time/1000) as total_time,
     calls, 
-    total_time/calls as time_per_call, 
+    make_interval(secs => total_time/calls/1000) as time_per_call, 
     rows,
     100.0 * shared_blks_hit / nullif(shared_blks_hit + shared_blks_read, 0) AS hit_percent
 FROM pg_stat_statements 
@@ -75,13 +77,32 @@ FROM (
 
 SELECT
     indexname,
-    pg_size_pretty(rel_size) as size
+    pg_size_pretty(rel_size) as size,
+    tablespace
 FROM (
     SELECT 
         indexname,
-        pg_relation_size(indexname::text) as rel_size 
+        pg_relation_size(indexname::text) as rel_size,
+        tablespace
     FROM pg_indexes
-    WHERE schemaname = 'public'
+    WHERE 
+        schemaname = 'public'
+        -- AND tablespace = 'fastdata'
+    ORDER BY rel_size DESC
+)t;
+
+-- total usage of fastdata indexes
+
+SELECT
+    pg_size_pretty(sum(rel_size)) as fastdata_size
+FROM (
+    SELECT 
+        indexname,
+        pg_relation_size(indexname::text) as rel_size
+    FROM pg_indexes
+    WHERE 
+        schemaname = 'public'
+        AND tablespace = 'fastdata'
     ORDER BY rel_size DESC
 )t;
 
@@ -500,3 +521,82 @@ where
     pub_time < '1960-01-01'
     and articles.hostname='www.nytimes.com'
 limit 10
+
+
+
+SELECT 
+    t1.hostname,
+    responses,
+    keywords_title,
+    --(keywords_title/responses) AS fraction_title,
+    COALESCE(ROUND(keywords_title/responses::numeric,4),0) AS title_per_response
+    --keywords_text
+    --(keywords_text/responses) AS fraction_text
+    --COALESCE(ROUND(keywords_text/responses::numeric,4),0) AS text_per_response,
+    --COALESCE(ROUND(keywords_title/keywords_text::numeric,4),0) AS title_per_text
+FROM (
+    SELECT hostname,count(1) AS keywords_title
+    FROM (
+        SELECT distinct on (hostname,title) id_articles,hostname,date_trunc('day',pub_time) as day,title
+        FROM articles
+        WHERE
+            to_tsquery('english','(coronavirus | (corona & virus) | covid)') @@ to_tsvector('english',title)
+            and lang='en'
+            and pub_time is not null
+        order by hostname,title,pub_time asc
+        )t
+    GROUP BY hostname 
+    ) t1
+INNER JOIN (
+    SELECT hostname,sum(num) AS responses
+    FROM responses_timestamp_hostname 
+    WHERE timestamp > '2020-02-01' 
+    GROUP BY hostname 
+    )t3 ON t3.hostname=t1.hostname
+ORDER BY title_per_response DESC,hostname DESC
+;
+
+SELECT 
+    t1.hostname,
+    responses,
+    keywords_title,
+    --(keywords_title/responses) AS fraction_title,
+    COALESCE(ROUND(keywords_title/responses::numeric,4),0) AS title_per_response,
+    keywords_text,
+    --(keywords_text/responses) AS fraction_text
+    COALESCE(ROUND(keywords_text/responses::numeric,4),0) AS text_per_response,
+    COALESCE(ROUND(keywords_title/keywords_text::numeric,4),0) AS title_per_text
+FROM (
+    SELECT hostname,count(1) AS keywords_title
+    FROM (
+        SELECT distinct on (hostname,title) id_articles,hostname,date_trunc('day',pub_time) as day,title
+        FROM articles
+        WHERE
+            to_tsquery('english','(coronavirus | (corona & virus) | covid)') @@ to_tsvector('english',title)
+            and lang='en'
+            and pub_time is not null
+        order by hostname,title,pub_time asc
+        )t
+    GROUP BY hostname 
+    ) t1
+INNER JOIN (
+    SELECT hostname,count(1) AS keywords_text
+    FROM (
+        SELECT distinct on (hostname,title) id_articles,hostname,date_trunc('day',pub_time) as day,title
+        FROM articles
+        WHERE
+            to_tsquery('english','(coronavirus | (corona & virus) | covid)') @@ to_tsvector('english',text)
+            and lang='en'
+            and pub_time is not null
+        order by hostname,title,pub_time asc
+        )t
+    GROUP BY hostname 
+    ) t2 ON t2.hostname=t1.hostname
+INNER JOIN (
+    SELECT hostname,sum(num) AS responses
+    FROM responses_timestamp_hostname 
+    WHERE timestamp > '2020-02-01' 
+    GROUP BY hostname 
+    )t3 ON t3.hostname=t1.hostname
+ORDER BY text_per_response DESC,title_per_response,hostname DESC
+;

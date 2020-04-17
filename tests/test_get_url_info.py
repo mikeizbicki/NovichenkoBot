@@ -5,7 +5,7 @@ import random
 # the sys import is needed so that we can import from the current project
 import sys
 sys.path.append('.')
-from NovichenkoBot.sqlalchemy_utils import get_url_info,urlinfo2url
+from Novichenko.Bot.sqlalchemy_utils import get_url_info,urlinfo2url
 
 def test_get_url_info_1(connection):
     '''

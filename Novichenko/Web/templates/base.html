@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>{{page_name}}</title>
+        <link rel='stylesheet' href='/static/style.css'>
+        {% if refresh %}
+        <meta http-equiv="refresh" content="{{ refresh }}">
+        {% endif %}
+    </head>
+    <body>
+        <h1> {{ page_name }} </h1>
+        {{ page_html|safe }}
+    </body>
+</html>

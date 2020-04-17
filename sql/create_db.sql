@@ -2,6 +2,7 @@ CREATE EXTENSION btree_gist;
 CREATE EXTENSION btree_gin;
 CREATE EXTENSION tablefunc;
 CREATE EXTENSION pgstattuple;
+CREATE EXTENSION pgroonga;
 
 CREATE TABLE crawlable_hostnames (
     hostname VARCHAR(253) PRIMARY KEY,
@@ -55,11 +56,15 @@ CREATE TABLE frontier (
     FOREIGN KEY (id_urls) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE INDEX frontier_index_urls ON frontier(id_urls);
-CREATE INDEX frontier_index_hostname_reversed ON frontier(hostname_reversed);
-CREATE INDEX frontier_index_timestamp_received ON frontier(timestamp_received);
-CREATE INDEX frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
 CREATE INDEX frontier_index_nextrequest_alt ON frontier(priority) WHERE timestamp_processed IS NULL;
+CREATE INDEX frontier_index_nextrequest2 ON frontier(hostname_reversed,priority,id_frontier,id_urls) WHERE timestamp_processed IS NULL;
+CREATE INDEX frontier_index_urls ON frontier(id_urls);
+
+-- FIXME: are the indexes below really needed?
+-- they have been moved off of fastdata to save space
+-- dropped: CREATE INDEX frontier_index_nextrequest ON frontier(timestamp_processed,hostname_reversed,priority,id_frontier,id_urls);
+CREATE INDEX frontier_index_hostnamereversed ON frontier(hostname_reversed);
+CREATE INDEX frontier_index_timestamp_received ON frontier(timestamp_received);
 
 CREATE TABLE requests (
     id_requests BIGSERIAL PRIMARY KEY,
@@ -300,25 +305,22 @@ CREATE TABLE articles (
 
 CREATE INDEX articles_index_urls ON articles(id_urls);
 CREATE INDEX articles_index_hostnametime ON articles(hostname,pub_time);
-
---CREATE INDEX articles_text_tsv2 ON articles USING GIN (to_tsvector('english',text)) WHERE lang='en';
 CREATE INDEX articles_index_hostname_tsvtitle_en2 ON articles USING GIN (hostname,to_tsvector('english',title)) WHERE lang='en';
 CREATE INDEX articles_index_text_en ON articles USING GIN (to_tsvector('english',text)) WHERE lang='en';
---CREATE INDEX CONCURRENTLY articles_index_text_de ON articles USING GIN (to_tsvector('german',text)) tablespace fastdata WHERE lang='de';
---CREATE INDEX articles_index_title_en  ON articles USING GIN (hostname,to_tsvector('english',title)) WHERE lang='en';
-
-update pg_index set indisvalid = false where indexrelid = 'articles_index_hostname_tsvtext_en'::regclass;
-update pg_index set indisvalid = false where indexrelid = 'articles_title_tsv'::regclass;
-update pg_index set indisvalid = false where indexrelid = 'articles_index_hostname_tsvtitle_en'::regclass;
 
 
-CREATE INDEX articles_title_tsv ON articles USING GIST (to_tsvector('english',title));
---CREATE INDEX CONCURRENTLY articles_title_tsv2 ON articles USING GIN (to_tsvector('english',title)) TABLESPACE fastdata WHERE lang='en';
-CREATE INDEX articles_text_tsv ON articles USING GIST (to_tsvector('english',text));
-CREATE INDEX articles_index_hostname_tsvtitle_en ON articles USING GIST (hostname,to_tsvector('english',title));
---CREATE INDEX articles_index_hostname_tsvtitle_en3 ON articles USING GIST (hostname,to_tsvector('english',title),pub_time) WHERE lang='en';
--- FIXME: 
--- CREATE INDEX concurrently articles_index_hostnamelang ON articles(hostname,lang);
+CREATE INDEX articles_index_pgroonga_title ON articles USING pgroonga(title);
+CREATE INDEX articles_index_pgroonga_text ON articles USING pgroonga(text);
+
+--CREATE INDEX articles_index_pgroonga_title ON articles USING pgroonga(title)
+--CREATE INDEX articles_index_pgroonga_title ON articles USING pgroonga(title)
+--WITH (tokenizer='TokenNgram("unify_alphabet", false, "unify_digit", false, "unify_symbol", false)');
+--CREATE INDEX articles_index_pgroonga_title ON articles USING pgroonga(title)
+--WITH (tokenizer='TokenNgram("n",5,"unify_alphabet", false, "unify_digit", false, "unify_symbol", false)');
+
+--CREATE INDEX articles_index_pgroonga_text5 ON articles USING pgroonga(text) WITH (tokenizer='TokenNgram("n",5)');
+--CREATE INDEX articles_index_pgroonga_text2 ON articles USING pgroonga(left(text,4*1024*1024)); 
+
 
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
@@ -449,6 +451,16 @@ CREATE TABLE fullhtml (
     --FOREIGN KEY (id_articles) REFERENCES articles(id_articles)
 );
 CREATE INDEX fullhtml_index_hostname ON fullhtml(hostname);
+
+/*
+CREATE TABLE languages (
+    iso639_1 VARCHAR(2),
+    fullname TEXT,
+    PRIMARY KEY(fullname)
+);
+INSERT INTO languages (iso639_1, fullname) VALUES
+    ('en','english');
+*/
 
 -- FIXME: what is this table for?
 CREATE TABLE articles_valid (
