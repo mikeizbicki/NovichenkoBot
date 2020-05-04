@@ -3,6 +3,10 @@ CREATE EXTENSION btree_gin;
 CREATE EXTENSION tablefunc;
 CREATE EXTENSION pgstattuple;
 
+/*********************************************************************************
+ * Common
+ */
+
 CREATE TABLE hostnames (
     id_hostnames SERIAL PRIMARY KEY,
     hostname VARCHAR(253) UNIQUE NOT NULL,
@@ -39,6 +43,36 @@ BEGIN
     RETURN case when left(hostname,4) = 'www.' then substring(hostname,5) else hostname end;
 END;
 $$ LANGUAGE plpgsql;
+
+/*********************************************************************************
+ * Novichenko.Seed
+ */
+
+/* FIXME:
+CREATE TABLE queries (
+    id_queries SERIAL PRIMARY KEY,
+    query TEXT NOT NULL,
+    lang VARCHAR(2) NOT NULL,
+    dialect TEXT,
+    english_translation TEXT NOT NULL,
+    translation_verified BOOL DEFAULT FALSE NOT NULL,
+    UNIQUE(word,lang,dialect)
+);
+
+CREATE TABLE topic (
+    topic TEXT,
+    subtopic TEXT,
+    words TEXT
+);
+
+CREATE TABLE seeds (
+    id_urls BIGINT
+);
+*/
+
+/*********************************************************************************
+ * Novichenko.Bot
+ */
 
 
 /*
@@ -136,15 +170,34 @@ CREATE TABLE responses (
     FOREIGN KEY (id_urls_redirected) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
 
--- FIXME: 
+CREATE TABLE responses_text (
+    id_responses BIGINT,
+    text TEXT,
+    PRIMARY KEY (id_responses),
+    FOREIGN KEY (id_responses) REFERENCES responses(id_responses)
+);
+
+-- FIXME: move contents into responses_body
+CREATE TABLE fullhtml (
+    id_articles BIGINT,
+    hostname TEXT NOT NULL,
+    html TEXT NOT NULL,
+    PRIMARY KEY (id_articles)
+    --FIXME: add foreign key constraint
+    --FOREIGN KEY (id_articles) REFERENCES articles(id_articles)
+);
+CREATE INDEX fullhtml_index_hostname ON fullhtml(hostname);
+
+
+-- NOTE: 
 -- somehow there are duplicate rows in responses for the same id_frontier;
 -- we need to find how this happens in the spider code and fix that;
 -- figure out which of the duplicate rows to get rid of and which to keep;
 -- and then fix this unique constraint to apply to all rows.
 -- Now that this constraint is added, we should start getting failures in the 
 -- scrapy logs which will tell us what is causing the duplication.
-create unique index responses_unique_frontier on responses(id_frontier)
-where id_responses > 111562143;
+CREATE UNIQUE INDEX responses_unique_frontier ON responses(id_frontier) 
+WHERE id_responses > 111562143;
 
 CREATE INDEX responses_index_frontier ON responses(id_frontier);
 CREATE INDEX responses_index_timestamp_received ON responses(timestamp_received);
@@ -434,26 +487,6 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
-CREATE TABLE fullhtml (
-    id_articles BIGINT,
-    hostname TEXT NOT NULL,
-    html TEXT NOT NULL,
-    PRIMARY KEY (id_articles)
-    --FIXME: add foreign key constraint
-    --FOREIGN KEY (id_articles) REFERENCES articles(id_articles)
-);
-CREATE INDEX fullhtml_index_hostname ON fullhtml(hostname);
-
-/*
-CREATE TABLE languages (
-    iso639_1 VARCHAR(2),
-    fullname TEXT,
-    PRIMARY KEY(fullname)
-);
-INSERT INTO languages (iso639_1, fullname) VALUES
-    ('en','english');
-*/
-
 CREATE TABLE keywords (
     id_keywords BIGSERIAL PRIMARY KEY,
     id_articles BIGINT, 
@@ -558,7 +591,7 @@ CREATE MATERIALIZED VIEW fraction_crawled AS
 WITH NO DATA;
 REFRESH MATERIALIZED VIEW fraction_crawled;
 
-/*
+/*********************************************************************************
  * The following tables are for postprocessing after download.
  */
 

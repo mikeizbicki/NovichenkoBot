@@ -158,24 +158,34 @@ class Scheduler(object):
                     id_urls_redirected=url_info_redirected['id_urls']
 
                 # create a new row in responses table
-                sql=text('''
-                insert into responses
-                    (id_frontier,hostname,timestamp_received,twisted_status,http_status,dataloss,bytes,id_urls_redirected)
-                    values
-                    (:id_frontier,:hostname,:timestamp_received,:twisted_status,:http_status,:dataloss,:bytes,:id_urls_redirected)
-                    returning id_responses
-                ''')
-                res=self.connection.execute(sql,{
-                    'id_frontier':frontier_row['id_frontier'],
-                    'hostname':frontier_row['hostname'],
-                    'timestamp_received':datetime.datetime.now(),
-                    'twisted_status':'Success',
-                    'http_status':response.status,
-                    'dataloss':'dataloss' in response.flags,
-                    'bytes':len(response.body),
-                    'id_urls_redirected':id_urls_redirected
-                    })
-                response.id_responses=res.first()[0]
+                with self.connection.begin() as trans:
+                    sql=text('''
+                    insert into responses
+                        (id_frontier,hostname,timestamp_received,twisted_status,http_status,dataloss,bytes,id_urls_redirected)
+                        values
+                        (:id_frontier,:hostname,:timestamp_received,:twisted_status,:http_status,:dataloss,:bytes,:id_urls_redirected)
+                        returning id_responses
+                    ''')
+                    res=self.connection.execute(sql,{
+                        'id_frontier':frontier_row['id_frontier'],
+                        'hostname':frontier_row['hostname'],
+                        'timestamp_received':datetime.datetime.now(),
+                        'twisted_status':'Success',
+                        'http_status':response.status,
+                        'dataloss':'dataloss' in response.flags,
+                        'bytes':len(response.body),
+                        'id_urls_redirected':id_urls_redirected
+                        })
+                    response.id_responses=res.first()[0]
+
+                    if isinstance(response,scrapy.http.TextResponse):
+                        sql=text('''
+                        INSERT INTO responses_text (id_responses, text) VALUES (:id_responses, :text);
+                        ''')
+                        res=self.connection.execute(sql,{
+                            'id_responses':response.id_responses,
+                            'text':response.text
+                            })
 
                 # run the spider on the response only for successful http_status codes
                 parse_generator=None
