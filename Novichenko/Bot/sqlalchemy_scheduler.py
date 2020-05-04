@@ -22,7 +22,7 @@ from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError, TCPTimedOutError
 
-from NovichenkoBot.sqlalchemy_utils import get_url_info, urlinfo2url, insert_request, reverse_hostname
+from Novichenko.Bot.sqlalchemy_utils import get_url_info, urlinfo2url, insert_request, reverse_hostname
 from timeit import default_timer as timer
 
 logger = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ class Scheduler(object):
     def __init__(self, stats=None, crawler=None, db=None):
         # configure settings
         settings=crawler.settings
-        self.MEMQUEUE_LIMIT = settings.getint('MEMQUEUE_LIMIT',default=50)
+        self.MEMQUEUE_LIMIT = settings.getint('MEMQUEUE_LIMIT',default=100)
         self.MEMQUEUE_MIN_URLS = settings.getint('MEMQUEUE_MIN_URLS',default=1)
         self.MEMQUEUE_MAX_URLS = settings.getint('MEMQUEUE_MAX_URLS',default=self.MEMQUEUE_LIMIT*2)
         self.MEMQUEUE_TIMEDELTA = settings.getint('MEMQUEUE_TIMEDELTA',default=120)
@@ -75,7 +75,10 @@ class Scheduler(object):
         if crawler is not None:
             self.connection = crawler.spider.connection
         elif db is not None:
-            engine = sqlalchemy.create_engine(db, connect_args={'timeout': 120})
+            engine = sqlalchemy.create_engine(db, connect_args={
+                'connect_timeout': 120,
+                'application_name': 'NovichenkoBot_scheduler',
+                })
             self.connection = engine.connect()
         self.memqueue = {}
         self.memqueue_recent = []

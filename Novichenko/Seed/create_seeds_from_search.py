@@ -79,10 +79,18 @@ def search_bing_api(query,count=50,offset=0,freshness=None,mkt=None,lang=None):
 
     # initiate request using exponential backoff for failure
     sleep=0
+    bad_responses=0
     while True:
         try:
             request = requests.get(url, headers=headers) 
-            break
+            if request.status_code != 200:
+                print('WARNING: request=',request,'bad_responses=',bad_responses)
+                bad_responses+=1
+                if bad_responses>=3:
+                    raise ValueError('too many bad responses')
+                time.sleep(30)
+            else:
+                break
         except requests.exceptions.ConnectionError:
             sleep_time=2**sleep
             print('  sleep_time=',sleep_time)
@@ -90,8 +98,6 @@ def search_bing_api(query,count=50,offset=0,freshness=None,mkt=None,lang=None):
             sleep+=1
 
     # extract urls from request
-    if request.status_code != 200:
-        raise ValueError('request=',request)
     response = request.json()
     try:
         totalEstimatedMatches = response['webPages']['totalEstimatedMatches']
@@ -161,11 +167,6 @@ if __name__=='__main__':
     if args.search_type=='deep':
 
         # load the queries
-        #queries = []
-        #for path in glob.glob(os.path.join(args.input_dir,'*.'+args.lang)):
-            #with open(path) as f:
-                #queries += [ line.strip() for line in f.readlines() ]
-
         if args.prefix_file is not None:
             with open(args.prefix_file) as f1:
                 lines1 = [ line.strip() for line in f1.readlines() ]

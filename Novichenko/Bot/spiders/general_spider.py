@@ -42,7 +42,10 @@ class GeneralSpider(Spider):
 
         # database connection
         if connection is None:
-            engine = sqlalchemy.create_engine(db, connect_args={'connect_timeout': 120})
+            engine = sqlalchemy.create_engine(db, connect_args={
+                'connect_timeout': 120,
+                'application_name': 'NovichenkoBot_GeneralSpider',
+                })
             self.connection = engine.connect()
         else:
             self.connection = connection

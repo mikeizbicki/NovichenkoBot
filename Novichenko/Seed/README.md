@@ -24,6 +24,10 @@ And this is a subset of languages I have found convenient to work with:
 
 ```
 LANGS='ar de en es fa fr he id it ja ko pt ru sv tr uk ur vi zh-Hans zh-Hant'
+
+topic=dprk_kimdying
+subtopic=
+freshness=2020-04-21
 ```
 
 Next, we will create some seeds for doing a wide search.
@@ -32,7 +36,7 @@ Translate this file into many languages using the command
 
 ```
 for lang in $LANGS; do
-    python3 -u Novichenko/Seed/translate_words.py --input=Novichenko/Seed/queries/dprk.en --target_lang=$lang
+    python3 -u Novichenko/Seed/translate_words.py --input=db/queries/$topic.en --target_lang=$lang
 done
 ```
 
@@ -47,8 +51,13 @@ and inside that folder create a file `${topic}.terms.en` containing all the Engl
 Translate the terms into the other languages with the command
 
 ```
+
 for lang in $LANGS; do
-    python3 -u Novichenko/Seed/translate_words.py --input=Novichenko/Seed/queries/dprk/smolinsky.en --target_lang=$lang
+    subtopic_str=''
+    if [ ! -e $subtopic ]; then
+        subtopic_str="/$subtopic"
+    fi
+    python3 -u Novichenko/Seed/translate_words.py --input=db/queries/$topic${subtopic_str}.en --target_lang=$lang
 done
 ```
 
@@ -56,6 +65,7 @@ Create a folder `seeds/${term}_search`.
 Generate the seeds for each term by running the command
 
 ```
+freshness=2020-04-17..2020-04-19
 for lang in $LANGS; do
     echo ==================================
     date
@@ -64,31 +74,51 @@ for lang in $LANGS; do
     python3 -u Novichenko/Seed/create_seeds_from_search.py \
         --search_type=deep \
         --count=400 \
-        --query_file=Novichenko/Seed/queries/coronavirus.$lang \
-        --output_file=Novichenko/Seed/seeds/coronavirus_search4/coronavirus.2020-04-04,08.$lang \
-        --freshness=2020-04-04..2020-04-08 \
+        --query_file=db/queries/coronavirus.$lang \
+        --output_file=db/seeds/coronavirus_search4/coronavirus.$freshness.$lang \
+        --freshness=$freshness \
         --lang=$lang
 done
-#for lang in $LANGS; do
-#    echo ==================================
-#    date
-#    echo $lang
-#    echo ==================================
-#    python3 -u Novichenko/Seed/create_seeds_from_search.py \
-#        --search_type=deep \
-#        --count=200 \
-#        --prefix_file=Novichenko/Seed/queries/dprk.$lang \
-#        --query_file=Novichenko/Seed/queries/dprk/smolinsky.$lang \
-#        --output_file=Novichenko/Seed/seeds/dprk_search/smolinsky.$lang \
-#        --lang=$lang
-#done
+
+
+mkdir -p db/seeds/${topic}_search/
+for lang in $LANGS; do
+    echo ==================================
+    date
+    echo $lang
+    echo ==================================
+
+    freshness_arg=''
+    if [ ! -e $freshness ]; then
+        freshness_arg="--freshness=$freshness"
+    fi
+    input_arg="--query_file=db/queries/$topic.$lang"
+    if [ ! -r $subtopic ]; then
+        input_arg="--prefix_file=db/queries/$topic.$lang --query_file=db/queries/$topic/$subtopic.$lang"
+    fi
+
+    python3 -u Novichenko/Seed/create_seeds_from_search.py \
+        --search_type=deep \
+        --count=500 \
+        $freshness_arg \
+        $input_arg \
+        --output_file=db/seeds/${topic}_search/$subtopic.$freshness.$lang.b \
+        --lang=$lang
+done
 ```
 
 Finally, insert the seeds into the database
 
 ```
-for f in Novichenko/Seed/seeds/coronavirus_search4/coronavirus.2020-04-04*; do
-    nohup python3 -u Novichenko/Seed/insert_seeds.py --inputs=$f --crawlable_hostnames_priority=coronavirus10 > nohup/nohup.insert_seeds.$(basename $f) &
+#for f in db/seeds/coronavirus_search4/coronavirus.$freshness*; do
+    #nohup python3 -u Novichenko/Seed/insert_seeds.py --inputs=$f --crawlable_hostnames_priority=coronavirus12 > nohup/nohup.insert_seeds.$(basename $f) &
+#done
+
+
+#for f in db/seeds/${topic}_search/$subtopic.$freshness.*; do
+for f in db/seeds/${topic}_search/.*; do
+    #echo nohup/nohup.insert_seeds.$(basename $f)
+    nohup python3 -u Novichenko/Seed/insert_seeds.py --inputs=$f --crawlable_hostnames_priority=$topic > nohup/nohup.insert_seeds.$(basename $f) &
 done
 ```
 

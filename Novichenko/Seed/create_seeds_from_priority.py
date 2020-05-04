@@ -30,16 +30,17 @@ res = connection.execute(sql,{
     'priority':args.priority,
     })
 
-for row in res:
-    url = 'https://'+row['hostname']
-    print('inserting',url)
-    url_info = insert_request(
-            connection,
-            url,
-            allow_dupes=args.allow_dupes,
-            priority=float('Inf'),
-            flexible_url=True
-            )
+with connection.begin() as trans:
+    for row in res:
+        url = 'https://'+row['hostname']
+        print('inserting',url)
+        url_info = insert_request(
+                connection,
+                url,
+                allow_dupes=args.allow_dupes,
+                priority=float('Inf'),
+                flexible_url=True
+                )
 
 # close the connection
 connection.close()

@@ -2,14 +2,6 @@ CREATE EXTENSION btree_gist;
 CREATE EXTENSION btree_gin;
 CREATE EXTENSION tablefunc;
 CREATE EXTENSION pgstattuple;
-CREATE EXTENSION pgroonga;
-
-CREATE TABLE crawlable_hostnames (
-    hostname VARCHAR(253) PRIMARY KEY,
-    lang VARCHAR(2),
-    country VARCHAR(2),
-    priority TEXT
-);
 
 CREATE TABLE hostnames (
     id_hostnames SERIAL PRIMARY KEY,
@@ -19,6 +11,9 @@ CREATE TABLE hostnames (
     type VARCHAR(256),
     priority TEXT
 );
+CREATE INDEX hostnames_index_priority ON hostnames(priority);
+CREATE INDEX hostnames_index_country ON hostnames(country);
+CREATE INDEX hostnames_index_lang ON hostnames(lang);
 
 CREATE TABLE urls (
     id_urls BIGSERIAL PRIMARY KEY,
@@ -34,7 +29,17 @@ CREATE TABLE urls (
     UNIQUE(scheme,hostname,port,path,params,query,fragment,other)
 );
 
-CREATE INDEX urls_index_hostname_path ON urls(hostname,path);
+-- FIXME: The following index requires Postgres 12, but would be faster.
+--CREATE UNIQUE INDEX urls_index ON urls(scheme,hostname,port,path,params,query,fragment,other,id_urls) INCLUDE (id_urls);
+
+CREATE FUNCTION remove_www_from_hostname(hostname text)
+RETURNS text AS
+$$
+BEGIN
+    RETURN case when left(hostname,4) = 'www.' then substring(hostname,5) else hostname end;
+END;
+$$ LANGUAGE plpgsql;
+
 
 /*
  * These tables store metadata about which urls have been 
@@ -309,19 +314,6 @@ CREATE INDEX articles_index_hostname_tsvtitle_en2 ON articles USING GIN (hostnam
 CREATE INDEX articles_index_text_en ON articles USING GIN (to_tsvector('english',text)) WHERE lang='en';
 
 
-CREATE INDEX articles_index_pgroonga_title ON articles USING pgroonga(title);
-CREATE INDEX articles_index_pgroonga_text ON articles USING pgroonga(text);
-
---CREATE INDEX articles_index_pgroonga_title ON articles USING pgroonga(title)
---CREATE INDEX articles_index_pgroonga_title ON articles USING pgroonga(title)
---WITH (tokenizer='TokenNgram("unify_alphabet", false, "unify_digit", false, "unify_symbol", false)');
---CREATE INDEX articles_index_pgroonga_title ON articles USING pgroonga(title)
---WITH (tokenizer='TokenNgram("n",5,"unify_alphabet", false, "unify_digit", false, "unify_symbol", false)');
-
---CREATE INDEX articles_index_pgroonga_text5 ON articles USING pgroonga(text) WITH (tokenizer='TokenNgram("n",5)');
---CREATE INDEX articles_index_pgroonga_text2 ON articles USING pgroonga(left(text,4*1024*1024)); 
-
-
 CREATE FUNCTION get_valid_articles(_hostname TEXT)
 RETURNS TABLE 
     ( id_articles BIGINT
@@ -462,13 +454,6 @@ INSERT INTO languages (iso639_1, fullname) VALUES
     ('en','english');
 */
 
--- FIXME: what is this table for?
-CREATE TABLE articles_valid (
-    id_articles BIGINT,
-    PRIMARY KEY(id_articles),
-    FOREIGN KEY(id_articles) REFERENCES articles(id_articles)
-);
-
 CREATE TABLE keywords (
     id_keywords BIGSERIAL PRIMARY KEY,
     id_articles BIGINT, 
@@ -504,10 +489,6 @@ CREATE TABLE refs2 (
     target BIGINT,
     type VARCHAR(10),
     text VARCHAR(2048),
-);
-
-CREATE TABLE hostnames (
-    
 );
 */
 
@@ -643,3 +624,4 @@ CREATE TABLE politicians (
     UNIQUE (role,name_family,name_given),
     UNIQUE (id_hostnames)
 );
+

@@ -3,7 +3,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--db',default='postgres:///novichenkobot')
 parser.add_argument('--allow_dupes',action='store_true')
-parser.add_argument('--crawlable_hostnames_priority')
+parser.add_argument('--hostnames_priority')
 parser.add_argument('--inputs',required=True)
 args = parser.parse_args()
 
@@ -43,12 +43,12 @@ for file in files:
                     )
             hostname = url_info['hostname']
 
-            # populate the crawlable_hostnames table
-            if args.crawlable_hostnames_priority is not None:
+            # populate the hostnames table
+            if args.hostnames_priority is not None:
 
                 sql=sqlalchemy.sql.text('''
                 SELECT priority
-                FROM crawlable_hostnames
+                FROM hostnames
                 where hostname=:hostname
                 ''')
                 res = connection.execute(sql,{
@@ -57,7 +57,7 @@ for file in files:
 
                 if res is None or res['priority']!='high':
                     sql=sqlalchemy.sql.text('''
-                    INSERT INTO crawlable_hostnames
+                    INSERT INTO hostnames
                         (hostname,lang,country,priority)
                         VALUES
                         (:hostname,:lang,:country,:priority)
@@ -70,7 +70,7 @@ for file in files:
                         'hostname':hostname,
                         'lang':'',
                         'country':'',
-                        'priority':args.crawlable_hostnames_priority,
+                        'priority':args.hostnames_priority,
                         })
 
 # close the connection

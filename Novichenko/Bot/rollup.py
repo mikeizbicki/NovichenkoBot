@@ -19,7 +19,7 @@ import datetime
 # the sys import is needed so that we can import from the current project
 import sys
 sys.path.append('.')
-from NovichenkoBot.sqlalchemy_utils import get_url_info,insert_request
+from Novichenko.Bot.sqlalchemy_utils import get_url_info,insert_request
 
 # create database connection
 engine = sqlalchemy.create_engine(args.db)

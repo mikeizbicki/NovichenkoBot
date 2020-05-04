@@ -18,7 +18,10 @@ app = Flask(__name__)
 def before_request():
     g.start = time.time()
     db = 'postgres:///novichenkobot'
-    engine = sqlalchemy.create_engine(db)
+    engine = sqlalchemy.create_engine(db, connect_args={
+        'connect_timeout': 10,
+        'application_name': 'NovichenkoWeb',
+        })
     g.connection = engine.connect()
 
 
