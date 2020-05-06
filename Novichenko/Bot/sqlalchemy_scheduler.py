@@ -21,6 +21,7 @@ from scrapy.utils.job import job_dir
 from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError, TCPTimedOutError
+from collections import deque
 
 from Novichenko.Bot.sqlalchemy_utils import get_url_info, urlinfo2url, insert_request, reverse_hostname
 from timeit import default_timer as timer
@@ -119,12 +120,12 @@ class Scheduler(object):
             self.next_hostname=hostnames[next_index]
 
             # get the next row from the frontier
-            frontier_row=self.memqueue[current_hostname].pop()
+            frontier_row=self.memqueue[current_hostname].popleft()
             url=urlinfo2url(frontier_row)
             
             # if the pop leaves an entry of the memqueue empty,
             # delete the key so that a new entry can be populated
-            if self.memqueue[current_hostname]==[]:
+            if self.memqueue[current_hostname]==deque([]):
                 del self.memqueue[current_hostname]
 
             # define callback functions for generating a request
@@ -348,7 +349,7 @@ class Scheduler(object):
                 for row in [dict(row.items()) for row in res]:
                     hostname=row['hostname']
                     if row['id_urls'] not in self.memqueue_recent:
-                        self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
+                        self.memqueue[hostname]=self.memqueue.get(hostname,deque([]))+deque([row])
                     self.next_hostname=hostname
 
             # performing a normal crawl restricted to certain domains
@@ -381,7 +382,7 @@ class Scheduler(object):
                         hostname=row['hostname']
                         hostnames|={hostname}
                         if row['id_urls'] not in self.memqueue_recent:
-                            self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
+                            self.memqueue[hostname]=self.memqueue.get(hostname,deque([]))+deque([row])
                         self.next_hostname=hostname
                     logger.info(f'expanded memqueue; total hostnames={len(hostnames)}')
 
@@ -410,7 +411,7 @@ class Scheduler(object):
                         for row in [dict(row.items()) for row in res]:
                             hostname=row['hostname']
                             if row['id_urls'] not in self.memqueue_recent:
-                                self.memqueue[hostname]=self.memqueue.get(hostname,[])+[row]
+                                self.memqueue[hostname]=self.memqueue.get(hostname,deque([]))+deque([row])
                             self.next_hostname=hostname
 
             memqueue_values=[]
