@@ -3,9 +3,16 @@
 #set -e
 
 # run like a deamon
-trap '' HUP
-exec >> nohup/run_crawlers_2
-exec 2>&1
+if [ "$1" != 'daemon_mode' ]; then
+
+    # find and kill previous daemon
+    pids=$(ps -ef | grep 'run_crawlers_2.sh daemon_mode' | grep -v grep | cut -c9-15)
+    kill $pids > /dev/null 2>&1
+
+    # launch in daemon mode and exit non-daemon mode
+    nohup $0 'daemon_mode' >> log/run_crawlers_2 2>&1 &
+    exit
+fi
 
 # the main loop
 offset=0
@@ -16,7 +23,7 @@ while true; do
     #cat log/newest/pids | xargs kill
     #cat log/newest/pids | xargs kill
     sh run_crawlers.sh $offset
-    offset=$(( $offset + 300 ))
+    offset=$(( $offset + 150 ))
     echo $prev_pids | xargs kill > /dev/null 2>&1
     echo $prev_pids | xargs kill > /dev/null 2>&1
     sleep 20m
