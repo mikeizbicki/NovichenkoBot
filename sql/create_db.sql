@@ -213,6 +213,15 @@ CREATE VIEW responses_hostname AS
     ORDER BY hostname,twisted_status,http_status
     ;
 
+CREATE VIEW responses_recent_hostname AS
+    SELECT hostname,twisted_status,http_status,count(1) as num
+    FROM responses
+    WHERE NOT recycled_into_frontier
+        AND timestamp_received>(SELECT max(timestamp_received)-interval '1 hour' FROM responses)
+    GROUP BY hostname,twisted_status,http_status
+    ORDER BY hostname,twisted_status,http_status
+    ;
+
 CREATE VIEW responses_recent_status AS
     SELECT twisted_status,http_status,count(1) as num
     FROM responses
