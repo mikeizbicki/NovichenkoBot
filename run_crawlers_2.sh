@@ -8,7 +8,7 @@ if [ "$1" != 'daemon_mode' ]; then
     kill $pids > /dev/null 2>&1 || true
 
     # launch in daemon mode and exit non-daemon mode
-    nohup $0 'daemon_mode' >> log/run_crawlers_2 2>&1 &
+    nohup setsid $0 'daemon_mode' >> log/run_crawlers_2 2>&1 &
     exit
 fi
 

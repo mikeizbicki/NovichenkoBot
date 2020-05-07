@@ -14,7 +14,8 @@ export PATH=/home/mizbicki/.local/bin:/home/mizbicki/.local/bin:/home/mizbicki/.
 
 db=novichenkobot
 db_rfc=postgres:///$db
-num_jobs=100
+num_jobs=150
+hostnames_per_job=3
 
 ########################################
 # create log directories
@@ -35,8 +36,8 @@ ln -sfn "$(pwd)/$log" log/newest
 # kill all currently running crawls
 ########################################
 
-(ps -ef | grep scrapy | cut -c9-15 | xargs kill 2>/dev/null) || true
-(ps -ef | grep scrapy | cut -c9-15 | xargs kill 2>/dev/null) || true
+#(ps -ef | grep scrapy | cut -c9-15 | xargs kill 2>/dev/null) || true
+#(ps -ef | grep scrapy | cut -c9-15 | xargs kill 2>/dev/null) || true
 
 ########################################
 # launch the high priority crawls
@@ -44,7 +45,6 @@ ln -sfn "$(pwd)/$log" log/newest
 
 res=$(psql $db -c "select hostname from hostnames where priority='high' order by hostname;")
 hostnames_high=$(echo "$res" | tail -n +4 | head -n -3)
-
 for hostname in $hostnames_high; do
     echo "high priority crawl: $hostname"
     nohup nice -n -10 scrapy crawl general -s HOSTNAME_RESTRICTIONS=$hostname -s MEMQUEUE_LIMIT=200 -a db=$db_rfc > $log/general-$hostname 2>&1 &
@@ -66,53 +66,41 @@ done
 ########################################
 
 # NOTE: started focusing on new languages when max(id_frontier)=618645536
-#res=$(psql $db -c "
-#SELECT hostname
-#FROM (
-    #SELECT hostname, count(*) as count
-    #FROM (
-        #SELECT remove_www_from_hostname(substring(reverse(hostname_reversed) from 2)) as hostname,priority
-        #FROM frontier
-        #WHERE 
-            #timestamp_processed is null
-            #and substring(reverse(hostname_reversed) from 2) not in (
-                #SELECT hostname FROM hostnames WHERE priority in ('ban','high')
-            #)
-            #and not reverse(hostname_reversed) like any (array[
-                #'.m.%',
-                #'.mobile.%',
-                #'.amp.%',
-                #'.www.m.%',
-                #'.www.mobile.%',
-                #'.www.amp.%',
-                #'%.pinterest.%',
-                #'%.facebook.com',
-                #'%.wikipedia.%'
-                #])
-        #ORDER BY priority DESC
-        #LIMIT 10000
-    #)t
-    #WHERE NOT hostname LIKE '% %'
-      #AND NOT hostname LIKE '%\\%%'
-    #GROUP BY hostname
-    #--ORDER BY hostname DESC,priority DESC
-#)t
-#ORDER BY count DESC, random()
-#limit $(($num_jobs * 3))
-#;
-#")
 res=$(psql $db -c "
-SELECT hostname FROM hostnames WHERE priority in ('dprk_kimdying..2020-05-01..2020-05-03')
-ORDER BY hostname
-OFFSET $1
-limit $(($num_jobs * 3))
+SELECT hostname
+--SELECT hostname, priority, count
+FROM (
+    SELECT hostname, max(priority) as priority, count(*) as count
+    FROM (
+        SELECT remove_www_from_hostname(substring(reverse(hostname_reversed) from 2)) as hostname,priority
+        FROM frontier
+        WHERE 
+            timestamp_processed is null
+            and substring(reverse(hostname_reversed) from 2) not in (
+                SELECT hostname FROM hostnames WHERE priority in ('ban','high')
+            )
+            and not reverse(hostname_reversed) like any (array[
+                '.m.%',
+                '.mobile.%',
+                '.amp.%',
+                '.www.m.%',
+                '.www.mobile.%',
+                '.www.amp.%',
+                '%.pinterest.%',
+                '%.facebook.com',
+                '%.wikipedia.%'
+                ])
+            --AND priority = float 'infinity'
+        ORDER BY priority DESC
+        LIMIT 50000
+    )t
+    WHERE hostname ~ '^[a-zA-Z0-9\-\.]+$'
+    GROUP BY hostname
+)t
+ORDER BY priority DESC, count DESC, random()
+limit $(($num_jobs * $hostnames_per_job))
+;
 ")
-#res=$(psql $db -c "
-#SELECT hostname FROM hostnames WHERE priority like any (array['dprk_politburo.%' , 'dprk_kimdying.%', 'dprk_kimfamily.%'])
-#ORDER BY hostname
-#OFFSET $1
-#limit $(($num_jobs * 3))
-#")
 
 # log the hostnames 
 hostnames_low=$(echo "$res" | tail -n +4 | head -n -3)
