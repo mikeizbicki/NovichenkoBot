@@ -2,8 +2,10 @@
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--db',default='postgres:///novichenkobot')
-parser.add_argument('--id_articles0',type=int)
-parser.add_argument('--articles_per_iteration',type=int,default=512)
+parser.add_argument('--source',required=True)
+parser.add_argument('--id0',type=int, default=0)
+parser.add_argument('--texts_per_iteration',type=int,default=256)
+parser.add_argument('--max_length',type=int,default=None)
 args = parser.parse_args()
 
 # imports
@@ -22,6 +24,29 @@ engine = sqlalchemy.create_engine(args.db, connect_args={
     'application_name': 'Novichenko.Analyze.Bert',
     })
 connection = engine.connect()
+
+# get id_source;
+# we do this before the other initialization code below because that code can take a while to run,
+# and the checks here can give us more immediate feedback on whether the input parameters are acceptable
+table_schema = args.source.split('.')[0]
+table_name = args.source.split('.')[1]
+column_name = args.source.split('.')[2]
+sql=sqlalchemy.sql.text('''
+    SELECT id_sources
+    FROM embeddings.sources
+    WHERE table_schema=:table_schema 
+      AND table_name=:table_name 
+      AND column_name=:column_name
+    ''')
+res = connection.execute(sql,{
+    'table_schema':table_schema,
+    'table_name':table_name,
+    'column_name':column_name,
+    })
+try:
+    id_sources = res.first()['id_sources']
+except TypeError:
+    raise ValueError(f'--source={args.source} not contained in embeddings.sources table')
 
 # disable warnings
 import warnings
@@ -55,61 +80,70 @@ bert = transformers.BertModel.from_pretrained(model_name).cuda()
 # the main worker loop
 import itertools
 for iteration in itertools.count(0):
-    print(datetime.datetime.now(),'articles=',iteration*args.articles_per_iteration)
+    if iteration%100==0 or iteration<100:
+        print(datetime.datetime.now(),'texts=',iteration*args.texts_per_iteration)
 
-    # get the next unlabeled article raw data from the db
-    sql=sqlalchemy.sql.text('''
-    SELECT articles.id_articles,title 
-    FROM articles
-    LEFT JOIN articles_title_bert ON articles.id_articles = articles_title_bert.id_articles
-    WHERE articles_title_bert.id_articles is null
-      AND articles.pub_time is not null
-      AND articles.id_articles > :id_articles0
+    # get the next unlabeled text raw data from the db
+    sql=sqlalchemy.sql.text(f'''
+    SELECT {table_name}.id_{table_name},{column_name} 
+    FROM {table_schema}.{table_name}
+    LEFT JOIN embeddings.bert ON {table_name}.id_{table_name} = embeddings.bert.id AND embeddings.bert.id_sources = {id_sources}
+    WHERE embeddings.bert.id is null
+      AND {table_name}.id_{table_name} > :id0
     LIMIT :limit
     ''')
     res = connection.execute(sql,{
         'offset':0,
-        'id_articles0':args.id_articles0,
-        'limit':args.articles_per_iteration
+        'id0':args.id0,
+        'limit':args.texts_per_iteration
         })
     rows = [ dict(row) for row in res ]
+
+    ids = [ row['id_'+table_name] for row in rows ]
+    texts = [ row[column_name] for row in rows ]
 
     # exit if no rows remaining
     if len(rows)==0:
         sys.exit(0)
 
-    # generate the encoding tensors tha will be input into bert
-    maxlen = max([ len(row['title']) for row in rows ])
-    for row in rows:
-        row['encoding'] = tokenizer.encode_plus(
-            row['title'],
-            add_special_tokens = True,
-            max_length = maxlen,
-            pad_to_max_length = True,
-            return_attention_mask = True,
-            return_tensors = 'pt',
-            )
-        row['encoding']['input_ids'].cuda()
-        row['encoding']['attention_mask'].cuda()
-    input_ids = torch.cat([ row['encoding']['input_ids'] for row in rows ],dim=0).cuda()
-    attention_mask = torch.cat([ row['encoding']['attention_mask'] for row in rows ],dim=0).cuda()
-
-    # apply bert to generate the embedding
+    # apply bert to generate the embeddings
     with torch.no_grad():
-        res = bert(input_ids, attention_mask)
-        last_layer,embedding = res
+
+        # first generate the encoding in two attempts;
+        # the first attempt uses an arbitrary length max_length value,
+        # which will make BERT much faster on short texts;
+        # if this results in an encoding that is too long, however,
+        # then we must resort to specifying the max_length
+        encodings = tokenizer.batch_encode_plus(
+            texts,
+            max_length = args.max_length,
+            pad_to_max_length = True,
+            return_tensors = 'pt'
+            )
+        if encodings['input_ids'].shape[1]>512:
+            encodings = tokenizer.batch_encode_plus(
+                texts,
+                max_length = 512,
+                pad_to_max_length = True,
+                return_tensors = 'pt'
+                )
+
+        # convert the encoding into an embedding with BERT
+        res = bert(encodings['input_ids'].cuda())
+        last_layer,_ = res
         embedding = torch.mean(last_layer,dim=1)
         embedding = torch.einsum('ab,bc->ac',embedding,projection) 
 
     # store the embeddings in the db
     with connection.begin() as trans:
-        for i,row in enumerate(rows):
+        for i,id in enumerate(ids):
             sql=sqlalchemy.sql.text('''
-            INSERT INTO articles_title_bert (id_articles,embedding) 
-            VALUES (:id_articles,cube(:embedding))
+            INSERT INTO embeddings.bert (id_sources,id,embedding) 
+            VALUES (:id_sources,:id,cube(:embedding))
             ON CONFLICT DO NOTHING;
             ''')
             res = connection.execute(sql,{
-                'id_articles':row['id_articles'],
+                'id':id,
+                'id_sources':id_sources,
                 'embedding':list(embedding[i,:].tolist())
                 })
