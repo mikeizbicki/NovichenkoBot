@@ -48,25 +48,40 @@ $$ LANGUAGE plpgsql;
  * Novichenko.Seed
  */
 
-/* FIXME:
-CREATE TABLE queries (
+/*
+CREATE TABLE vocab (
     id_queries SERIAL PRIMARY KEY,
-    query TEXT NOT NULL,
+    vocab TEXT NOT NULL,
     lang VARCHAR(2) NOT NULL,
     dialect TEXT,
-    english_translation TEXT NOT NULL,
-    translation_verified BOOL DEFAULT FALSE NOT NULL,
-    UNIQUE(word,lang,dialect)
+    source_vocab TEXT,
+    source_lang TEXT,
+    source_dialect TEXT,
+    translator TEXT,
+    UNIQUE(query,lang,dialect)
 );
 
 CREATE TABLE topic (
-    topic TEXT,
-    subtopic TEXT,
-    words TEXT
+    id_topic SERIAL PRIMARY KEY,
+    topic TEXT NOT NULL
 );
 
-CREATE TABLE seeds (
-    id_urls BIGINT
+CREATE TABLE topic_hierarchy (
+    id_topic INTEGER NOT NULL,
+    id_topic_subtopic INTEGER NOT NULL,
+    weight FLOAT DEFAULT 1.0 NOT NULL,
+    PRIMARY KEY (id_topic,id_topic_subtopic),
+    FOREIGN KEY (id_topic) REFERENCES topic(id_topic) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (id_topic_subtopic) REFERENCES topic(id_topic) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE topic_vocab (
+    id_topic INTEGER NOT NULL,
+    source_vocab TEXT NOT NULL,
+    source_lang TEXT NOT NULL,
+    source_dialect TEXT NOT NULL,
+    FOREIGN KEY (id_topic) REFERENCES topic(id_topic) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (source_vocab,source_lang,source_dialect) REFERENCES vocab(source_vocab,source_lang,source_dialect);
 );
 */
 
@@ -221,6 +236,43 @@ CREATE VIEW responses_recent_hostname AS
     GROUP BY hostname,twisted_status,http_status
     ORDER BY hostname,twisted_status,http_status
     ;
+
+WITH tmp AS (
+    SELECT hostname,twisted_status,CAST(http_status as INTEGER),count(1) as num
+    FROM responses
+    WHERE NOT recycled_into_frontier
+        AND timestamp_received>(SELECT max(timestamp_received)-interval '1 hour' FROM responses)
+    GROUP BY hostname,twisted_status,http_status
+    ORDER BY hostname,twisted_status,http_status
+)
+SELECT 
+    t2.hostname, 
+    COALESCE(_2xx,0) as Success_2xx, 
+    COALESCE(_3xx,0) as Success_3xx,
+    COALESCE(_4xx,0) as Success_4xx,
+    COALESCE(Success_other,0) as Success_other,
+    COALESCE(Failure_TCPTimedOutError,0) as Failure_TCPTimedOutError,
+    COALESCE(Failure_Other,0) as Failure_Other
+FROM (
+    SELECT hostname, sum(num) as _2xx FROM tmp WHERE http_status >= 200 AND http_status < 300 GROUP BY hostname
+    ) t2
+LEFT OUTER JOIN (
+    SELECT hostname, sum(num) as _3xx FROM tmp WHERE http_status >= 300 AND http_status < 400 GROUP BY hostname
+    ) t3 ON t3.hostname = t2.hostname
+LEFT OUTER JOIN (
+    SELECT hostname, sum(num) as _4xx FROM tmp WHERE http_status >= 400 AND http_status < 500 GROUP BY hostname
+    ) t4 ON t4.hostname = t2.hostname
+LEFT OUTER JOIN (
+    SELECT hostname, sum(num) as Success_other FROM tmp WHERE http_status >= 500 OR http_status < 200 GROUP BY hostname
+    ) t5 ON t5.hostname = t2.hostname
+LEFT OUTER JOIN (
+    SELECT hostname, sum(num) as Failure_TCPTimedOutError FROM tmp WHERE twisted_status='TCPTimedOutError' GROUP BY hostname
+    ) t6 ON t6.hostname = t2.hostname
+LEFT OUTER JOIN (
+    SELECT hostname, sum(num) as Failure_other FROM tmp WHERE twisted_status!='TCPTimedOutError' GROUP BY hostname
+    ) t7 ON t7.hostname = t2.hostname
+ORDER BY Failure_TCPTimedOutError DESC
+;    
 
 CREATE VIEW responses_recent_status AS
     SELECT twisted_status,http_status,count(1) as num

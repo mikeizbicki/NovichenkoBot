@@ -51,6 +51,15 @@ SELECT
 FROM pg_stat_statements;
 
 /*
+ * Calculate the disk usage of a schema
+ */
+CREATE OR REPLACE FUNCTION pg_schema_size(text) RETURNS BIGINT AS $$
+SELECT SUM(pg_total_relation_size(quote_ident(schemaname) || '.' || quote_ident(tablename)))::BIGINT FROM pg_tables WHERE schemaname = $1
+$$ LANGUAGE SQL;
+
+SELECT pg_size_pretty(pg_schema_size('twitter'));
+
+/*
  * Calculate the disk usage of each table
  */
 SELECT
