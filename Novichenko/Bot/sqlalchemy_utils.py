@@ -28,10 +28,14 @@ def parse_url(url):
     if hostname is None:
         hostname=''
 
-    # don't store port numbers if its the default port
-    port=url_parsed.port
+    # store port numbers as -1 if its the default port for a scheme
+    # we must wrap this in a try/except block in case post numbers are out of range
+    try:
+        port = url_parsed.port
+    except ValueError:
+        port = None
     if port is None:
-        port=-1
+        port = -1
 
     return {
         'scheme':url_parsed.scheme,

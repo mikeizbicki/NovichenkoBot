@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--db',default='postgres:///novichenkobot')
 parser.add_argument('--inputs',nargs='+',required=True)
 parser.add_argument('--min_id',default=-1,type=int)
-parser.add_argument('--print_every',type=int,default=1000)
+parser.add_argument('--print_every',type=int,default=100)
 args = parser.parse_args()
 
 # imports
@@ -52,6 +52,19 @@ def insert_tweet(connection,tweet):
         connection: a sqlalchemy connection to the postgresql db
         tweet: a dictionary representing the json tweet object
     '''
+    # skip tweet if already inserted
+    sql=sqlalchemy.sql.text('''
+    SELECT id_tweets 
+    FROM twitter.tweets
+    WHERE id_tweets = :id_tweets
+        ''')
+    res = connection.execute(sql,{
+        'id_tweets':tweet['id'],
+        })
+    if res.first() is not None:
+        return
+
+    # insert tweet
     with connection.begin() as trans:
 
         ########################################
@@ -169,9 +182,9 @@ def insert_tweet(connection,tweet):
         # insert the tweet
         sql=sqlalchemy.sql.text(f'''
         INSERT INTO twitter.tweets
-            (id_tweets,id_users,created_at,in_reply_to_status_id,in_reply_to_user_id,quoted_status_id,geo,retweet_count,quote_count,favorite_count,withheld_copyright,withheld_in_countries,place_name,country_code,state_code,text,source)
+            (id_tweets,id_users,created_at,in_reply_to_status_id,in_reply_to_user_id,quoted_status_id,geo,retweet_count,quote_count,favorite_count,withheld_copyright,withheld_in_countries,place_name,country_code,state_code,lang,text,source)
             VALUES
-            (:id_tweets,:id_users,:created_at,:in_reply_to_status_id,:in_reply_to_user_id,:quoted_status_id,ST_GeomFromText(:geo_str || '(' || :geo_coords || ')'),:retweet_count,:quote_count,:favorite_count,:withheld_copyright,:withheld_in_countries,:place_name,:country_code,:state_code,:text,:source)
+            (:id_tweets,:id_users,:created_at,:in_reply_to_status_id,:in_reply_to_user_id,:quoted_status_id,ST_GeomFromText(:geo_str || '(' || :geo_coords || ')'),:retweet_count,:quote_count,:favorite_count,:withheld_copyright,:withheld_in_countries,:place_name,:country_code,:state_code,:lang,:text,:source)
         ON CONFLICT DO NOTHING;
             ''')
         res = connection.execute(sql,{
@@ -191,8 +204,9 @@ def insert_tweet(connection,tweet):
             'place_name':place_name,
             'country_code':country_code,
             'state_code':state_code,
+            'lang':tweet.get('lang'),
             'text':remove_nulls(text),
-            'source':tweet.get('source',None),
+            'source':remove_nulls(tweet.get('source',None)),
             })
 
         ########################################
@@ -240,8 +254,8 @@ def insert_tweet(connection,tweet):
                 ''')
             res = connection.execute(sql,{
                 'id_users':mention['id'],
-                'name':mention['name'],
-                'screen_name':mention['screen_name'],
+                'name':remove_nulls(mention['name']),
+                'screen_name':remove_nulls(mention['screen_name']),
                 })
 
             sql=sqlalchemy.sql.text('''
@@ -277,7 +291,7 @@ def insert_tweet(connection,tweet):
                 ''')
             res = connection.execute(sql,{
                 'id_tweets':tweet['id'],
-                'tag':tag
+                'tag':remove_nulls(tag)
                 })
 
         ########################################
@@ -307,17 +321,35 @@ def insert_tweet(connection,tweet):
                 })
 
 # loop through file
-for filename in args.inputs:
+# NOTE:
+# we reverse sort the filenames because this results in fewer updates to the users table,
+# which prevents excessive dead tuples and autovacuums
+for filename in sorted(args.inputs, reverse=True):
     with zipfile.ZipFile(filename, 'r') as archive: 
-        with connection.begin() as trans:
+        #with connection.begin() as trans:
             print(datetime.datetime.now(),filename)
-            for subfilename in archive.namelist():
+            for subfilename in sorted(archive.namelist(), reverse=True):
                 with io.TextIOWrapper(archive.open(subfilename)) as f:
+                    tweets_list = []
                     for i,line in enumerate(f):
                         tweet = json.loads(line)
+
+                        # print message
+                        #tweets_list.append(tweet)
                         if i%args.print_every==0:
                             print(datetime.datetime.now(),filename,subfilename,'i=',i,'id=',tweet['id'])
-                        #print(datetime.datetime.now(),filename,subfilename,'id=',tweet['id'])
+                            #with connection.begin() as trans:
+                                #for tweet in tweets_list:
+                                    #insert_tweet(connection,tweet)
+                            #tweets_list = []
+                        insert_tweet(connection,tweet)
+
+                        """
+
+                        # skip tweets before threshold
                         if tweet['id']<args.min_id:
                             continue
+
+                        # insert tweets
                         insert_tweet(connection,tweet)
+                        """

@@ -42,6 +42,7 @@ CREATE TABLE twitter.tweets (
     text TEXT,
     country_code VARCHAR(2),
     state_code VARCHAR(2),
+    lang TEXT,
     place_name TEXT,
     geo geometry,
     FOREIGN KEY (id_users) REFERENCES twitter.users(id_users),
@@ -54,7 +55,7 @@ CREATE TABLE twitter.tweets (
     -- FOREIGN KEY (quoted_status_id) REFERENCES twitter.tweets(id_tweets)
 );
 COMMENT ON TABLE twitter.tweets IS 'Tweets may be entered in hydrated or unhydrated form.';
-CREATE INDEX tweets_index_pgroonga ON twitter.tweets USING pgroonga(text);
+--CREATE INDEX tweets_index_pgroonga ON twitter.tweets USING pgroonga(text);
 CREATE INDEX tweets_index_geo ON twitter.tweets USING gist(geo);
 CREATE INDEX tweets_index_withheldincountries ON twitter.tweets USING gin(withheld_in_countries);
 
@@ -98,6 +99,8 @@ CREATE UNIQUE INDEX tweet_media_unique ON twitter.tweet_media(id_tweets,id_urls)
 
 
 /*
+ * FIXME: should we add these tables?
+ *
 CREATE TABLE twitter.datasets (
     id_datasets SERIAL PRIMARY KEY,
     name TEXT
@@ -113,39 +116,32 @@ CREATE TABLE twitter.datasets (
 );
 */
 
-'''
-CREATE LANGUAGE plpython3u;
-CREATE OR REPLACE FUNCTION urlparse (url TEXT)
-  RETURNS TEXT[]
-AS $$
-    # normalizing the url converts all domain characters
-    # into lower case and ensures non-alphanumeric characters
-    # are properly formatted
-    from urllib.parse import urlparse,urlunparse
-    from url_normalize import url_normalize
-    try:
-        url_parsed=urlparse(url_normalize(url))
-    except:
-        url_parsed=urlparse(url)
+/*
+ * Precomputes the total number of occurrences for each hashtag
+ */
+CREATE MATERIALIZED VIEW twitter.tweet_tags_total AS (
+    SELECT 
+        row_number() over (order by count(*) desc) AS row,
+        tag, 
+        count(*) AS total
+    FROM twitter.tweet_tags
+    GROUP BY tag
+    ORDER BY total DESC
+);
 
-    # remove trailing slash from url if present
-    path=url_parsed.path
-    if len(path)>0 and path[-1]=='/':
-        path=path[:-1]
-
-    # this check is necessary for when url=''
-    hostname=url_parsed.hostname
-    if hostname is None:
-        hostname=''
-
-    # dont store port numbers if its the default port
-    port=url_parsed.port
-    if port is None:
-        port=-1
-
-    return [url_parsed.scheme, hostname, port, url_parsed.path, url_parsed.params, url_parsed.query, url_parsed.fragment,'']
-$$ LANGUAGE plpython3u;
-'''
+/*
+ * Precomputes the number of hashtags that co-occur with each other
+ */
+CREATE MATERIALIZED VIEW twitter.tweet_tags_cooccurrence AS (
+    SELECT 
+        t1.tag AS tag1,
+        t2.tag AS tag2,
+        count(*) AS total
+    FROM twitter.tweet_tags t1
+    INNER JOIN twitter.tweet_tags t2 ON t1.id_tweets = t2.id_tweets
+    GROUP BY t1.tag, t2.tag
+    ORDER BY total DESC
+);
 
 /*
  * Calculates the hashtags that are commonly used with another hashtag
@@ -154,6 +150,59 @@ SELECT t1.tag,count(*) as count
 FROM twitter.tweet_tags t1
 INNER JOIN twitter.tweet_tags t2 ON t1.id_tweets = t2.id_tweets
 WHERE
-    t2.tag='#corona'
+    t2.tag='#coronavirus'
 GROUP BY t1.tag
 ORDER BY count DESC;
+
+/*
+ * Calculates how commonly a hashtag is used in each country.
+ */
+SELECT 
+    country_code,
+    count(*) as count
+FROM twitter.tweet_tags
+INNER JOIN twitter.tweets ON tweet_tags.id_tweets = tweets.id_tweets
+WHERE
+    tag = '#coronavirus'
+GROUP BY country_code
+ORDER BY count DESC;
+
+/*
+ * Calculates how commonly a hashtag is used in each US state.
+ */
+SELECT 
+    state_code,
+    count(*) as count
+FROM twitter.tweet_tags
+INNER JOIN twitter.tweets ON tweet_tags.id_tweets = tweets.id_tweets
+WHERE
+    country_code = 'us' AND
+    tag = '#coronavirus'
+GROUP BY country_code
+ORDER BY count DESC;
+
+/*
+ * Calculates how commonly a hashtag is used each day.
+ */
+SELECT
+    date_trunc('day',created_at) as day,
+    count(*) as count
+FROM twitter.tweet_tags
+INNER JOIN twitter.tweets ON tweet_tags.id_tweets = tweets.id_tweets
+WHERE
+    tag = '#coronavirus'
+GROUP BY day
+ORDER BY day DESC;
+
+/*
+ * Selects the text of tweets that are written in english and contain a particular hashtag
+ */
+SELECT
+    tweets.id_tweets,
+    text
+FROM twitter.tweet_tags
+INNER JOIN twitter.tweets ON tweet_tags.id_tweets = tweets.id_tweets
+WHERE
+    lang='en' AND
+    tag = '#coronavirus' 
+LIMIT 100;
