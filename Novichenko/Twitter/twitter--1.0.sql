@@ -75,7 +75,7 @@ CREATE TABLE twitter.tweet_mentions (
     FOREIGN KEY (id_tweets) REFERENCES twitter.tweets(id_tweets),
     FOREIGN KEY (id_users) REFERENCES twitter.users(id_users)
 );
---CREATE INDEX tweet_mentions_index ON twitter.tweet_mentions(id_users);
+CREATE INDEX tweet_mentions_index ON twitter.tweet_mentions(id_users);
 CREATE UNIQUE INDEX tweet_mentions_unique ON twitter.tweet_mentions(id_users,id_tweets);
 
 CREATE TABLE twitter.tweet_tags (
@@ -86,6 +86,20 @@ CREATE TABLE twitter.tweet_tags (
 COMMENT ON TABLE twitter.tweet_tags IS 'This table links both hashtags and cashtags';
 CREATE INDEX tweet_tags_index ON twitter.tweet_tags(id_tweets);
 CREATE UNIQUE INDEX tweet_tags_unique ON twitter.tweet_tags(tag,id_tweets);
+--CREATE INDEX tweet_tags_unique2 ON twitter.tweet_tags(lower(tag),id_tweets);
+
+/*
+CREATE TABLE twitter.tweet_tags2 (
+    id_tweets BIGINT,
+    tag TEXT,
+    FOREIGN KEY (id_tweets) REFERENCES twitter.tweets(id_tweets)
+);
+COMMENT ON TABLE twitter.tweet_tags2 IS 'This table links both hashtags and cashtags';
+CREATE INDEX tweet_tags2_index ON twitter.tweet_tags2(id_tweets);
+--CREATE INDEX tweet_tags2_index2 ON twitter.tweet_tags2(tag);
+--CREATE INDEX tweet_tags2_index3 ON twitter.tweet_tags2(lower(tag));
+CREATE UNIQUE INDEX tweet_tags2_unique ON twitter.tweet_tags2(tag,id_tweets);
+*/
 
 CREATE TABLE twitter.tweet_media (
     id_tweets BIGINT,
@@ -96,7 +110,6 @@ CREATE TABLE twitter.tweet_media (
     FOREIGN KEY (id_tweets) REFERENCES twitter.tweets(id_tweets)
 );
 CREATE UNIQUE INDEX tweet_media_unique ON twitter.tweet_media(id_tweets,id_urls);
-
 
 /*
  * FIXME: should we add these tables?
@@ -131,7 +144,7 @@ CREATE MATERIALIZED VIEW twitter.tweet_tags_total AS (
 
 /*
  * Precomputes the number of hashtags that co-occur with each other
- */
+ *
 CREATE MATERIALIZED VIEW twitter.tweet_tags_cooccurrence AS (
     SELECT 
         t1.tag AS tag1,
@@ -142,17 +155,43 @@ CREATE MATERIALIZED VIEW twitter.tweet_tags_cooccurrence AS (
     GROUP BY t1.tag, t2.tag
     ORDER BY total DESC
 );
+*/
 
 /*
  * Calculates the hashtags that are commonly used with another hashtag
  */
-SELECT t1.tag,count(*) as count
+SELECT lower(t1.tag) as tag,count(*) as count
 FROM twitter.tweet_tags t1
 INNER JOIN twitter.tweet_tags t2 ON t1.id_tweets = t2.id_tweets
 WHERE
-    t2.tag='#coronavirus'
-GROUP BY t1.tag
+    lower(t2.tag)='#coronavirus'
+GROUP BY (1)
 ORDER BY count DESC;
+
+/*
+ * Like the above query, 
+ * but also returns the total number of times each hashtag is used
+ */
+SELECT t1.tag, shared_count, total_count
+FROM (
+    SELECT lower(t1.tag) as tag,count(*) as shared_count
+    FROM twitter.tweet_tags t1
+    INNER JOIN twitter.tweet_tags t2 ON t1.id_tweets = t2.id_tweets
+    WHERE
+        lower(t2.tag)='#coronavirus'
+    GROUP BY (1)
+    ORDER BY shared_count DESC
+    LIMIT 100
+) t1
+INNER JOIN (
+    SELECT 
+        lower(tag) as tag,
+        count(*) as total_count
+        FROM twitter.tweet_tags
+        GROUP BY (1)
+    ) t3 ON t1.tag = t3.tag
+ORDER BY shared_count DESC
+;
 
 /*
  * Calculates how commonly a hashtag is used in each country.
@@ -178,7 +217,7 @@ INNER JOIN twitter.tweets ON tweet_tags.id_tweets = tweets.id_tweets
 WHERE
     country_code = 'us' AND
     tag = '#coronavirus'
-GROUP BY country_code
+GROUP BY country_code, state_code
 ORDER BY count DESC;
 
 /*
@@ -206,3 +245,63 @@ WHERE
     lang='en' AND
     tag = '#coronavirus' 
 LIMIT 100;
+
+/*
+ * Emoji tables are not provided by the twitter API but calculated within python
+ */
+CREATE TABLE twitter.tweet_emoji (
+    id_tweets BIGINT,
+    id_emoji INTEGER NOT NULL,
+    num SMALLINT NOT NULL,
+    FOREIGN KEY (id_tweets) REFERENCES twitter.tweets(id_tweets),
+    FOREIGN KEY (id_emoji) REFERENCES twitter.emoji(id_emoji)
+);
+CREATE INDEX tweet_emoji_index ON twitter.tweet_emoji(id_emoji);
+CREATE UNIQUE INDEX tweet_emoji_unique ON twitter.tweet_emoji(id_emoji,id_tweets);
+
+CREATE TABLE twitter.emoji (
+    id_emoji SERIAL PRIMARY KEY,
+    emoji TEXT NOT NULL,
+    name TEXT NOT NULL
+);
+CREATE UNIQUE INDEX emoji_unique1 ON twitter.emoji(id_emoji);
+CREATE UNIQUE INDEX emoji_unique2 ON twitter.emoji(emoji);
+
+/*
+ * Sentiment is calculated according to the nvidia-sentiment library
+ */
+CREATE TABLE twitter.tweet_sentiment (
+    id_tweets BIGINT PRIMARY KEY,
+    anger REAL NOT NULL,
+    anticipation REAL NOT NULL,
+    disgust REAL NOT NULL,
+    fear REAL NOT NULL,
+    joy REAL NOT NULL,
+    sadness REAL NOT NULL,
+    surprise REAL NOT NULL,
+    trust REAL NOT NULL,
+    model TEXT NOT NULL,
+    FOREIGN KEY (id_tweets) REFERENCES twitter.tweets(id_tweets)
+);
+
+/*
+ * Stefanos:
+ * 1. Use the SELECT query below to get the next set of tweets
+ * 2. Use the function you created to get the sentiment of these tweets
+ * 3. Use the INSERT query below to insert them into the database
+ */
+SELECT
+    tweets.id_tweets,
+    text
+FROM twitter.tweet_tags
+INNER JOIN twitter.tweets ON tweet_tags.id_tweets = tweets.id_tweets
+WHERE
+    tweets.id_tweets NOT IN (SELECT id_tweets FROM twitter.tweet_sentiment) AND
+    lang='en' AND
+    tag = '#coronavirus' 
+LIMIT 100;
+
+INSERT INTO twitter.tweet_sentiment
+    (id_tweets,anger,anticipation,disgust,fear,joy,sadness,surprise,trust,model)
+    VALUES
+    (1225192375816982528,0,0,0,0,0,0,0,0,'example');

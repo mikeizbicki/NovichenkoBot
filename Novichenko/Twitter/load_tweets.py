@@ -6,7 +6,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--db',default='postgres:///novichenkobot')
 parser.add_argument('--inputs',nargs='+',required=True)
 parser.add_argument('--min_id',default=-1,type=int)
-parser.add_argument('--print_every',type=int,default=100)
+parser.add_argument('--print_every',type=int,default=1000)
+parser.add_argument('--emoji_only',action='store_true')
 args = parser.parse_args()
 
 # imports
@@ -17,6 +18,13 @@ import zipfile
 import io
 import simplejson as json
 import reverse_geocoder as rg
+
+# load the demoji library and download the latest list of emoji from the Unicode standards;
+# since all processed tweets are created before the current time,
+# this guarantees that we can find all emojis within all tweets,
+# even very new ones
+import demoji
+demoji.download_codes()
 
 # the sys import is needed so that we can import from the current project
 import sys
@@ -73,8 +81,7 @@ def insert_tweet(connection,tweet):
         else:
             tweet_user_url = get_url_info(connection,tweet['user']['url'])
 
-
-        # FIXME: ON CONFLICT should update the user if this is from a more recent tweet
+        # create/update the user
         sql=sqlalchemy.sql.text('''
         INSERT INTO twitter.users
             (id_users,created_at,updated_at,screen_name,name,location,id_urls,hostname,description,protected,verified,friends_count,listed_count,favourites_count,statuses_count,withheld_in_countries)
@@ -320,6 +327,51 @@ def insert_tweet(connection,tweet):
                 'type':medium['type']
                 })
 
+
+def insert_emoji(connection, tweet):
+    '''
+    this is a separate function from insert_tweet only for historical reasons
+    '''
+    text = tweet['text']
+    emojis = demoji.findall(text)
+
+    with connection.begin() as trans:
+        for emoji,name in emojis.items():
+
+            sql=sqlalchemy.sql.text('''
+            INSERT INTO twitter.emoji
+                (emoji,name)
+                VALUES
+                (:emoji,:name)
+            ON CONFLICT DO NOTHING
+                ''')
+            res = connection.execute(sql,{
+                'emoji':emoji,
+                'name':name
+                })
+
+            sql=sqlalchemy.sql.text('''
+            SELECT id_emoji FROM twitter.emoji WHERE emoji=:emoji
+                ''')
+            id_emoji = connection.execute(sql,{
+                'emoji':emoji,
+                }).first()['id_emoji']
+
+            sql=sqlalchemy.sql.text('''
+            INSERT INTO twitter.tweet_emoji
+                (id_tweets,id_emoji,num)
+                VALUES
+                (:id_tweets,:id_emoji,:num)
+            ON CONFLICT DO NOTHING
+                ''')
+            res = connection.execute(sql,{
+                'id_tweets':tweet['id'],
+                'id_emoji':id_emoji,
+                'num':text.count(emoji)
+                })
+
+
+
 # loop through file
 # NOTE:
 # we reverse sort the filenames because this results in fewer updates to the users table,
@@ -335,14 +387,17 @@ for filename in sorted(args.inputs, reverse=True):
                         tweet = json.loads(line)
 
                         # print message
-                        #tweets_list.append(tweet)
+                        tweets_list.append(tweet)
                         if i%args.print_every==0:
                             print(datetime.datetime.now(),filename,subfilename,'i=',i,'id=',tweet['id'])
-                            #with connection.begin() as trans:
-                                #for tweet in tweets_list:
-                                    #insert_tweet(connection,tweet)
-                            #tweets_list = []
-                        insert_tweet(connection,tweet)
+                            with connection.begin() as trans:
+                                for tweet in tweets_list:
+                                    insert_tweet(connection,tweet)
+                                    insert_emoji(connection,tweet)
+                            tweets_list = []
+
+                        #insert_tweet(connection,tweet)
+                        #insert_emoji(connection,tweet)
 
                         """
 

@@ -10,7 +10,7 @@ mkdir -p $logdir
 #done
 
 #for file in ~/gdrive_twitter/geoTwitter20*.zip; do
-for file in /data/tweets/geoTwitter20-05-10.zip /data/tweets/geoTwitter20-01-0*.zip;  do
+for file in /data/tweets/geoTwitter20-03-18.zip; do
     nohup python3 -u Novichenko/Twitter/load_tweets.py --inputs $file > $logdir/$(basename $file) &
 done
 #nohup python3 -u Novichenko/Twitter/load_tweets.py --inputs /data/Twitter\ dataset/geoTwitter20-03-*.zip > $logdir/20- &
